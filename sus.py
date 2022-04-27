@@ -5,5 +5,6 @@ while True:
     expression = input("> ")
   except EOFError:
     break
-  interpreter = suslib.Interpreter(expression)
+  lexer = suslib.Lexer(expression)
+  interpreter = suslib.Interpreter(lexer)
   print(interpreter.expr())

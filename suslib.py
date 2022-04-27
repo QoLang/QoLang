@@ -5,6 +5,8 @@ class Tokens:
   MINUS     = 3
   MULTIPLY  = 4
   DIVIDE    = 5
+  LPAREN    = 6
+  RPAREN    = 7
 
 class Token:
   def __init__(self, type, value):
@@ -17,7 +19,7 @@ class Token:
   def __repr__(self):
     return self.__str__()
 
-class Interpreter:
+class Lexer:
   def __init__(self, text):
     self.text = text
     self.pos = 0
@@ -72,19 +74,39 @@ class Interpreter:
       if self.current_char == '/':
         self.advance()
         return Token(Tokens.DIVIDE, '/')
+
+      if self.current_char == '(':
+        self.advance()
+        return Token(Tokens.LPAREN, '(')
+
+      if self.current_char == ')':
+        self.advance()
+        return Token(Tokens.RPAREN, ')')
     
     return Token(Tokens.EOF, None)
 
+class Interpreter:
+  def __init__(self, lexer):
+    self.lexer = lexer
+    self.current_token = self.lexer.next_token()
+
   def eat(self, token_type):
     if self.current_token.type == token_type:
-      self.current_token = self.next_token()
+      self.current_token = self.lexer.next_token()
     else:
       self.error()
 
   def factor(self):
     token = self.current_token
-    self.eat(Tokens.INTEGER)
-    return token.value
+    match token.type:
+      case Tokens.INTEGER:
+        self.eat(Tokens.INTEGER)
+        return token.value
+      case Tokens.LPAREN:
+        self.eat(Tokens.LPAREN)
+        result = self.expr()
+        self.eat(Tokens.RPAREN)
+        return result
 
   def term(self):
     result = self.factor()
@@ -102,8 +124,6 @@ class Interpreter:
     return result
 
   def expr(self):
-    self.current_token = self.next_token()
-
     result = self.term()
 
     while self.current_token.type in (Tokens.PLUS, Tokens.MINUS, Tokens.MULTIPLY, Tokens.DIVIDE):
