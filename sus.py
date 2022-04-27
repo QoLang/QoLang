@@ -6,5 +6,6 @@ while True:
   except EOFError:
     break
   lexer = suslib.Lexer(expression)
-  interpreter = suslib.Interpreter(lexer)
-  print(interpreter.expr())
+  parser = suslib.Parser(lexer)
+  interpreter = suslib.Interpreter(parser)
+  print(interpreter.visit(parser.parse()))

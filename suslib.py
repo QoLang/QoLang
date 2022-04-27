@@ -19,6 +19,20 @@ class Token:
   def __repr__(self):
     return self.__str__()
 
+class AST:
+  pass
+
+class BinOp(AST):
+  def __init__(self, left, op, right):
+    self.left = left
+    self.token = self.op = op
+    self.right = right
+
+class Num(AST):
+  def __init__(self, token):
+    self.token = token
+    self.value = token.value
+
 class Lexer:
   def __init__(self, text):
     self.text = text
@@ -85,7 +99,7 @@ class Lexer:
     
     return Token(Tokens.EOF, None)
 
-class Interpreter:
+class Parser:
   def __init__(self, lexer):
     self.lexer = lexer
     self.current_token = self.lexer.next_token()
@@ -101,45 +115,67 @@ class Interpreter:
     match token.type:
       case Tokens.INTEGER:
         self.eat(Tokens.INTEGER)
-        return token.value
+        return Num(token)
       case Tokens.LPAREN:
         self.eat(Tokens.LPAREN)
-        result = self.expr()
+        node = self.expr()
         self.eat(Tokens.RPAREN)
-        return result
+        return node
 
   def term(self):
-    result = self.factor()
+    node = self.factor()
 
     while self.current_token.type in (Tokens.MULTIPLY, Tokens.DIVIDE):
       token = self.current_token
       match token.type:
         case Tokens.MULTIPLY:
           self.eat(Tokens.MULTIPLY)
-          result = result * self.factor()
         case Tokens.DIVIDE:
           self.eat(Tokens.DIVIDE)
-          result = result / self.factor()
+      node = BinOp(node, token, self.factor())
     
-    return result
+    return node
 
   def expr(self):
-    result = self.term()
+    node = self.term()
 
     while self.current_token.type in (Tokens.PLUS, Tokens.MINUS, Tokens.MULTIPLY, Tokens.DIVIDE):
       token = self.current_token
       match token.type:
         case Tokens.PLUS:
           self.eat(Tokens.PLUS)
-          result = result + self.term()
         case Tokens.MINUS:
           self.eat(Tokens.MINUS)
-          result = result - self.term()
-        case Tokens.MULTIPLY:
-          self.eat(Tokens.MULTIPLY)
-          result = result * self.term()
-        case Tokens.DIVIDE:
-          self.eat(Tokens.DIVIDE)
-          result = result / self.term()
+      node = BinOp(node, token, self.term())
     
-    return result
+    return node
+
+  def parse(self):
+    return self.expr()
+
+class NodeVisitor:
+  def visit(self, node):
+    method_name = 'visit_' + type(node).__name__
+    visitor = getattr(self, method_name, self.generic_visit)
+    return visitor(node)
+
+  def generic_visit(self, node):
+    raise Exception(f"No visit_{type(node).__name__} method")
+
+class Interpreter(NodeVisitor):
+  def __init__(self, parser):
+    self.parser = parser
+
+  def visit_BinOp(self, node):
+    match node.op.type:
+      case Tokens.PLUS:
+        return self.visit(node.left) + self.visit(node.right)
+      case Tokens.MINUS:
+        return self.visit(node.left) - self.visit(node.right)
+      case Tokens.MULTIPLY:
+        return self.visit(node.left) * self.visit(node.right)
+      case Tokens.DIVIDE:
+        return self.visit(node.left) / self.visit(node.right)
+  
+  def visit_Num(self, node):
+    return node.value
