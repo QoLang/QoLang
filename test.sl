@@ -1,9 +1,6 @@
 {
-  {
-    number := 2;
-    a := number;
-    b := 10 * a + 10 * number / 4;
-    c := a - - b;
+  func: my_func {
+    a := 13;
   };
-  x := 11;
+  my_func();
 }

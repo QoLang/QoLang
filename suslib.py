@@ -14,6 +14,9 @@ class Tokens:
   ASSIGN    = "ASSIGN"
   SEMI      = "SEMI"
   ID        = "ID"
+  FUNC      = "FUNC"
+  COL       = "COL"
+  FUNCCALL  = "FUNCCALL"
 
 class Token:
   def __init__(self, type, value):
@@ -66,6 +69,52 @@ class Var(AST):
 class NoOp(AST):
   pass
 
+class FncDec(AST):
+  def __init__(self, name, node):
+    self.name = name
+    self.node = node
+
+class FncCall(AST):
+  def __init__(self, name):
+    self.name = name
+
+#endregion
+#region Variables
+
+class Variable:
+  pass
+
+class VarVal(Variable):
+  def __init__(self, name, value):
+    self.name = name
+    self.value = value
+  
+  def __str__(self):
+    return f"VarNum({self.name}, {self.value})"
+
+class VarFnc(Variable):
+  def __init__(self, name, node):
+    self.name = name
+    self.node = node
+  
+  def __str__(self):
+    return f"VarFnc({self.name})"
+
+class Vars:
+  def __init__(self):
+    self.vars = []
+  
+  def getVar(self, name):
+    for var in self.vars:
+      if var.name == name:
+        return var
+    return None
+  
+  def setVar(self, var):
+    self.vars += [var]
+
+Variables = Vars()
+
 #endregion
 #region The Lexer
 
@@ -104,13 +153,22 @@ class Lexer:
     else:
       return self.text[peek_pos]
 
+  reserved_keyws = {
+    "func": Token(Tokens.FUNC, "func")
+  }
+  
   def _id(self):
     result = ''
-    while self.current_char is not None and self.current_char.isalnum():
+    while self.current_char is not None and (self.current_char.isalnum() or self.current_char == '_'):
       result += self.current_char
       self.advance()
 
-    token = Token(Tokens.ID, result)
+    self.skipspace()
+    if self.current_char == '(':
+      token = Token(Tokens.FUNCCALL, result)
+    else:
+      token = self.reserved_keyws.get(result, Token(Tokens.ID, result))
+
     return token
 
   def next_token(self):
@@ -167,6 +225,10 @@ class Lexer:
       if self.current_char == '}':
         self.advance()
         return Token(Tokens.END, '}')
+
+      if self.current_char == ':':
+        self.advance()
+        return Token(Tokens.COL, ':')
     
     return Token(Tokens.EOF, None)
 
@@ -237,7 +299,7 @@ class Parser:
     return node
   
   def program(self):
-    node = self.compound_statement()
+    node = self.compound_statement() # program
     return node
   
   def compound_statement(self):
@@ -269,12 +331,17 @@ class Parser:
     return results
   
   def statement(self):
-    if self.current_token.type == Tokens.BEGIN:
-      node = self.compound_statement()
-    elif self.current_token.type == Tokens.ID:
-      node = self.assignment_statement()
-    else:
-      node = self.empty()
+    match self.current_token.type:
+      case Tokens.BEGIN:
+        node = self.compound_statement()
+      case Tokens.ID:
+        node = self.assignment_statement()
+      case Tokens.FUNC:
+        node = self.fncdec()
+      case Tokens.FUNCCALL:
+        node = self.fnccall()
+      case _:
+        node = self.empty()
     return node
     
   def assignment_statement(self):
@@ -292,6 +359,23 @@ class Parser:
 
   def empty(self):
     return NoOp()
+  
+  def fncdec(self):
+    self.eat(Tokens.FUNC)
+    self.eat(Tokens.COL)
+    proc_name = self.current_token.value
+    self.eat(Tokens.ID)
+    node = self.compound_statement()
+    var = FncDec(proc_name, node)
+    return var
+  
+  def fnccall(self):
+    proc_name = self.current_token.value
+    self.eat(Tokens.FUNCCALL)
+    self.eat(Tokens.LPAREN)
+    self.eat(Tokens.RPAREN)
+    var = FncCall(proc_name)
+    return var
 
   def parse(self):
     node = self.program()
@@ -316,18 +400,41 @@ class NodeVisitor:
 class Interpreter(NodeVisitor):
   def __init__(self, parser):
     self.parser = parser
-    self.GLOBAL_SCOPE = {}
 
   def visit_BinOp(self, node):
     match node.op.type:
       case Tokens.PLUS:
-        return self.visit(node.left) + self.visit(node.right)
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        if isinstance(left, VarVal):
+          left = left.value
+        if isinstance(right, VarVal):
+          right = right.value
+        return left + right
       case Tokens.MINUS:
-        return self.visit(node.left) - self.visit(node.right)
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        if isinstance(left, VarVal):
+          left = left.value
+        if isinstance(right, VarVal):
+          right = right.value
+        return left - right
       case Tokens.MULTIPLY:
-        return self.visit(node.left) * self.visit(node.right)
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        if isinstance(left, VarVal):
+          left = left.value
+        if isinstance(right, VarVal):
+          right = right.value
+        return left * right
       case Tokens.DIVIDE:
-        return self.visit(node.left) / self.visit(node.right)
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        if isinstance(left, VarVal):
+          left = left.value
+        if isinstance(right, VarVal):
+          right = right.value
+        return left / right
   
   def visit_Num(self, node):
     return node.value
@@ -336,9 +443,15 @@ class Interpreter(NodeVisitor):
     op = node.op.type
     match node.op.type:
       case Tokens.PLUS:
-        return +self.visit(node.expr)
+        val = self.visit(node.expr)
+        if isinstance(val, VarVal):
+          val = val.value
+        return +val
       case Tokens.MINUS:
-        return -self.visit(node.expr)
+        val = self.visit(node.expr)
+        if isinstance(val, VarVal):
+          val = val.value
+        return -val
 
   def visit_Compound(self, node):
     for child in node.children:
@@ -349,16 +462,25 @@ class Interpreter(NodeVisitor):
 
   def visit_Assign(self, node):
     var_name = node.left.value
-    self.GLOBAL_SCOPE[var_name] = self.visit(node.right)
+    var_val = self.visit(node.right)
+    var = VarVal(var_name, var_val)
+    Variables.setVar(var)
 
   def visit_Var(self, node):
     var_name = node.value
-    val = self.GLOBAL_SCOPE.get(var_name)
+    val = Variables.getVar(var_name)
     if val is None:
       raise NameError(repr(var_name))
     else:
       return val
-  
+
+  def visit_FncDec(self, node):
+    Variables.setVar(node)
+
+  def visit_FncCall(self, node):
+    var = Variables.getVar(node.name)
+    return self.visit(var.node)
+
   def interpret(self):
     tree = self.parser.parse()
     if tree is None:

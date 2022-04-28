@@ -6,4 +6,10 @@ lexer = suslib.Lexer(expression)
 parser = suslib.Parser(lexer)
 interpreter = suslib.Interpreter(parser)
 interpreter.interpret()
-print(interpreter.GLOBAL_SCOPE)
+out = ""
+for val in suslib.Variables.vars:
+  if isinstance(val, suslib.VarVal):
+    out += f"{val.name}: {val.value}\n"
+out = out[:-1]
+
+print(out)
