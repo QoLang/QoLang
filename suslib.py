@@ -17,6 +17,9 @@ class Tokens:
   FUNC      = "FUNC"
   COL       = "COL"
   FUNCCALL  = "FUNCCALL"
+  COMMA     = "COMMA"
+  SBRACKETL = "SBRACKETL"
+  SBRACKETR = "SBRACKETR"
 
 class Token:
   def __init__(self, type, value):
@@ -40,43 +43,63 @@ class BinOp(AST):
     self.left = left
     self.token = self.op = op
     self.right = right
+  
+  def __str__(self):
+    return f"BinOp({self.left}, {self.op}, {self.right})"
 
 class Num(AST):
   def __init__(self, token):
     self.token = token
     self.value = token.value
+  
+  def __str__(self):
+    return f"Num({self.token}, {self.value})"
 
 class UnaryOp(AST):
   def __init__(self, op, expr):
     self.token = self.op = op
     self.expr = expr
+  
+  def __str__(self):
+    return f"UnaryOp({self.token}, {self.expr})"
 
 class Compound(AST):
   def __init__(self):
     self.children = []
+  
+  def __str__(self):
+    return f"Compound({', '.join(self.children)})"
 
 class Assign(AST):
   def __init__(self, left, op, right):
     self.left = left
     self.token = self.op = op
     self.right = right
+  
+  def __str__(self):
+    return f"Assign({self.left}, {self.op}, {self.right})"
 
 class Var(AST):
   def __init__(self, token):
     self.token = token
     self.value = token.value
+  
+  def __str__(self):
+    return f"Var({self.token}, {self.value})"
 
 class NoOp(AST):
   pass
 
 class FncDec(AST):
-  def __init__(self, name, node):
+  def __init__(self, name, node, args):
     self.name = name
     self.node = node
+    self.args = args
 
 class FncCall(AST):
-  def __init__(self, name):
+  def __init__(self, name, args):
     self.name = name
+    self.args = args
 
 #endregion
 #region Variables
@@ -229,6 +252,18 @@ class Lexer:
       if self.current_char == ':':
         self.advance()
         return Token(Tokens.COL, ':')
+
+      if self.current_char == ',':
+        self.advance()
+        return Token(Tokens.COMMA, ',')
+
+      if self.current_char == '[':
+        self.advance()
+        return Token(Tokens.SBRACKETL, '[')
+
+      if self.current_char == ']':
+        self.advance()
+        return Token(Tokens.SBRACKETR, ']')
     
     return Token(Tokens.EOF, None)
 
@@ -365,16 +400,30 @@ class Parser:
     self.eat(Tokens.COL)
     proc_name = self.current_token.value
     self.eat(Tokens.ID)
+    self.eat(Tokens.SBRACKETL)
+
+    args = [self.expr()]
+    while self.current_token.type == Tokens.COMMA:
+      self.eat(Tokens.COMMA)
+      args.append(self.expr())
+
+    self.eat(Tokens.SBRACKETR)
     node = self.compound_statement()
-    var = FncDec(proc_name, node)
+    var = FncDec(proc_name, node, args)
     return var
   
   def fnccall(self):
     proc_name = self.current_token.value
     self.eat(Tokens.FUNCCALL)
     self.eat(Tokens.LPAREN)
+
+    args = [self.expr()]
+    while self.current_token.type == Tokens.COMMA:
+      self.eat(Tokens.COMMA)
+      args.append(self.expr())
+
     self.eat(Tokens.RPAREN)
-    var = FncCall(proc_name)
+    var = FncCall(proc_name, args)
     return var
 
   def parse(self):
@@ -479,7 +528,17 @@ class Interpreter(NodeVisitor):
 
   def visit_FncCall(self, node):
     var = Variables.getVar(node.name)
-    return self.visit(var.node)
+    if not len(node.args) == len(var.args):
+      raise Exception(f"Expected {str(len(node.args))} args, got {str(len(var.args))}")
+    
+    i = 0
+    for arg in node.args:
+      nvar = VarVal(var.args[i].value, arg.token)
+      Variables.setVar(nvar)
+      i += 1
+    
+    nnode = self.visit(var.node)
+    return nnode
 
   def interpret(self):
     tree = self.parser.parse()

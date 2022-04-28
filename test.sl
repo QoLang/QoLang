@@ -1,6 +1,6 @@
 {
-  func: my_func {
-    a := 13;
+  func: my_func [num] {
+    a := num;
   };
-  my_func();
+  my_func(13);
 }
