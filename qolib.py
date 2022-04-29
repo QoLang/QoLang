@@ -1,10 +1,10 @@
-import sstd
-from sclasses import * 
+import qstd
+from qclasses import * 
 
 #region Built-in Functions
 
-for fn in sstd.available_functions:
-  added = BuiltinFunc(fn, getattr(sstd, fn))
+for fn in qstd.available_functions:
+  added = BuiltinFunc(fn, getattr(qstd, fn))
   Variables.setVar(added)
 
 #endregion

@@ -1,4 +1,4 @@
-import sstd
+import qstd
 
 #region Tokens
 

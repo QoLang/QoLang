@@ -1,17 +1,17 @@
-import suslib
+import qolib
 import sys
 
 expression = open(sys.argv[1]).read()
-lexer = suslib.Lexer(expression)
-parser = suslib.Parser(lexer)
-interpreter = suslib.Interpreter(parser)
+lexer = qolib.Lexer(expression)
+parser = qolib.Parser(lexer)
+interpreter = qolib.Interpreter(parser)
 interpreter.interpret()
 
 exit() # Remove/comment this line if you want to see variables
 
 out = ""
-for val in suslib.Variables.vars:
-  if isinstance(val, suslib.VarVal):
+for val in qolib.Variables.vars:
+  if isinstance(val, qolib.VarVal):
     out += f"{val.name}: {val.value}\n"
 out = out[:-1]
 

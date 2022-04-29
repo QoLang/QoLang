@@ -1,5 +1,5 @@
-# sus standard library
-from sclasses import VarVal, Var
+# QoLang Standart Library
+from qclasses import VarVal, Var
 
 available_functions = ["func_print", "func_println", "func_input"]
 
