@@ -6,6 +6,9 @@ lexer = suslib.Lexer(expression)
 parser = suslib.Parser(lexer)
 interpreter = suslib.Interpreter(parser)
 interpreter.interpret()
+
+exit() # Remove/comment this line if you want to see variables
+
 out = ""
 for val in suslib.Variables.vars:
   if isinstance(val, suslib.VarVal):

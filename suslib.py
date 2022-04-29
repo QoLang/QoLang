@@ -1,142 +1,11 @@
-#region Tokens
+import sstd
+from sclasses import * 
 
-class Tokens:
-  INTEGER   = "INTEGER"
-  EOF       = "EOF"
-  PLUS      = "PLUS"
-  MINUS     = "MINUS"
-  MULTIPLY  = "MULTIPLY"
-  DIVIDE    = "DIVIDE"
-  LPAREN    = "LPAREN"
-  RPAREN    = "RPAREN"
-  BEGIN     = "BEGIN"
-  END       = "END"
-  ASSIGN    = "ASSIGN"
-  SEMI      = "SEMI"
-  ID        = "ID"
-  FUNC      = "FUNC"
-  COL       = "COL"
-  FUNCCALL  = "FUNCCALL"
-  COMMA     = "COMMA"
-  SBRACKETL = "SBRACKETL"
-  SBRACKETR = "SBRACKETR"
+#region Built-in Functions
 
-class Token:
-  def __init__(self, type, value):
-    self.type = type
-    self.value = value
-
-  def __str__(self):
-    return f"Token({self.type}, {self.value})"
-
-  def __repr__(self):
-    return self.__str__()
-
-#endregion
-#region Absract Syntax Trees
-
-class AST:
-  pass
-
-class BinOp(AST):
-  def __init__(self, left, op, right):
-    self.left = left
-    self.token = self.op = op
-    self.right = right
-  
-  def __str__(self):
-    return f"BinOp({self.left}, {self.op}, {self.right})"
-
-class Num(AST):
-  def __init__(self, token):
-    self.token = token
-    self.value = token.value
-  
-  def __str__(self):
-    return f"Num({self.token}, {self.value})"
-
-class UnaryOp(AST):
-  def __init__(self, op, expr):
-    self.token = self.op = op
-    self.expr = expr
-  
-  def __str__(self):
-    return f"UnaryOp({self.token}, {self.expr})"
-
-class Compound(AST):
-  def __init__(self):
-    self.children = []
-  
-  def __str__(self):
-    return f"Compound({', '.join(self.children)})"
-
-class Assign(AST):
-  def __init__(self, left, op, right):
-    self.left = left
-    self.token = self.op = op
-    self.right = right
-  
-  def __str__(self):
-    return f"Assign({self.left}, {self.op}, {self.right})"
-
-class Var(AST):
-  def __init__(self, token):
-    self.token = token
-    self.value = token.value
-  
-  def __str__(self):
-    return f"Var({self.token}, {self.value})"
-
-class NoOp(AST):
-  pass
-
-class FncDec(AST):
-  def __init__(self, name, node, args):
-    self.name = name
-    self.node = node
-    self.args = args
-
-class FncCall(AST):
-  def __init__(self, name, args):
-    self.name = name
-    self.args = args
-
-#endregion
-#region Variables
-
-class Variable:
-  pass
-
-class VarVal(Variable):
-  def __init__(self, name, value):
-    self.name = name
-    self.value = value
-  
-  def __str__(self):
-    return f"VarNum({self.name}, {self.value})"
-
-class VarFnc(Variable):
-  def __init__(self, name, node):
-    self.name = name
-    self.node = node
-  
-  def __str__(self):
-    return f"VarFnc({self.name})"
-
-class Vars:
-  def __init__(self):
-    self.vars = []
-  
-  def getVar(self, name):
-    for var in self.vars:
-      if var.name == name:
-        return var
-    return None
-  
-  def setVar(self, var):
-    self.vars += [var]
-
-Variables = Vars()
+for fn in sstd.available_functions:
+  added = BuiltinFunc(fn, getattr(sstd, fn))
+  Variables.setVar(added)
 
 #endregion
 #region The Lexer
@@ -194,6 +63,18 @@ class Lexer:
 
     return token
 
+  def string(self, char):
+    self.advance()
+    
+    result = ''
+    while self.current_char is not None and self.current_char != char:
+      result += self.current_char
+      self.advance()
+        
+    self.advance()
+
+    return Token(Tokens.STRING, result)
+
   def next_token(self):
     text = self.text
 
@@ -204,6 +85,12 @@ class Lexer:
 
       if self.current_char.isdigit():
         return Token(Tokens.INTEGER, self.integer())
+        
+      if self.current_char == "'":
+        return self.string("'")
+        
+      if self.current_char == "\"":
+        return self.string("\"")
 
       if self.current_char == '+':
         self.advance()
@@ -301,6 +188,9 @@ class Parser:
         node = self.expr()
         self.eat(Tokens.RPAREN)
         return node
+      case Tokens.STRING:
+        self.eat(Tokens.STRING)
+        return String(token)
       case _:
         node = self.variable()
         return node
@@ -417,13 +307,27 @@ class Parser:
     self.eat(Tokens.FUNCCALL)
     self.eat(Tokens.LPAREN)
 
-    args = [self.expr()]
+    toadd = self.expr()
+    args = [toadd]
     while self.current_token.type == Tokens.COMMA:
       self.eat(Tokens.COMMA)
-      args.append(self.expr())
+      toadd = self.expr()
+      args.append(toadd)
 
     self.eat(Tokens.RPAREN)
-    var = FncCall(proc_name, args)
+
+    func = Variables.getVar(proc_name)
+    var = None
+
+    if func is None:
+      func = Variables.getVar("func_" + proc_name)
+      if func is None:
+        self.error()
+      else:
+        var = BuiltinFuncCall(func.func, args)
+    else:
+      var = FncCall(proc_name, args)
+
     return var
 
   def parse(self):
@@ -528,6 +432,8 @@ class Interpreter(NodeVisitor):
 
   def visit_FncCall(self, node):
     var = Variables.getVar(node.name)
+    if var is None:
+      raise Exception("Function not found")
     if not len(node.args) == len(var.args):
       raise Exception(f"Expected {str(len(node.args))} args, got {str(len(var.args))}")
     
@@ -539,6 +445,19 @@ class Interpreter(NodeVisitor):
     
     nnode = self.visit(var.node)
     return nnode
+
+  def visit_BuiltinFuncCall(self, node):
+    global Variables
+    args = []
+    i = 0
+    for arg in node.args:
+      args += [arg]
+      i += 1
+
+    Variables = node.func(Variables, node.args)
+
+  def visit_String(self, node):
+    return node.value
 
   def interpret(self):
     tree = self.parser.parse()

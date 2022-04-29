@@ -1,6 +1,4 @@
 {
-  func: my_func [num] {
-    a := num;
-  };
-  my_func(13);
+  input("> ", toprint);
+  println(toprint, "this looks nice!");
 }
