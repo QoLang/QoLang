@@ -3,26 +3,35 @@ import qstd
 #region Tokens
 
 class Tokens:
-  INTEGER   = "INTEGER"
-  EOF       = "EOF"
-  PLUS      = "PLUS"
-  MINUS     = "MINUS"
-  MULTIPLY  = "MULTIPLY"
-  DIVIDE    = "DIVIDE"
-  LPAREN    = "LPAREN"
-  RPAREN    = "RPAREN"
-  BEGIN     = "BEGIN"
-  END       = "END"
-  ASSIGN    = "ASSIGN"
-  SEMI      = "SEMI"
-  ID        = "ID"
-  FUNC      = "FUNC"
-  COL       = "COL"
-  FUNCCALL  = "FUNCCALL"
-  COMMA     = "COMMA"
-  SBRACKETL = "SBRACKETL"
-  SBRACKETR = "SBRACKETR"
-  STRING    = "STRING"
+  INTEGER       = "INTEGER"
+  EOF           = "EOF"
+  PLUS          = "PLUS"
+  MINUS         = "MINUS"
+  MULTIPLY      = "MULTIPLY"
+  DIVIDE        = "DIVIDE"
+  LPAREN        = "LPAREN"
+  RPAREN        = "RPAREN"
+  BEGIN         = "BEGIN"
+  END           = "END"
+  ASSIGN        = "ASSIGN"
+  SEMI          = "SEMI"
+  ID            = "ID"
+  FUNC          = "FUNC"
+  COL           = "COL"
+  FUNCCALL      = "FUNCCALL"
+  COMMA         = "COMMA"
+  SBRACKETL     = "SBRACKETL"
+  SBRACKETR     = "SBRACKETR"
+  STRING        = "STRING"
+  LESS_THAN     = "LESS_THAN"
+  GREATER_THAN  = "GREATER_THAN"
+  EQUAL         = "EQUAL"
+  LESS_EQUAL    = "LESS_EQUAL"
+  GREATER_EQUAL = "GREATER_EQUAL"
+  NOT_EQUAL     = "NOT_EQUAL"
+  TRUE          = "TRUE"
+  FALSE         = "FALSE"
+  POINTER       = "POINTER"
 
 class Token:
   def __init__(self, type, value):
@@ -118,6 +127,16 @@ class BuiltinFuncCall(AST):
     self.value = None
 
 class String(AST):
+  def __init__(self, token):
+    self.token = token
+    self.value = token.value
+
+class Boolean(AST):
+  def __init__(self, token):
+    self.token = token
+    self.value = token.value
+
+class Pointer(AST):
   def __init__(self, token):
     self.token = token
     self.value = token.value

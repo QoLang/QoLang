@@ -1,4 +1,6 @@
 {
-  input("> ", toprint);
-  println(toprint, "this looks nice!");
+  println(1 == 1);
+  out := "";
+  input("> ", &out);
+  println(out == "hello");
 }

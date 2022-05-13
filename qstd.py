@@ -20,13 +20,13 @@ def func_println(Variables, args:list):
     if isinstance(arg, Var):
       toprint += [Variables.getVar(arg.value).value]
     else:
-      toprint += [arg.value]
+      toprint += [str(arg)]
 
   print(" ".join(toprint))
   return Variables
 
 def func_input(Variables, args:list):
-  inp = input(args[0].value)
-  var = VarVal(name=args[1].value, value=inp)
+  inp = input(args[0])
+  var = VarVal(name=args[1], value=inp)
   Variables.setVar(var)
   return Variables

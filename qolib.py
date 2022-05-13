@@ -46,10 +46,17 @@ class Lexer:
       return self.text[peek_pos]
 
   reserved_keyws = {
-    "func": Token(Tokens.FUNC, "func")
+    "func": Token(Tokens.FUNC, "func"),
+    "True": Token(Tokens.TRUE, "True"),
+    "False": Token(Tokens.FALSE, "False")
   }
   
   def _id(self):
+    isp = False
+    if self.current_char == '&':
+      isp = True
+      self.advance()
+    
     result = ''
     while self.current_char is not None and (self.current_char.isalnum() or self.current_char == '_'):
       result += self.current_char
@@ -58,6 +65,8 @@ class Lexer:
     self.skipspace()
     if self.current_char == '(':
       token = Token(Tokens.FUNCCALL, result)
+    elif isp:
+      token = Token(Tokens.POINTER, result)
     else:
       token = self.reserved_keyws.get(result, Token(Tokens.ID, result))
 
@@ -116,13 +125,33 @@ class Lexer:
         self.advance()
         return Token(Tokens.RPAREN, ')')
       
-      if self.current_char.isalpha():
+      if self.current_char.isalpha() or self.current_char == '&':
         return self._id()
 
       if self.current_char == ':' and self.peek() == '=':
         self.advance()
         self.advance()
         return Token(Tokens.ASSIGN, ':=')
+
+      if self.current_char == '=' and self.peek() == '=':
+        self.advance()
+        self.advance()
+        return Token(Tokens.EQUAL, '==')
+
+      if self.current_char == '<' and self.peek() == '=':
+        self.advance()
+        self.advance()
+        return Token(Tokens.LESS_EQUAL, '<=')
+
+      if self.current_char == '>' and self.peek() == '=':
+        self.advance()
+        self.advance()
+        return Token(Tokens.GREATER_EQUAL, '>=')
+
+      if self.current_char == '!' and self.peek() == '=':
+        self.advance()
+        self.advance()
+        return Token(Tokens.NOT_EQUAL, '!=')
 
       if self.current_char == ';':
         self.advance()
@@ -151,7 +180,14 @@ class Lexer:
       if self.current_char == ']':
         self.advance()
         return Token(Tokens.SBRACKETR, ']')
-    
+
+      if self.current_char == '<':
+        self.advance()
+        return Token(Tokens.LESS_THAN, '<')
+
+      if self.current_char == '>':
+        self.advance()
+        return Token(Tokens.GREATER_THAN, '>')
     return Token(Tokens.EOF, None)
 
 #endregion
@@ -191,6 +227,15 @@ class Parser:
       case Tokens.STRING:
         self.eat(Tokens.STRING)
         return String(token)
+      case Tokens.TRUE:
+        self.eat(Tokens.TRUE)
+        return Boolean(token)
+      case Tokens.FALSE:
+        self.eat(Tokens.FALSE)
+        return Boolean(token)
+      case Tokens.POINTER:
+        self.eat(Tokens.POINTER)
+        return Pointer(token)
       case _:
         node = self.variable()
         return node
@@ -210,8 +255,38 @@ class Parser:
     return node
 
   def expr(self):
-    node = self.term()
+    return self.relation()
+  
+  def relation(self):
+    node = self.arithmetic_expr()
+    if self.current_token.type in (
+      Tokens.LESS_THAN,
+      Tokens.GREATER_THAN,
+      Tokens.LESS_EQUAL,
+      Tokens.GREATER_EQUAL,
+      Tokens.EQUAL,
+      Tokens.NOT_EQUAL,
+    ):
+      token = self.current_token
+      match self.current_token.type:
+        case Tokens.LESS_THAN:
+          self.eat(Tokens.LESS_THAN)
+        case Tokens.GREATER_THAN:
+          self.eat(Tokens.GREATER_THAN)
+        case Tokens.EQUAL:
+          self.eat(Tokens.EQUAL)
+        case Tokens.LESS_EQUAL:
+          self.eat(Tokens.LESS_EQUAL)
+        case Tokens.GREATER_EQUAL:
+          self.eat(Tokens.GREATER_EQUAL)
+        case Tokens.NOT_EQUAL:
+          self.eat(Tokens.NOT_EQUAL)
+      node = BinOp(left=node, op=token, right=self.arithmetic_expr())
+    return node
 
+  def arithmetic_expr(self):
+    node = self.term()
+    
     while self.current_token.type in (Tokens.PLUS, Tokens.MINUS, Tokens.MULTIPLY, Tokens.DIVIDE):
       token = self.current_token
       match token.type:
@@ -220,7 +295,7 @@ class Parser:
         case Tokens.MINUS:
           self.eat(Tokens.MINUS)
       node = BinOp(node, token, self.term())
-    
+
     return node
   
   def program(self):
@@ -355,39 +430,33 @@ class Interpreter(NodeVisitor):
     self.parser = parser
 
   def visit_BinOp(self, node):
+    left = self.visit(node.left)
+    right = self.visit(node.right)
+    if isinstance(left, VarVal):
+      left = left.value
+    if isinstance(right, VarVal):
+      right = right.value
     match node.op.type:
       case Tokens.PLUS:
-        left = self.visit(node.left)
-        right = self.visit(node.right)
-        if isinstance(left, VarVal):
-          left = left.value
-        if isinstance(right, VarVal):
-          right = right.value
         return left + right
       case Tokens.MINUS:
-        left = self.visit(node.left)
-        right = self.visit(node.right)
-        if isinstance(left, VarVal):
-          left = left.value
-        if isinstance(right, VarVal):
-          right = right.value
         return left - right
       case Tokens.MULTIPLY:
-        left = self.visit(node.left)
-        right = self.visit(node.right)
-        if isinstance(left, VarVal):
-          left = left.value
-        if isinstance(right, VarVal):
-          right = right.value
         return left * right
       case Tokens.DIVIDE:
-        left = self.visit(node.left)
-        right = self.visit(node.right)
-        if isinstance(left, VarVal):
-          left = left.value
-        if isinstance(right, VarVal):
-          right = right.value
         return left / right
+      case Tokens.LESS_THAN:
+        return str(left < right)
+      case Tokens.GREATER_THAN:
+        return str(left > right)
+      case Tokens.EQUAL:
+        return str(left == right)
+      case Tokens.LESS_EQUAL:
+        return str(left <= right)
+      case Tokens.GREATER_EQUAL:
+        return str(left >= right)
+      case Tokens.NOT_EQUAL:
+        return str(left != right)
   
   def visit_Num(self, node):
     return node.value
@@ -451,12 +520,18 @@ class Interpreter(NodeVisitor):
     args = []
     i = 0
     for arg in node.args:
-      args += [arg]
+      args += [self.visit(arg)]
       i += 1
 
-    Variables = node.func(Variables, node.args)
+    Variables = node.func(Variables, args)
 
   def visit_String(self, node):
+    return node.value
+
+  def visit_Boolean(self, node):
+    return node.value
+
+  def visit_Pointer(self, node):
     return node.value
 
   def interpret(self):
