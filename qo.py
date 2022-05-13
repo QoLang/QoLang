@@ -1,10 +1,11 @@
 import qolib
+import qint
 import sys
 
 expression = open(sys.argv[1]).read()
 lexer = qolib.Lexer(expression)
 parser = qolib.Parser(lexer)
-interpreter = qolib.Interpreter(parser)
+interpreter = qint.Interpreter(parser)
 interpreter.interpret()
 
 exit() # Remove/comment this line if you want to see variables
