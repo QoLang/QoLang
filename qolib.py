@@ -308,9 +308,13 @@ class Parser:
 
     return node
   
-  def program(self):
-    node = self.compound_statement() # program
-    return node
+  def program(self): # compound statement, without {}
+    nodes = self.statement_list()
+    root = Compound()
+    for node in nodes:
+      root.children.append(node)
+
+    return root
   
   def compound_statement(self):
     self.eat(Tokens.BEGIN)

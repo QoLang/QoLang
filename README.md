@@ -8,12 +8,10 @@ Currently not installable, but you can test it by cloning the repository and run
 
 ## Examples
 ```
-{
-  println(1 == 1); | print if 1 is equal to 1 (True) |
-  out := ""; | initialize variable `out` |
-  input("> ", &out); | get input to the variable `out` |
-  println(out == "hello"); | print if the variable `out` is equal to "hello" |
-}
+println(1 == 1); | print if 1 is equal to 1 (True) |
+out := ""; | initialize variable `out` |
+input("> ", &out); | get input to the variable `out` |
+println(out == "hello"); | print if the variable `out` is equal to "hello" |
 ```
 
 Save this as `test.qo` (exists in repository with this content) and run `python3 qo.py test.qo`.
