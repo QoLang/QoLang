@@ -9,13 +9,11 @@ Currently not installable, but you can test it by cloning the repository and run
 ## Examples
 ```
 {
-  println(1 == 1);
-  out := "";
-  input("> ", &out);
-  println(out == "hello");
+  println(1 == 1); | print if 1 is equal to 1 (True) |
+  out := ""; | initialize variable `out` |
+  input("> ", &out); | get input to the variable `out` |
+  println(out == "hello"); | print if the variable `out` is equal to "hello" |
 }
 ```
 
 Save this as `test.qo` (exists in repository with this content) and run `python3 qo.py test.qo`.
-
-This will print if `1` is equal to `1` (which is `True`) and wait for input with `> ` prompt, and will print if your input is equal to `"hello"` after the input. Note that this uses `println` and will print newline after the text, unlike `print`.

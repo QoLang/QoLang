@@ -31,6 +31,12 @@ class Lexer:
     while self.current_char is not None and self.current_char.isspace():
       self.advance()
 
+  def skipcomment(self):
+    self.advance()
+    while self.current_char != '|':
+      self.advance()
+    self.advance()
+
   def integer(self):
     result = ''
     while self.current_char is not None and self.current_char.isdigit():
@@ -90,6 +96,10 @@ class Lexer:
     while self.current_char is not None:
       if self.current_char.isspace():
         self.skipspace()
+        continue
+
+      if self.current_char == '|':
+        self.skipcomment()
         continue
 
       if self.current_char.isdigit():
