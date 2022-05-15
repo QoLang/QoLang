@@ -1,10 +1,18 @@
-import qolib
+import qstd
+import qlexer
+import qparser
+from qclasses import BuiltinFunc, Variables
 import qint
 import sys
 
+# Load standard library
+for fn in qstd.available_functions:
+  added = BuiltinFunc(fn, getattr(qstd, fn))
+  Variables.setVar(added)
+
 expression = open(sys.argv[1]).read()
-lexer = qolib.Lexer(expression)
-parser = qolib.Parser(lexer)
+lexer = qlexer.Lexer(expression)
+parser = qparser.Parser(lexer)
 interpreter = qint.Interpreter(parser)
 interpreter.interpret()
 
