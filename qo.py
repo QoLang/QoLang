@@ -8,6 +8,11 @@ parser = qolib.Parser(lexer)
 interpreter = qint.Interpreter(parser)
 interpreter.interpret()
 
+#tok = lexer.next_token()
+#while tok.value is not None:
+#  print(tok)
+#  tok = lexer.next_token()
+
 exit() # Remove/comment this line if you want to see variables
 
 out = ""

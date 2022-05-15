@@ -6,12 +6,25 @@ The project was inspired from [Let’s Build A Simple Interpreter.](https://rusl
 ## Installation
 Currently not installable, but you can test it by cloning the repository and running `python3 qo.py file.qo`.
 
-## Examples
+## Example
 ```
-println(1 == 1); | print if 1 is equal to 1 (True) |
-out := ""; | initialize variable `out` |
-input("> ", &out); | get input to the variable `out` |
-println(out == "hello"); | print if the variable `out` is equal to "hello" |
+println("QoLang test");
+println(""); | newline |
+println("commands:");
+println("  1  print 'Hello, world!'");
+println("  2  print 'Hello, QoLang!'");
+println("  3  print 'Hello, Camroku.TECH!'");
+in := "";
+input("> ", &in);
+if (in == "1") { | note the ". "1" and 1 are not the same. |
+  println("Hello, world!");
+} else if (in == "2") {
+  println("Hello, QoLang!");
+} else if (in == "3") {
+  println("Hello, Camroku.TECH!");
+} else {
+  println("Invalid input!");
+};
 ```
 
 Save this as `test.qo` (exists in repository with this content) and run `python3 qo.py test.qo`.

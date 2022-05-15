@@ -16,16 +16,23 @@ class Lexer:
     self.pos = 0
     self.current_token = None
     self.current_char = self.text[self.pos]
+    self.line = 1
+    self.column = 1
   
   def error(self):
-    raise Exception('Invalid character')
+    raise Exception(f'Invalid character, line: {str(self.line)}, col:{str(self.column)}')
 
   def advance(self):
+    if self.current_char == '\n':
+      self.line += 1
+      self.column = 0
+
     self.pos += 1
     if self.pos > len(self.text) - 1:
       self.current_char = None
     else:
       self.current_char = self.text[self.pos]
+      self.column += 1
 
   def skipspace(self):
     while self.current_char is not None and self.current_char.isspace():
@@ -54,7 +61,10 @@ class Lexer:
   reserved_keyws = {
     "func": Token(Tokens.FUNC, "func"),
     "True": Token(Tokens.TRUE, "True"),
-    "False": Token(Tokens.FALSE, "False")
+    "False": Token(Tokens.FALSE, "False"),
+    "if": Token(Tokens.IF_ST, "if"),
+    "elif": Token(Tokens.ELIF_ST, "elif"),
+    "else": Token(Tokens.ELSE_ST, "else")
   }
   
   def _id(self):
@@ -69,7 +79,7 @@ class Lexer:
       self.advance()
 
     self.skipspace()
-    if self.current_char == '(':
+    if self.current_char == '(' and result not in self.reserved_keyws:
       token = Token(Tokens.FUNCCALL, result)
     elif isp:
       token = Token(Tokens.POINTER, result)
@@ -207,13 +217,19 @@ class Parser:
   def __init__(self, lexer):
     self.lexer = lexer
     self.current_token = self.lexer.next_token()
+    self.next_token = self.lexer.next_token()
   
   def error(self):
-    raise Exception('Syntax error - ' + str(self.lexer.pos))
+    raise Exception(f'Syntax error, token: {str(self.current_token)}')
+
+  def get_next_token(self):
+    current_token = self.next_token
+    self.next_token = self.lexer.next_token()
+    return current_token
 
   def eat(self, token_type):
     if self.current_token.type == token_type:
-      self.current_token = self.lexer.next_token()
+      self.current_token = self.get_next_token()
     else:
       self.error()
 
@@ -354,6 +370,8 @@ class Parser:
         node = self.fncdec()
       case Tokens.FUNCCALL:
         node = self.fnccall()
+      case Tokens.IF_ST:
+        node = self.if_st()
       case _:
         node = self.empty()
     return node
@@ -418,6 +436,47 @@ class Parser:
       var = FncCall(proc_name, args)
 
     return var
+  
+  def if_st(self):
+    if self.current_token.type == Tokens.IF_ST:
+      self.eat(Tokens.IF_ST)                 # if
+    else:                                    # *or*
+      self.eat(Tokens.ELIF_ST)               # elif
+    self.eat(Tokens.LPAREN)                  # (
+    condition = self.expr()                  # condition
+    self.eat(Tokens.RPAREN)                  # )
+    consequences = self.compound_statement() # { code(); }
+
+    alternatives = [] # else
+
+    if (self.current_token.type == Tokens.ELSE_ST and self.next_token.type == Tokens.IF_ST) or self.next_token.type == Tokens.ELIF_ST:
+      alternatives.append(self.elif_st())
+    elif self.current_token.type == Tokens.ELSE_ST:
+      alternatives.extend(self.else_st())
+    
+    node = If_St(condition=condition)
+
+    for consequence in consequences.children:
+      node.consequences.append(consequence)
+
+    for alternative in alternatives:
+      node.alternatives.append(alternative)
+    
+    self.current_token = Token(Tokens.SEMI, ';')
+
+    return node
+  
+  def elif_st(self):
+    if self.current_token.type == Tokens.ELSE_ST:
+      self.eat(Tokens.ELSE_ST)
+    return self.if_st()
+  
+  def else_st(self):
+    self.eat(Tokens.ELSE_ST)         # else
+    self.eat(Tokens.BEGIN)        # {
+    nodes = self.statement_list() # code();
+    self.eat(Tokens.END)          # }
+    return nodes
 
   def parse(self):
     node = self.program()

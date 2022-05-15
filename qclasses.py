@@ -32,6 +32,9 @@ class Tokens:
   TRUE          = "TRUE"
   FALSE         = "FALSE"
   POINTER       = "POINTER"
+  IF_ST         = "IF_ST"
+  ELIF_ST       = "ELIF_ST"
+  ELSE_ST       = "ELSE_ST"
 
 class Token:
   def __init__(self, type, value):
@@ -140,6 +143,12 @@ class Pointer(AST):
   def __init__(self, token):
     self.token = token
     self.value = token.value
+
+class If_St(AST):
+    def __init__(self, condition):
+        self.condition = condition
+        self.consequences = []
+        self.alternatives = []
 
 #endregion
 #region Variables

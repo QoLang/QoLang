@@ -30,17 +30,17 @@ class Interpreter(NodeVisitor):
       case Tokens.DIVIDE:
         return left / right
       case Tokens.LESS_THAN:
-        return str(left < right)
+        return left < right
       case Tokens.GREATER_THAN:
-        return str(left > right)
+        return left > right
       case Tokens.EQUAL:
-        return str(left == right)
+        return left == right
       case Tokens.LESS_EQUAL:
-        return str(left <= right)
+        return left <= right
       case Tokens.GREATER_EQUAL:
-        return str(left >= right)
+        return left >= right
       case Tokens.NOT_EQUAL:
-        return str(left != right)
+        return left != right
   
   def visit_Num(self, node):
     return node.value
@@ -117,6 +117,14 @@ class Interpreter(NodeVisitor):
 
   def visit_Pointer(self, node):
     return node.value
+
+  def visit_If_St(self, node):
+    if self.visit(node.condition) == True:
+      for statement in node.consequences:
+        self.visit(statement)
+    else:
+      for statement in node.alternatives:
+        self.visit(statement)
 
   def interpret(self):
     tree = self.parser.parse()
