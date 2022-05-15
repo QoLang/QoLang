@@ -1,3 +1,6 @@
+|
+Printing, input and if-elif-else statements
+|
 println("QoLang test");
 println(""); | newline |
 println("commands:");
