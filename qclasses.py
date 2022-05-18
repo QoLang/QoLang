@@ -139,7 +139,7 @@ class String(AST):
 class Boolean(AST):
   def __init__(self, token):
     self.token = token
-    self.value = token.value
+    self.value = token.value == "True"
 
 class Pointer(AST):
   def __init__(self, token):

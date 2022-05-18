@@ -24,3 +24,22 @@ in := "";
 input("> ", &in);
 toInt(in, &in);
 print_text(in);
+
+|
+Get type of something
+|
+
+test1 := 123;
+test1_out := "";
+test2 := "hello";
+test2_out := "";
+test3 := True;
+test3_out := "";
+
+type(test1, &test1_out);
+type(test2, &test2_out);
+type(test3, &test3_out);
+
+println(test1, "->", test1_out);
+println(test2, "->", test2_out);
+println(test3, "->", test3_out);

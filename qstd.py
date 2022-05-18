@@ -7,7 +7,8 @@ available_functions = [
   "func_input",
   "func_toInt",
   "func_toBool",
-  "func_toStr"
+  "func_toStr",
+  "func_type"
 ]
 
 def func_print(Variables, args:list):
@@ -86,5 +87,19 @@ def func_toStr(Variables, args:list):
   """
   out = str(args[0])
   var = VarVal(name=args[1], value=out)
+  Variables.setVar(var)
+  return Variables
+
+def func_type(Variables, args:list):
+  """
+  Get type of something and assign it to specified variable.
+  """
+  types = {
+    int: "Int",
+    str: "Str",
+    bool: "Bool"
+  }
+  inp = types[type(args[0])]
+  var = VarVal(name=args[1], value=inp)
   Variables.setVar(var)
   return Variables
