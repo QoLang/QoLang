@@ -37,12 +37,14 @@ class Tokens:
   ELSE_ST       = "ELSE_ST"
 
 class Token:
-  def __init__(self, type, value):
+  def __init__(self, type, value, line, col):
     self.type = type
     self.value = value
+    self.line = line
+    self.col = col
 
   def __str__(self):
-    return f"Token({self.type}, '{self.value}')"
+    return f"Token({self.type}, '{self.value}', {self.line}, {self.col})"
 
   def __repr__(self):
     return self.__str__()

@@ -54,12 +54,12 @@ def func_toInt(Variables, args:list):
   out = 0
   if type(args[0]) == int:
     out = args[0]
-  if type(args[0]) == str:
+  elif type(args[0]) == str:
     try:
       out = int(args[0])
     except:
       out = 0 if args[0] == "" else 1
-  if type(args[0]) == bool:
+  elif type(args[0]) == bool:
     out = 1 if args[0] else 0
   var = VarVal(name=args[1], value=out)
   Variables.setVar(var)
@@ -71,10 +71,10 @@ def func_toBool(Variables, args:list):
   """
   out = False
   if type(args[0]) == int:
-    out = (args[0] == 1)
-  if type(args[0]) == str:
-    out = False if args[0] == "" else True
-  if type(args[0]) == bool:
+    out = args[0] == 1
+  elif type(args[0]) == str:
+    out = args[0] != ""
+  elif type(args[0]) == bool:
     out = out
   var = VarVal(name=args[1], value=out)
   Variables.setVar(var)

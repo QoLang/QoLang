@@ -1,7 +1,7 @@
 import qstd
 import qlexer
 import qparser
-from qclasses import BuiltinFunc, Variables
+from qclasses import BuiltinFunc, Variables, VarVal
 import qint
 import sys
 
@@ -24,8 +24,8 @@ interpreter.interpret()
 exit() # Remove/comment this line if you want to see variables
 
 out = ""
-for val in qolib.Variables.vars:
-  if isinstance(val, qolib.VarVal):
+for val in Variables.vars:
+  if isinstance(val, VarVal):
     out += f"{val.name}: {val.value}\n"
 out = out[:-1]
 

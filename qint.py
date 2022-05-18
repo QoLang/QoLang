@@ -81,18 +81,27 @@ class Interpreter(NodeVisitor):
       return val
 
   def visit_FncDec(self, node):
+    global Variables
     Variables.setVar(node)
 
   def visit_FncCall(self, node):
     var = Variables.getVar(node.name)
     if var is None:
-      raise Exception("Function not found")
+      var = Variables.getVar("func_" + node.name)
+      if var is None:
+        raise Exception("Function not found")
+      else:
+        var = BuiltinFuncCall(var.func, node.args)
+        return self.visit(var)
     if not len(node.args) == len(var.args):
       raise Exception(f"Expected {str(len(node.args))} args, got {str(len(var.args))}")
     
     i = 0
     for arg in node.args:
-      nvar = VarVal(var.args[i].value, arg.token)
+      toadd = arg
+      if isinstance(arg, Var):
+        toadd = Variables.getVar(arg.value).value
+      nvar = VarVal(var.args[i].value, toadd)
       Variables.setVar(nvar)
       i += 1
     
@@ -104,7 +113,10 @@ class Interpreter(NodeVisitor):
     args = []
     i = 0
     for arg in node.args:
-      args += [self.visit(arg)]
+      toadd = self.visit(arg)
+      if isinstance(toadd, VarVal):
+        toadd = toadd.value
+      args += [toadd]
       i += 1
 
     Variables = node.func(Variables, args)

@@ -18,7 +18,7 @@ class Parser:
     if self.current_token.type == token_type:
       self.current_token = self.get_next_token()
     else:
-      self.error()
+      raise Exception(f'Syntax error: Expected {str(token_type)} but found {str(self.current_token)}')
 
   def factor(self):
     token = self.current_token
@@ -186,10 +186,11 @@ class Parser:
     self.eat(Tokens.ID)
     self.eat(Tokens.SBRACKETL)
 
-    args = [self.expr()]
-    while self.current_token.type == Tokens.COMMA:
-      self.eat(Tokens.COMMA)
-      args.append(self.expr())
+    if self.current_token.type == Tokens.ID:
+      args = [self.variable()]
+      while self.current_token.type == Tokens.COMMA:
+        self.eat(Tokens.COMMA)
+        args.append(self.variable())
 
     self.eat(Tokens.SBRACKETR)
     node = self.compound_statement()
@@ -201,26 +202,18 @@ class Parser:
     self.eat(Tokens.FUNCCALL)
     self.eat(Tokens.LPAREN)
 
-    toadd = self.expr()
-    args = [toadd]
-    while self.current_token.type == Tokens.COMMA:
-      self.eat(Tokens.COMMA)
-      toadd = self.expr()
-      args.append(toadd)
-
+    if self.current_token.type != Tokens.RPAREN:
+      args = [self.expr()]
+      while self.current_token.type == Tokens.COMMA:
+        self.eat(Tokens.COMMA)
+        toadd = self.expr()
+        args.append(toadd)
     self.eat(Tokens.RPAREN)
 
     func = Variables.getVar(proc_name)
     var = None
 
-    if func is None:
-      func = Variables.getVar("func_" + proc_name)
-      if func is None:
-        self.error()
-      else:
-        var = BuiltinFuncCall(func.func, args)
-    else:
-      var = FncCall(proc_name, args)
+    var = FncCall(proc_name, args)
 
     return var
   
@@ -248,8 +241,6 @@ class Parser:
 
     for alternative in alternatives:
       node.alternatives.append(alternative)
-    
-    self.current_token = Token(Tokens.SEMI, ';')
 
     return node
   
