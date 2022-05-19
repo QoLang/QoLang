@@ -37,6 +37,8 @@ class Tokens:
   ELSE_ST       = "ELSE_ST"
   FOR_ST        = "FOR_ST"
   WHILE_ST      = "WHILE_ST"
+  TIMES_ST      = "TIMES_ST"
+  AS            = "AS"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -164,6 +166,12 @@ class For_St(AST):
 class While_St(AST):
     def __init__(self, condition, statements):
         self.condition = condition
+        self.statements = statements
+
+class Times_St(AST):
+    def __init__(self, times, _as, statements):
+        self.times = times # run `times` times
+        self._as = _as # how many times did we run yet
         self.statements = statements
 
 #endregion

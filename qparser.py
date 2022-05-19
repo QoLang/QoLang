@@ -163,6 +163,8 @@ class Parser:
         node = self.for_st()
       case Tokens.WHILE_ST:
         node = self.while_st()
+      case Tokens.TIMES_ST:
+        node = self.times_st()
       case _:
         node = self.empty()
     return node
@@ -276,6 +278,17 @@ class Parser:
     statements = self.compound_statement()
 
     node = While_St(condition, statements.children)
+    return node
+
+  def times_st(self):
+    self.eat(Tokens.TIMES_ST)
+    times = self.arithmetic_expr()
+    self.eat(Tokens.AS)
+    _as = self.current_token.value
+    self.eat(Tokens.POINTER)
+    statements = self.compound_statement()
+
+    node = Times_St(times, _as, statements.children)
     return node
 
   def parse(self):

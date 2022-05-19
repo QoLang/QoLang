@@ -61,3 +61,9 @@ while(i < 5){
   i := i + 1;
 };
 println("");
+
+print("Some numbers printed with times loop: ");
+times 5 as &i{
+  print(i);
+};
+println("");

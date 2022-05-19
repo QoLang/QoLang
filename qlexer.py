@@ -57,7 +57,9 @@ class Lexer:
       "elif": Token(Tokens.ELIF_ST, "elif", self.line, self.column),
       "else": Token(Tokens.ELSE_ST, "else", self.line, self.column),
       "for": Token(Tokens.FOR_ST, "for", self.line, self.column),
-      "while": Token(Tokens.WHILE_ST, "while", self.line, self.column)
+      "while": Token(Tokens.WHILE_ST, "while", self.line, self.column),
+      "times": Token(Tokens.TIMES_ST, "times", self.line, self.column),
+      "as": Token(Tokens.AS, "as", self.line, self.column)
     }
     isp = False
     if self.current_char == '&':

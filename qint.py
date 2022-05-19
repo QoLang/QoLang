@@ -150,6 +150,13 @@ class Interpreter(NodeVisitor):
       for statement in node.statements:
         self.visit(statement)
 
+  def visit_Times_St(self, node):
+    global Variables
+    for i in range(self.visit(node.times)):
+      Variables.setVar(VarVal(node._as, i))
+      for statement in node.statements:
+        self.visit(statement)
+
   def interpret(self):
     tree = self.parser.parse()
     if tree is None:
