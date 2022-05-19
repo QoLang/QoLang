@@ -1,9 +1,9 @@
-|
+/*
 Function declaration, printing, input and if-elif-else statements
-|
+*/
 
 func: print_text[whichone]{
-  if (whichone == 1) { | note the ". "1" and 1 are not the same. |
+  if (whichone == 1) { /* note the ". "1" and 1 are not the same. */
     println("Hello, world!");
   } else if (whichone == 2) {
     println("Hello, QoLang!");
@@ -16,7 +16,7 @@ func: print_text[whichone]{
 };
 
 println("QoLang test");
-println(""); | newline |
+println(""); /* newline */
 println("commands:");
 println("  1  print 'Hello, world!'");
 println("  2  print 'Hello, QoLang!'");
@@ -26,9 +26,9 @@ input("> ", &in);
 toInt(in, &in);
 print_text(in);
 
-|
+/*
 Get type of something
-|
+*/
 
 test1 := 123;
 test1_out := "";
@@ -45,9 +45,9 @@ println(test1, "->", test1_out);
 println(test2, "->", test2_out);
 println(test3, "->", test3_out);
 
-|
+/*
 Loops
-|
+*/
 
 print("Some numbers printed with for loop: ");
 for(i := 0; i < 5; i := i + 1){

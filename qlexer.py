@@ -30,8 +30,10 @@ class Lexer:
 
   def skipcomment(self):
     self.advance()
-    while self.current_char != '|':
+    self.advance()
+    while self.current_char != '*' and self.peek() != '/':
       self.advance()
+    self.advance()
     self.advance()
 
   def integer(self):
@@ -101,7 +103,7 @@ class Lexer:
         self.skipspace()
         continue
 
-      if self.current_char == '|':
+      if self.current_char == '/' and self.peek() == '*':
         self.skipcomment()
         continue
 
