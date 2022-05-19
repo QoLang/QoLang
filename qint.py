@@ -41,6 +41,10 @@ class Interpreter(NodeVisitor):
         return left >= right
       case Tokens.NOT_EQUAL:
         return left != right
+      case Tokens.AND:
+        return left and right
+      case Tokens.OR:
+        return left or right
   
   def visit_Num(self, node):
     return node.value

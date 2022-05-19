@@ -139,6 +139,16 @@ class Lexer:
       if self.current_char == ')':
         self.advance()
         return Token(Tokens.RPAREN, ')', self.line, self.column)
+
+      if self.current_char == '&' and self.peek() == '&':
+        self.advance()
+        self.advance()
+        return Token(Tokens.AND, '&&', self.line, self.column)
+      
+      if self.current_char == '|' and self.peek() == '|':
+        self.advance()
+        self.advance()
+        return Token(Tokens.OR, '||', self.line, self.column)
       
       if self.current_char.isalpha() or self.current_char == '&':
         return self._id()

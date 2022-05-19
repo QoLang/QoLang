@@ -77,3 +77,27 @@ times 5 as &i{
   print(i);
 };
 println("");
+
+/*
+`&&` and `||` boolean operators
+*/
+
+btest1 := "";
+
+input("Enter a number: ", &btest1);
+toInt(btest1, &btest1);
+if(btest1 >= 1 && btest1 <= 10){
+  println("Your number is between 1 and 10.");
+} else {
+  println("Your number is not between 1 and 10.");
+};
+
+btest2 := "";
+
+input("Enter a number: ", &btest2);
+toInt(btest2, &btest2);
+if(btest2 >= 20 || btest2 <= 10){
+  println("Your number is bigger than 20 or smaller than 10.");
+} else {
+  println("Your number is not bigger than 20 or smaller than 10.");
+};

@@ -68,7 +68,19 @@ class Parser:
     return node
 
   def expr(self):
-    return self.relation()
+    return self.mulrel()
+
+  def mulrel(self):
+    node = self.relation()
+    if self.current_token.type in (Tokens.AND, Tokens.OR):
+      token = self.current_token
+      match self.current_token.type:
+        case Tokens.AND:
+          self.eat(Tokens.AND)
+        case Tokens.OR:
+          self.eat(Tokens.OR)
+      node = BinOp(node, token, self.relation())
+    return node
   
   def relation(self):
     node = self.arithmetic_expr()

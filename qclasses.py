@@ -39,6 +39,8 @@ class Tokens:
   WHILE_ST      = "WHILE_ST"
   TIMES_ST      = "TIMES_ST"
   AS            = "AS"
+  AND           = "AND"
+  OR            = "OR"
 
 class Token:
   def __init__(self, type, value, line, col):
