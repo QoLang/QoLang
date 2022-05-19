@@ -148,10 +148,10 @@ class Pointer(AST):
     self.value = token.value
 
 class If_St(AST):
-    def __init__(self, condition):
+    def __init__(self, condition, consequences, alternatives):
         self.condition = condition
-        self.consequences = []
-        self.alternatives = []
+        self.consequences = consequences
+        self.alternatives = alternatives
 
 class For_St(AST):
     def __init__(self, initial, condition, everyiter, statements):

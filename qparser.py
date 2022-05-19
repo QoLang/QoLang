@@ -232,17 +232,11 @@ class Parser:
     alternatives = [] # else
 
     if (self.current_token.type == Tokens.ELSE_ST and self.next_token.type == Tokens.IF_ST) or self.next_token.type == Tokens.ELIF_ST:
-      alternatives.append(self.elif_st())
+      alternatives = [self.elif_st()]
     elif self.current_token.type == Tokens.ELSE_ST:
-      alternatives.extend(self.else_st())
+      alternatives = self.else_st()
     
-    node = If_St(condition=condition)
-
-    for consequence in consequences.children:
-      node.consequences.append(consequence)
-
-    for alternative in alternatives:
-      node.alternatives.append(alternative)
+    node = If_St(condition, consequences.children, alternatives)
 
     return node
   
