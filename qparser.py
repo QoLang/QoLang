@@ -159,6 +159,8 @@ class Parser:
         node = self.fnccall()
       case Tokens.IF_ST:
         node = self.if_st()
+      case Tokens.FOR_ST:
+        node = self.for_st()
       case _:
         node = self.empty()
     return node
@@ -250,11 +252,25 @@ class Parser:
     return self.if_st()
   
   def else_st(self):
-    self.eat(Tokens.ELSE_ST)         # else
+    self.eat(Tokens.ELSE_ST)      # else
     self.eat(Tokens.BEGIN)        # {
     nodes = self.statement_list() # code();
     self.eat(Tokens.END)          # }
     return nodes
+
+  def for_st(self):
+    self.eat(Tokens.FOR_ST)
+    self.eat(Tokens.LPAREN)
+    init = self.statement()
+    self.eat(Tokens.SEMI)
+    condition = self.expr()
+    self.eat(Tokens.SEMI)
+    everyiter = self.statement()
+    self.eat(Tokens.RPAREN)
+    statements = self.compound_statement()
+
+    node = For_St(init, condition, everyiter, statements.children)
+    return node
 
   def parse(self):
     node = self.program()

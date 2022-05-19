@@ -138,6 +138,13 @@ class Interpreter(NodeVisitor):
       for statement in node.alternatives:
         self.visit(statement)
 
+  def visit_For_St(self, node):
+    self.visit(node.initial)
+    while self.visit(node.condition):
+      for statement in node.statements:
+        self.visit(statement)
+      self.visit(node.everyiter)
+
   def interpret(self):
     tree = self.parser.parse()
     if tree is None:

@@ -35,6 +35,7 @@ class Tokens:
   IF_ST         = "IF_ST"
   ELIF_ST       = "ELIF_ST"
   ELSE_ST       = "ELSE_ST"
+  FOR_ST        = "FOR_ST"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -151,6 +152,13 @@ class If_St(AST):
         self.condition = condition
         self.consequences = []
         self.alternatives = []
+
+class For_St(AST):
+    def __init__(self, initial, condition, everyiter, statements):
+        self.initial = initial
+        self.condition = condition
+        self.everyiter = everyiter # statement to run after every iteration
+        self.statements = statements
 
 #endregion
 #region Variables
