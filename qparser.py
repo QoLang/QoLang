@@ -161,6 +161,8 @@ class Parser:
         node = self.if_st()
       case Tokens.FOR_ST:
         node = self.for_st()
+      case Tokens.WHILE_ST:
+        node = self.while_st()
       case _:
         node = self.empty()
     return node
@@ -264,6 +266,16 @@ class Parser:
     statements = self.compound_statement()
 
     node = For_St(init, condition, everyiter, statements.children)
+    return node
+
+  def while_st(self):
+    self.eat(Tokens.WHILE_ST)
+    self.eat(Tokens.LPAREN)
+    condition = self.expr()
+    self.eat(Tokens.RPAREN)
+    statements = self.compound_statement()
+
+    node = While_St(condition, statements.children)
     return node
 
   def parse(self):

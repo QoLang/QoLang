@@ -56,7 +56,8 @@ class Lexer:
       "if": Token(Tokens.IF_ST, "if", self.line, self.column),
       "elif": Token(Tokens.ELIF_ST, "elif", self.line, self.column),
       "else": Token(Tokens.ELSE_ST, "else", self.line, self.column),
-      "for": Token(Tokens.FOR_ST, "for", self.line, self.column)
+      "for": Token(Tokens.FOR_ST, "for", self.line, self.column),
+      "while": Token(Tokens.WHILE_ST, "while", self.line, self.column)
     }
     isp = False
     if self.current_char == '&':

@@ -44,8 +44,20 @@ println(test1, "->", test1_out);
 println(test2, "->", test2_out);
 println(test3, "->", test3_out);
 
+|
+Loops
+|
+
 print("Some numbers printed with for loop: ");
 for(i := 0; i < 5; i := i + 1){
   print(i);
+};
+println("");
+
+print("Some numbers printed with while loop: ");
+i := 0;
+while(i < 5){
+  print(i);
+  i := i + 1;
 };
 println("");
