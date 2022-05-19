@@ -203,4 +203,6 @@ class Lexer:
       if self.current_char == '>':
         self.advance()
         return Token(Tokens.GREATER_THAN, '>', self.line, self.column)
+      
+      self.error()
     return Token(Tokens.EOF, None, self.line, self.column)
