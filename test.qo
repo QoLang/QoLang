@@ -11,6 +11,7 @@ func: print_text[whichone]{
     println("Hello, Camroku.TECH!");
   } else {
     println("Invalid input!");
+    exit(1);
   };
 };
 

@@ -8,7 +8,8 @@ available_functions = [
   "func_toInt",
   "func_toBool",
   "func_toStr",
-  "func_type"
+  "func_type",
+  "func_exit"
 ]
 
 def func_print(Variables, args:list):
@@ -103,3 +104,9 @@ def func_type(Variables, args:list):
   var = VarVal(name=args[1], value=inp)
   Variables.setVar(var)
   return Variables
+
+def func_exit(Variables, args:list = [0]):
+  """
+  Exit with code.
+  """
+  exit(args[0])
