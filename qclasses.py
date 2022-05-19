@@ -169,7 +169,7 @@ class While_St(AST):
         self.statements = statements
 
 class Times_St(AST):
-    def __init__(self, times, _as, statements):
+    def __init__(self, times, statements, _as = None):
         self.times = times # run `times` times
         self._as = _as # how many times did we run yet
         self.statements = statements

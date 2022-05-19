@@ -64,6 +64,15 @@ while(i < 5){
 println("");
 
 print("Some numbers printed with times loop: ");
+i := 0;
+times 5{
+  print(i);
+  i := i + 1;
+};
+println("");
+
+
+print("Some numbers printed with times as loop: ");
 times 5 as &i{
   print(i);
 };

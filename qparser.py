@@ -283,12 +283,14 @@ class Parser:
   def times_st(self):
     self.eat(Tokens.TIMES_ST)
     times = self.arithmetic_expr()
-    self.eat(Tokens.AS)
-    _as = self.current_token.value
-    self.eat(Tokens.POINTER)
+    _as = None
+    if self.current_token.type == Tokens.AS:
+      self.eat(Tokens.AS)
+      _as = self.current_token.value
+      self.eat(Tokens.POINTER)
     statements = self.compound_statement()
 
-    node = Times_St(times, _as, statements.children)
+    node = Times_St(times, statements.children, _as)
     return node
 
   def parse(self):

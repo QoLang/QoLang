@@ -153,7 +153,8 @@ class Interpreter(NodeVisitor):
   def visit_Times_St(self, node):
     global Variables
     for i in range(self.visit(node.times)):
-      Variables.setVar(VarVal(node._as, i))
+      if node._as is not None:
+        Variables.setVar(VarVal(node._as, i))
       for statement in node.statements:
         self.visit(statement)
 
