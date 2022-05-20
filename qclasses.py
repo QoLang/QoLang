@@ -41,6 +41,7 @@ class Tokens:
   AS            = "AS"
   AND           = "AND"
   OR            = "OR"
+  FSTRING       = "FSTRING"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -175,6 +176,11 @@ class Times_St(AST):
         self.times = times # run `times` times
         self._as = _as # how many times did we run yet
         self.statements = statements
+
+class Fstring(AST):
+  def __init__(self, token):
+    self.token = token
+    self.nodes = token.value
 
 #endregion
 #region Variables

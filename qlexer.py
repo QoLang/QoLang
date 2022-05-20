@@ -95,6 +95,46 @@ class Lexer:
 
     return Token(Tokens.STRING, result, self.line, self.column)
 
+  def fstring(self, char):
+    self.advance()
+    
+    result = []
+    currentstring = ''
+    escaped = False
+    while self.current_char is not None and self.current_char != char:
+      willadvance = True
+      if escaped:
+        if self.current_char == 'n':
+          currentstring += '\n'
+        elif self.current_char == 'r':
+          currentstring += '\r'
+        elif self.current_char == '\\':
+          currentstring += '\\'
+        elif self.current_char == '$':
+          currentstring += '$'
+        else:
+          currentstring += '\\' + self.current_char
+        escaped = False
+      else:
+        if self.current_char == '\\':
+          escaped = True
+        elif self.current_char == '$':
+          result += [Token(Tokens.STRING, currentstring, self.line, self.column)]
+          currentstring = ''
+          self.advance()
+          result += [self._id()]
+          willadvance = False
+        else:
+          currentstring += self.current_char
+      if willadvance:
+        self.advance()
+
+    result += [Token(Tokens.STRING, currentstring, self.line, self.column)]
+        
+    self.advance()
+
+    return Token(Tokens.FSTRING, result, self.line, self.column)
+
   def next_token(self):
     text = self.text
 
@@ -115,6 +155,14 @@ class Lexer:
         
       if self.current_char == "\"":
         return self.string("\"")
+        
+      if self.current_char == "%":
+        self.advance()
+        if self.current_char == "'":
+          return self.fstring("'")
+          
+        if self.current_char == "\"":
+          return self.fstring("\"")
 
       if self.current_char == '+':
         self.advance()

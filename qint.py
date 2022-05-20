@@ -162,6 +162,16 @@ class Interpreter(NodeVisitor):
       for statement in node.statements:
         self.visit(statement)
 
+  def visit_Fstring(self, node):
+    result = ''
+    for nod in node.nodes:
+      match nod.type:
+        case Tokens.STRING:
+          result += nod.value
+        case Tokens.ID:
+          result += self.visit(Var(nod)).value
+    return result
+
   def interpret(self):
     tree = self.parser.parse()
     if tree is None:

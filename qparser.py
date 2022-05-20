@@ -49,6 +49,9 @@ class Parser:
       case Tokens.POINTER:
         self.eat(Tokens.POINTER)
         return Pointer(token)
+      case Tokens.FSTRING:
+        self.eat(Tokens.FSTRING)
+        return Fstring(token)
       case _:
         node = self.variable()
         return node
