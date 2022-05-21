@@ -21,7 +21,7 @@ interpreter.interpret()
 #  print(tok)
 #  tok = lexer.next_token()
 
-exit() # Remove/comment this line if you want to see variables
+sys.exit() # Remove/comment this line if you want to see variables
 
 out = ""
 for val in Variables.vars:

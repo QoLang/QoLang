@@ -1,5 +1,6 @@
 # QoLang Standart Library
 from qclasses import VarVal, Var
+import sys
 
 available_functions = [
   "func_print",
@@ -101,7 +102,7 @@ def func_exit(Variables, args:list = [0]):
   """
   Exit with code.
   """
-  exit(args[0])
+  sys.exit(args[0])
 
 def func_mod(Variables, args:list):
   """
