@@ -42,6 +42,7 @@ class Tokens:
   AND           = "AND"
   OR            = "OR"
   FSTRING       = "FSTRING"
+  RETURN        = "RETURN"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -181,6 +182,11 @@ class Fstring(AST):
   def __init__(self, token):
     self.token = token
     self.nodes = token.value
+
+class Return(AST):
+  def __init__(self, token, value):
+    self.token = token
+    self.value = value
 
 #endregion
 #region Variables

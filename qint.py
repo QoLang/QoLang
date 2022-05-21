@@ -109,8 +109,13 @@ class Interpreter(NodeVisitor):
       Variables.setVar(nvar)
       i += 1
     
-    nnode = self.visit(var.node)
-    return nnode
+    ret = 0
+    for node in var.node.children:
+      if isinstance(node, Return):
+        return self.visit(node)
+      else:
+        self.visit(node)
+    return node
 
   def visit_BuiltinFuncCall(self, node):
     global Variables
@@ -123,7 +128,9 @@ class Interpreter(NodeVisitor):
       args += [toadd]
       i += 1
 
-    Variables = node.func(Variables, args)
+    ret = None
+    Variables, ret = node.func(Variables, args)
+    return ret
 
   def visit_String(self, node):
     return node.value
@@ -171,6 +178,9 @@ class Interpreter(NodeVisitor):
         case Tokens.ID:
           result += self.visit(Var(nod)).value
     return result
+
+  def visit_Return(self, node):
+    return self.visit(node.value)
 
   def interpret(self):
     tree = self.parser.parse()

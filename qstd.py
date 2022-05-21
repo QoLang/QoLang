@@ -24,7 +24,7 @@ def func_print(Variables, args:list):
       toprint += [str(arg)]
 
   print(" ".join(toprint), end="")
-  return Variables
+  return (Variables, 0)
 
 def func_println(Variables, args:list):
   """
@@ -38,16 +38,13 @@ def func_println(Variables, args:list):
       toprint += [str(arg)]
 
   print(" ".join(toprint))
-  return Variables
+  return (Variables, 0)
 
 def func_input(Variables, args:list):
   """
   Get input with specified prompt and assign to specified variable.
   """
-  inp = input(args[0])
-  var = VarVal(name=args[1], value=inp)
-  Variables.setVar(var)
-  return Variables
+  return (Variables, input(args[0] if len(args) >= 1 else ""))
 
 def func_toInt(Variables, args:list):
   """
@@ -63,9 +60,8 @@ def func_toInt(Variables, args:list):
       out = 0 if args[0] == "" else 1
   elif type(args[0]) == bool:
     out = 1 if args[0] else 0
-  var = VarVal(name=args[1], value=out)
-  Variables.setVar(var)
-  return Variables
+  
+  return (Variables, out)
 
 def func_toBool(Variables, args:list):
   """
@@ -78,18 +74,15 @@ def func_toBool(Variables, args:list):
     out = args[0] != ""
   elif type(args[0]) == bool:
     out = out
-  var = VarVal(name=args[1], value=out)
-  Variables.setVar(var)
-  return Variables
+  
+  return (Variables, out)
 
 def func_toStr(Variables, args:list):
   """
   Convert any type of variable to Str.
   """
   out = str(args[0])
-  var = VarVal(name=args[1], value=out)
-  Variables.setVar(var)
-  return Variables
+  return (Variables, out)
 
 def func_type(Variables, args:list):
   """
@@ -100,10 +93,8 @@ def func_type(Variables, args:list):
     str: "Str",
     bool: "Bool"
   }
-  inp = types[type(args[0])]
-  var = VarVal(name=args[1], value=inp)
-  Variables.setVar(var)
-  return Variables
+  out = types[type(args[0])]
+  return (Variables, out)
 
 def func_exit(Variables, args:list = [0]):
   """

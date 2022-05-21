@@ -14,18 +14,23 @@ func: print_text[whichone]{
     println("Hello, Camroku.TECH!");
   } else {
     println("Invalid input!");
-    exit(1);
+    return 1;
   };
+  return 0;
 };
 
 println("commands:");
 println("  1  print 'Hello, world!'");
 println("  2  print 'Hello, QoLang!'");
 println("  3  print 'Hello, Camroku.TECH!'");
-in := "";
-input("> ", &in);
-toInt(in, &in);
-print_text(in);
+in := toInt(input("> "));
+exitcode := print_text(in);
+println("Exit code for previous function:", exitcode);
+if(exitcode == 0){
+  println("Successful");
+} else {
+  println("Unsuccessful");
+};
 
 println("-------------------------------");
 /*
@@ -33,19 +38,12 @@ Get type of something
 */
 
 test1 := 123;
-test1_out := "";
 test2 := "hello";
-test2_out := "";
 test3 := True;
-test3_out := "";
 
-type(test1, &test1_out);
-type(test2, &test2_out);
-type(test3, &test3_out);
-
-println(test1, "->", test1_out);
-println(test2, "->", test2_out);
-println(test3, "->", test3_out);
+println(test1, "->", type(test1));
+println(test2, "->", type(test2));
+println(test3, "->", type(test3));
 
 println("-------------------------------");
 /*
@@ -86,20 +84,16 @@ println("-------------------------------");
 `&&` and `||` boolean operators
 */
 
-btest1 := "";
+btest1 := toInt(input("Enter a number: "));
 
-input("Enter a number: ", &btest1);
-toInt(btest1, &btest1);
 if(btest1 >= 1 && btest1 <= 10){
   println("Your number is between 1 and 10.");
 } else {
   println("Your number is not between 1 and 10.");
 };
 
-btest2 := "";
+btest2 := toInt(input("Enter a number: "));
 
-input("Enter a number: ", &btest2);
-toInt(btest2, &btest2);
 if(btest2 >= 20 || btest2 <= 10){
   println("Your number is bigger than 20 or smaller than 10.");
 } else {

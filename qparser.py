@@ -52,6 +52,9 @@ class Parser:
       case Tokens.FSTRING:
         self.eat(Tokens.FSTRING)
         return Fstring(token)
+      case Tokens.FUNCCALL:
+        node = self.fnccall()
+        return node
       case _:
         node = self.variable()
         return node
@@ -180,6 +183,8 @@ class Parser:
         node = self.while_st()
       case Tokens.TIMES_ST:
         node = self.times_st()
+      case Tokens.RETURN:
+        node = self._return()
       case _:
         node = self.empty()
     return node
@@ -306,6 +311,13 @@ class Parser:
     statements = self.compound_statement()
 
     node = Times_St(times, statements.children, _as)
+    return node
+
+  def _return(self):
+    token = self.current_token
+    self.eat(Tokens.RETURN)
+    value = self.expr()
+    node = Return(token, value)
     return node
 
   def parse(self):
