@@ -9,7 +9,8 @@ available_functions = [
   "func_toBool",
   "func_toStr",
   "func_type",
-  "func_exit"
+  "func_exit",
+  "func_mod",
 ]
 
 def func_print(Variables, args:list):
@@ -101,3 +102,10 @@ def func_exit(Variables, args:list = [0]):
   Exit with code.
   """
   exit(args[0])
+
+def func_mod(Variables, args:list):
+  """
+  Math modulus function.
+  """
+  out = args[0] % args[1]
+  return (Variables, out)
