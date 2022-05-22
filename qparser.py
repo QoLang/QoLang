@@ -207,10 +207,9 @@ class Parser:
   
   def fncdec(self):
     self.eat(Tokens.FUNC)
-    self.eat(Tokens.COL)
     proc_name = self.current_token.value
     self.eat(Tokens.ID)
-    self.eat(Tokens.SBRACKETL)
+    self.eat(Tokens.LPAREN)
 
     if self.current_token.type == Tokens.ID:
       args = [self.variable()]
@@ -218,7 +217,7 @@ class Parser:
         self.eat(Tokens.COMMA)
         args.append(self.variable())
 
-    self.eat(Tokens.SBRACKETR)
+    self.eat(Tokens.RPAREN)
     node = self.compound_statement()
     var = FncDec(proc_name, node, args)
     return var

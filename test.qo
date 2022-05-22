@@ -5,7 +5,7 @@ println("-------------------------------");
 Function declaration, printing, input and if-elif-else statements
 */
 
-func: print_text[whichone]{
+func print_text(whichone){
   if (whichone == 1) { /* note the ". "1" and 1 are not the same. */
     println("Hello, world!");
   } else if (whichone == 2) {
