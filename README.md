@@ -4,7 +4,19 @@ The Qo Programming Language, or QoLang.
 The project was inspired from [Let’s Build A Simple Interpreter.](https://ruslanspivak.com/lsbasi-part1/) article series.
 
 ## Installation
-Currently not installable, but you can test it by cloning the repository and running `python3 qo.py file.qo`.
+You need `make` and `pyinstaller`.
+
+Run this command as root:
+```
+make clean build install
+```
+
+To uninstall, run this command as root:
+```
+make uninstall
+```
+
+A custom installer will be made in the future, with Windows support.
 
 ## Example
 For an example, see `test.qo`.
