@@ -55,6 +55,9 @@ class Parser:
       case Tokens.FUNCCALL:
         node = self.fnccall()
         return node
+      case Tokens.SBRACKETL:
+        node = self.list()
+        return node
       case _:
         node = self.variable()
         return node
@@ -198,6 +201,8 @@ class Parser:
     return node
   
   def variable(self):
+    if self.next_token.type == Tokens.SBRACKETL:
+      return self.listitem()
     node = Var(self.current_token)
     self.eat(Tokens.ID)
     return node
@@ -317,6 +322,32 @@ class Parser:
     self.eat(Tokens.RETURN)
     value = self.expr()
     node = Return(token, value)
+    return node
+
+  def list(self):
+    token = self.current_token
+    self.eat(Tokens.SBRACKETL)
+
+    result = []
+
+    if self.current_token.type != Tokens.SBRACKETR:
+      result = [self.expr()]
+      while self.current_token.type == Tokens.COMMA:
+        self.eat(Tokens.COMMA)
+        result.append(self.expr())
+    
+    self.eat(Tokens.SBRACKETR)
+    node = List(token, result)
+    return node
+
+  def listitem(self):
+    token = self.current_token
+    token.type = Tokens.LISTITEM
+    self.eat(Tokens.LISTITEM)
+    self.eat(Tokens.SBRACKETL)
+    item = self.expr()    
+    self.eat(Tokens.SBRACKETR)
+    node = ListItem(token, item)
     return node
 
   def parse(self):

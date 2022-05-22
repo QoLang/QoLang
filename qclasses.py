@@ -43,6 +43,7 @@ class Tokens:
   OR            = "OR"
   FSTRING       = "FSTRING"
   RETURN        = "RETURN"
+  LISTITEM      = "LISTITEM"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -187,6 +188,17 @@ class Return(AST):
   def __init__(self, token, value):
     self.token = token
     self.value = value
+
+class List(AST):
+  def __init__(self, token, values):
+    self.token = token
+    self.values = values
+
+class ListItem(AST):
+  def __init__(self, token, item):
+    self.token = token
+    self.value = token.value
+    self.item = item
 
 #endregion
 #region Variables

@@ -114,3 +114,21 @@ println(%"All these text are printed with a single println function.\n" +
         "This text will not be formatted. \rTest" + %"\n" +
         %"This is a variable used in a fstring: $testvar\n" +
         %"This is an escaped variable: \$testvar");
+
+println("-------------------------------");
+/*
+Lists
+*/
+
+println("You'll enter 3 values that are going to be added to a list.");
+
+list := [];
+times 3 as &valn{
+  list := list + [input(%"Number $valn: ")];
+};
+
+println("List:", list);
+println("list[1]:", list[1]);
+println("Setting list[0] to 45...");
+list[0] := 45;
+println("List:", list);

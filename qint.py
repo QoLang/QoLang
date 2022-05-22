@@ -71,10 +71,15 @@ class Interpreter(NodeVisitor):
     pass
 
   def visit_Assign(self, node):
-    var_name = node.left.value
-    var_val = self.visit(node.right)
-    var = VarVal(var_name, var_val)
-    Variables.setVar(var)
+    if node.left.token.type == Tokens.LISTITEM:
+      llist = Variables.getVar(node.left.value)
+      llist.value[self.visit(node.left.item)] = self.visit(node.right)
+      Variables.setVar(llist)
+    else:
+      var_name = node.left.value
+      var_val = self.visit(node.right)
+      var = VarVal(var_name, var_val)
+      Variables.setVar(var)
 
   def visit_Var(self, node):
     var_name = node.value
@@ -176,11 +181,17 @@ class Interpreter(NodeVisitor):
         case Tokens.STRING:
           result += nod.value
         case Tokens.ID:
-          result += self.visit(Var(nod)).value
+          result += str(self.visit(Var(nod)).value)
     return result
 
   def visit_Return(self, node):
     return self.visit(node.value)
+
+  def visit_List(self, node):
+    return [self.visit(nnode) for nnode in node.values]
+
+  def visit_ListItem(self, node):
+    return Variables.getVar(node.value).value[self.visit(node.item)]
 
   def interpret(self):
     tree = self.parser.parse()
