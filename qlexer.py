@@ -204,15 +204,14 @@ class Lexer:
       elif self.current_char.isalpha() or self.current_char == '&':
         self.current_token = self._id()
 
-      elif self.current_char == ':' and self.peek() == '=':
-        self.advance()
-        self.advance()
-        self.current_token = Token(Tokens.ASSIGN, ':=', self.line, self.column)
-
       elif self.current_char == '=' and self.peek() == '=':
         self.advance()
         self.advance()
         self.current_token = Token(Tokens.EQUAL, '==', self.line, self.column)
+
+      elif self.current_char == '=':
+        self.advance()
+        self.current_token = Token(Tokens.ASSIGN, '=', self.line, self.column)
 
       elif self.current_char == '<' and self.peek() == '=':
         self.advance()
