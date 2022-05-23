@@ -23,8 +23,8 @@ println("commands:");
 println("  1  print 'Hello, world!'");
 println("  2  print 'Hello, QoLang!'");
 println("  3  print 'Hello, Camroku.TECH!'");
-in = toInt(input("> "));
-exitcode = print_text(in);
+inp = toInt(input("> "));
+exitcode = print_text(inp);
 println("Exit code for previous function:", exitcode);
 if(exitcode == 0){
   println("Successful");
@@ -76,6 +76,14 @@ println("");
 print("Some numbers printed with times as loop: ");
 times 5 as &i{
   print(i);
+};
+println("");
+
+
+print("Some numbers printed with foreach loop: ");
+numbers = [0, 1, 2, 3, 4];
+foreach &num in numbers{
+  print(num);
 };
 println("");
 

@@ -193,6 +193,13 @@ class Interpreter(NodeVisitor):
   def visit_ListItem(self, node):
     return Variables.getVar(node.value).value[self.visit(node.item)]
 
+  def visit_Foreach_St(self, node):
+    global Variables
+    for item in self.visit(node.llist).value:
+      Variables.setVar(VarVal(node.pointer, item))
+      for statement in node.statements:
+        self.visit(statement)
+
   def interpret(self):
     tree = self.parser.parse()
     if tree is None:

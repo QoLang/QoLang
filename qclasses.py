@@ -44,6 +44,8 @@ class Tokens:
   FSTRING       = "FSTRING"
   RETURN        = "RETURN"
   LISTITEM      = "LISTITEM"
+  IN            = "IN"
+  FOREACH       = "FOREACH"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -199,6 +201,12 @@ class ListItem(AST):
     self.token = token
     self.value = token.value
     self.item = item
+
+class Foreach_St(AST):
+    def __init__(self, pointer, llist, statements):
+        self.pointer = pointer
+        self.llist = llist
+        self.statements = statements
 
 #endregion
 #region Variables

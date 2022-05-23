@@ -188,6 +188,8 @@ class Parser:
         node = self.times_st()
       case Tokens.RETURN:
         node = self._return()
+      case Tokens.FOREACH:
+        node = self.foreach_st()
       case _:
         node = self.empty()
     return node
@@ -348,6 +350,17 @@ class Parser:
     item = self.expr()    
     self.eat(Tokens.SBRACKETR)
     node = ListItem(token, item)
+    return node
+
+  def foreach_st(self):
+    self.eat(Tokens.FOREACH)
+    pointer = self.current_token.value
+    self.eat(Tokens.POINTER)
+    self.eat(Tokens.IN)
+    llist = self.expr()
+    statements = self.compound_statement()
+
+    node = Foreach_St(pointer, llist, statements.children)
     return node
 
   def parse(self):

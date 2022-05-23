@@ -63,7 +63,9 @@ class Lexer:
       "while": Token(Tokens.WHILE_ST, "while", self.line, self.column),
       "times": Token(Tokens.TIMES_ST, "times", self.line, self.column),
       "as": Token(Tokens.AS, "as", self.line, self.column),
-      "return": Token(Tokens.RETURN, "return", self.line, self.column)
+      "return": Token(Tokens.RETURN, "return", self.line, self.column),
+      "in": Token(Tokens.IN, "in", self.line, self.column),
+      "foreach": Token(Tokens.FOREACH, "foreach", self.line, self.column),
     }
     isp = False
     if self.current_char == '&':
