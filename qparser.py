@@ -58,6 +58,10 @@ class Parser:
       case Tokens.SBRACKETL:
         node = self.list()
         return node
+      case Tokens.NONE:
+        self.eat(Tokens.NONE)
+        node = None_Type()
+        return node
       case _:
         node = self.variable()
         return node

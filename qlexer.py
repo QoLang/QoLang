@@ -66,6 +66,7 @@ class Lexer:
       "return": Token(Tokens.RETURN, "return", self.line, self.column),
       "in": Token(Tokens.IN, "in", self.line, self.column),
       "foreach": Token(Tokens.FOREACH, "foreach", self.line, self.column),
+      "None": Token(Tokens.NONE, "None", self.line, self.column),
     }
     isp = False
     if self.current_char == '&':

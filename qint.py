@@ -200,6 +200,9 @@ class Interpreter(NodeVisitor):
       for statement in node.statements:
         self.visit(statement)
 
+  def visit_None_Type(self, node):
+    return None
+
   def interpret(self):
     tree = self.parser.parse()
     if tree is None:

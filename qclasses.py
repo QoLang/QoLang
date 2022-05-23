@@ -46,6 +46,7 @@ class Tokens:
   LISTITEM      = "LISTITEM"
   IN            = "IN"
   FOREACH       = "FOREACH"
+  NONE          = "NONE"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -158,28 +159,28 @@ class Pointer(AST):
     self.value = token.value
 
 class If_St(AST):
-    def __init__(self, condition, consequences, alternatives):
-        self.condition = condition
-        self.consequences = consequences
-        self.alternatives = alternatives
+  def __init__(self, condition, consequences, alternatives):
+    self.condition = condition
+    self.consequences = consequences
+    self.alternatives = alternatives
 
 class For_St(AST):
-    def __init__(self, initial, condition, everyiter, statements):
-        self.initial = initial
-        self.condition = condition
-        self.everyiter = everyiter # statement to run after every iteration
-        self.statements = statements
+  def __init__(self, initial, condition, everyiter, statements):
+    self.initial = initial
+    self.condition = condition
+    self.everyiter = everyiter # statement to run after every iteration
+    self.statements = statements
 
 class While_St(AST):
-    def __init__(self, condition, statements):
-        self.condition = condition
-        self.statements = statements
+  def __init__(self, condition, statements):
+    self.condition = condition
+    self.statements = statements
 
 class Times_St(AST):
-    def __init__(self, times, statements, _as = None):
-        self.times = times # run `times` times
-        self._as = _as # how many times did we run yet
-        self.statements = statements
+  def __init__(self, times, statements, _as = None):
+    self.times = times # run `times` times
+    self._as = _as # how many times did we run yet
+    self.statements = statements
 
 class Fstring(AST):
   def __init__(self, token):
@@ -203,10 +204,13 @@ class ListItem(AST):
     self.item = item
 
 class Foreach_St(AST):
-    def __init__(self, pointer, llist, statements):
-        self.pointer = pointer
-        self.llist = llist
-        self.statements = statements
+  def __init__(self, pointer, llist, statements):
+    self.pointer = pointer
+    self.llist = llist
+    self.statements = statements
+
+class None_Type(AST):
+  pass
 
 #endregion
 #region Variables
