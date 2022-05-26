@@ -26,7 +26,7 @@ def func_print(Variables, args:list):
       toprint += [str(arg)]
 
   print(" ".join(toprint), end="")
-  return (Variables, 0)
+  return (Variables, None)
 
 def func_println(Variables, args:list):
   """
@@ -40,11 +40,11 @@ def func_println(Variables, args:list):
       toprint += [str(arg)]
 
   print(" ".join(toprint))
-  return (Variables, 0)
+  return (Variables, None)
 
 def func_input(Variables, args:list):
   """
-  Get input with specified prompt and assign to specified variable.
+  Get input with specified prompt.
   """
   return (Variables, input(args[0] if len(args) >= 1 else ""))
 
@@ -88,7 +88,7 @@ def func_toStr(Variables, args:list):
 
 def func_type(Variables, args:list):
   """
-  Get type of something and assign it to specified variable.
+  Get type of something.
   """
   types = {
     int: "Int",
