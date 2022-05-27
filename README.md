@@ -5,7 +5,7 @@ The project was inspired from [Let’s Build A Simple Interpreter.](https://rusl
 
 ## Installation
 ### Latest Release (more stable, less features)
-Please refer to the [website](https://qolang.camroku.tech/#Installation).
+Please refer to the [website](https://qolang.camroku.tech/#Install).
 
 ### Latest Commit (less stable, more features)
 You need `make` and `pyinstaller`.
