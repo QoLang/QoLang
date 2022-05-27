@@ -47,6 +47,7 @@ class Tokens:
   IN            = "IN"
   FOREACH       = "FOREACH"
   NONE          = "NONE"
+  ADD           = "ADD"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -211,6 +212,12 @@ class Foreach_St(AST):
 
 class None_Type(AST):
   pass
+
+class Add(AST):
+  def __init__(self, left, op, right):
+    self.left = left
+    self.token = self.op = op
+    self.right = right
 
 #endregion
 #region Variables

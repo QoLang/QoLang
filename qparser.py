@@ -201,9 +201,14 @@ class Parser:
   def assignment_statement(self):
     left = self.variable()
     token = self.current_token
-    self.eat(Tokens.ASSIGN)
-    right = self.expr()
-    node = Assign(left, token, right)
+    if token.type == Tokens.ASSIGN:
+      self.eat(Tokens.ASSIGN)
+      right = self.expr()
+      node = Assign(left, token, right)
+    elif token.type == Tokens.ADD:
+      self.eat(Tokens.ADD)
+      right = self.expr()
+      node = Add(left, token, right)
     return node
   
   def variable(self):

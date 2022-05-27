@@ -4,6 +4,10 @@ The Qo Programming Language, or QoLang.
 The project was inspired from [Let’s Build A Simple Interpreter.](https://ruslanspivak.com/lsbasi-part1/) article series.
 
 ## Installation
+### Latest Release (more stable, less features)
+Please refer to the [website](https://qolang.camroku.tech/#Installation).
+
+### Latest Commit (less stable, more features)
 You need `make` and `pyinstaller`.
 
 Run this command as root:

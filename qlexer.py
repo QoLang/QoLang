@@ -170,6 +170,11 @@ class Lexer:
         elif self.current_char == "\"":
           self.current_token = self.fstring("\"")
 
+      elif self.current_char == '+' and self.peek() == '=':
+        self.advance()
+        self.advance()
+        self.current_token = Token(Tokens.ADD, '+=', self.line, self.column)
+
       elif self.current_char == '+':
         self.advance()
         self.current_token = Token(Tokens.PLUS, '+', self.line, self.column)
