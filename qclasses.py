@@ -48,6 +48,7 @@ class Tokens:
   FOREACH       = "FOREACH"
   NONE          = "NONE"
   ADD           = "ADD"
+  INCLUDE       = "INCLUDE"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -219,6 +220,11 @@ class Add(AST):
     self.token = self.op = op
     self.right = right
 
+class Include(AST):
+  def __init__(self, token):
+    self.token = token
+    self.incfile = token.value
+
 #endregion
 #region Variables
 
@@ -259,7 +265,5 @@ class Vars:
         return
       i += 1
     self.vars += [var]
-
-Variables = Vars()
 
 #endregion

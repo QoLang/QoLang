@@ -194,6 +194,8 @@ class Parser:
         node = self._return()
       case Tokens.FOREACH:
         node = self.foreach_st()
+      case Tokens.INCLUDE:
+        node = self.include()
       case _:
         node = self.empty()
     return node
@@ -250,9 +252,6 @@ class Parser:
         toadd = self.expr()
         args.append(toadd)
     self.eat(Tokens.RPAREN)
-
-    func = Variables.getVar(proc_name)
-    var = None
 
     var = FncCall(proc_name, args)
 
@@ -370,6 +369,13 @@ class Parser:
     statements = self.compound_statement()
 
     node = Foreach_St(pointer, llist, statements.children)
+    return node
+  
+  def include(self):
+    self.eat(Tokens.INCLUDE)
+    incfile = self.current_token
+    self.eat(Tokens.ID)
+    node = Include(incfile)
     return node
 
   def parse(self):

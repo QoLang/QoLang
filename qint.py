@@ -1,4 +1,6 @@
 from qclasses import *
+import os
+import sys
 
 class NodeVisitor:
   def visit(self, node):
@@ -10,8 +12,9 @@ class NodeVisitor:
     raise Exception(f"No visit_{type(node).__name__} method")
 
 class Interpreter(NodeVisitor):
-  def __init__(self, parser):
+  def __init__(self, parser, variables):
     self.parser = parser
+    self.Variables = variables
 
   def visit_BinOp(self, node):
     left = self.visit(node.left)
@@ -72,31 +75,30 @@ class Interpreter(NodeVisitor):
 
   def visit_Assign(self, node):
     if node.left.token.type == Tokens.LISTITEM:
-      llist = Variables.getVar(node.left.value)
+      llist = self.Variables.getVar(node.left.value)
       llist.value[self.visit(node.left.item)] = self.visit(node.right)
-      Variables.setVar(llist)
+      self.Variables.setVar(llist)
     else:
       var_name = node.left.value
       var_val = self.visit(node.right)
       var = VarVal(var_name, var_val)
-      Variables.setVar(var)
+      self.Variables.setVar(var)
 
   def visit_Var(self, node):
     var_name = node.value
-    val = Variables.getVar(var_name)
+    val = self.Variables.getVar(var_name)
     if val is None:
       raise NameError(repr(var_name))
     else:
       return val
 
   def visit_FncDec(self, node):
-    global Variables
-    Variables.setVar(node)
+    self.Variables.setVar(node)
 
   def visit_FncCall(self, node):
-    var = Variables.getVar(node.name)
+    var = self.Variables.getVar(node.name)
     if var is None:
-      var = Variables.getVar("func_" + node.name)
+      var = self.Variables.getVar("func_" + node.name)
       if var is None:
         raise Exception("Function not found")
       else:
@@ -109,9 +111,9 @@ class Interpreter(NodeVisitor):
     for arg in node.args:
       toadd = arg
       if isinstance(arg, Var):
-        toadd = Variables.getVar(arg.value).value
+        toadd = self.Variables.getVar(arg.value).value
       nvar = VarVal(var.args[i].value, toadd)
-      Variables.setVar(nvar)
+      self.Variables.setVar(nvar)
       i += 1
     
     ret = 0
@@ -123,7 +125,6 @@ class Interpreter(NodeVisitor):
     return node
 
   def visit_BuiltinFuncCall(self, node):
-    global Variables
     args = []
     i = 0
     for arg in node.args:
@@ -134,7 +135,7 @@ class Interpreter(NodeVisitor):
       i += 1
 
     ret = None
-    Variables, ret = node.func(Variables, args)
+    self.Variables, ret = node.func(self.Variables, args)
     return ret
 
   def visit_String(self, node):
@@ -167,10 +168,9 @@ class Interpreter(NodeVisitor):
         self.visit(statement)
 
   def visit_Times_St(self, node):
-    global Variables
     for i in range(self.visit(node.times)):
       if node._as is not None:
-        Variables.setVar(VarVal(node._as, i))
+        self.Variables.setVar(VarVal(node._as, i))
       for statement in node.statements:
         self.visit(statement)
 
@@ -191,12 +191,11 @@ class Interpreter(NodeVisitor):
     return [self.visit(nnode) for nnode in node.values]
 
   def visit_ListItem(self, node):
-    return Variables.getVar(node.value).value[self.visit(node.item)]
+    return self.Variables.getVar(node.value).value[self.visit(node.item)]
 
   def visit_Foreach_St(self, node):
-    global Variables
     for item in self.visit(node.llist).value:
-      Variables.setVar(VarVal(node.pointer, item))
+      self.Variables.setVar(VarVal(node.pointer, item))
       for statement in node.statements:
         self.visit(statement)
 
@@ -205,14 +204,21 @@ class Interpreter(NodeVisitor):
 
   def visit_Add(self, node):
     if node.left.token.type == Tokens.LISTITEM:
-      llist = Variables.getVar(node.left.value)
+      llist = self.Variables.getVar(node.left.value)
       llist.value[self.visit(node.left.item)] += self.visit(node.right)
-      Variables.setVar(llist)
+      self.Variables.setVar(llist)
     else:
-      var_old = Variables.getVar(node.left.value).value
+      var_old = self.Variables.getVar(node.left.value).value
       var_new = self.visit(node.right)
       var = VarVal(node.left.value, var_old + var_new)
-      Variables.setVar(var)
+      self.Variables.setVar(var)
+
+  def visit_Include(self, node):
+    import qo
+    qo.run([sys.argv[0], node.incfile + ".qo"])
+    for variable in qo.Variables.vars:
+      if variable.name in qo.Variables.getVar("__export__").value:
+        self.Variables.setVar(variable)
 
   def interpret(self):
     tree = self.parser.parse()

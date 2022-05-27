@@ -67,6 +67,7 @@ class Lexer:
       "in": Token(Tokens.IN, "in", self.line, self.column),
       "foreach": Token(Tokens.FOREACH, "foreach", self.line, self.column),
       "None": Token(Tokens.NONE, "None", self.line, self.column),
+      "include": Token(Tokens.INCLUDE, "include", self.line, self.column),
     }
     isp = False
     if self.current_char == '&':
@@ -209,7 +210,7 @@ class Lexer:
         self.advance()
         self.current_token = Token(Tokens.OR, '||', self.line, self.column)
       
-      elif self.current_char.isalpha() or self.current_char == '&':
+      elif self.current_char.isalpha() or self.current_char == '_' or self.current_char == '&':
         self.current_token = self._id()
 
       elif self.current_char == '=' and self.peek() == '=':
