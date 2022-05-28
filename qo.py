@@ -5,10 +5,17 @@ Variables = Vars()
 import qint
 import sys
 import runpy
+import os
 
 def run(args):
   # Load standard library
-  toinclude = runpy.run_path("/usr/lib/qo/std.py")
+  if os.name == "nt":
+    toinclude = runpy.run_path("C:\\qolang\\libs\\std.py")
+  elif os.name == "posix":
+    toinclude = runpy.run_path("/usr/lib/qo/std.py")
+  else:
+    print("This OS is not supported, yet.")
+    exit(1)
   for fn in toinclude["qolang_export"]:
     if callable(toinclude[fn]):
       added = PythonFunc(fn, toinclude[fn])

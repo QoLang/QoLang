@@ -218,6 +218,13 @@ class Interpreter(NodeVisitor):
   def visit_Include(self, node):
     import qo
     sourcedir = os.path.dirname(os.path.realpath(self.sourcefile))
+
+    libpath = ""
+    if os.name == "nt":
+      libpath = "C:\\qolang\\libs\\"
+    elif os.name == "posix":
+      libpath = "/usr/lib/qo/"
+
     if os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".qo")):
       qo.run([sys.argv[0], os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".qo")])
       for variable in qo.Variables.getVar("__export__").value:
@@ -230,12 +237,12 @@ class Interpreter(NodeVisitor):
         else:
           added = VarVal(toexport, toinclude[toexport])
         self.Variables.setVar(added)
-    elif os.path.isfile("/usr/lib/qo/" + node.incfile + ".qo")):
-      qo.run([sys.argv[0], "/usr/lib/qo/" + node.incfile + ".qo")])
+    elif os.path.isfile(libpath + node.incfile + ".qo")):
+      qo.run([sys.argv[0], libpath + node.incfile + ".qo")])
       for variable in qo.Variables.getVar("__export__").value:
         self.Variables.setVar(qo.Variables.getVar(variable))
-    elif os.path.isfile("/usr/lib/qo/" + node.incfile + ".py")):
-      toinclude = runpy.run_path("/usr/lib/qo/" + node.incfile + ".py")
+    elif os.path.isfile(libpath + node.incfile + ".py")):
+      toinclude = runpy.run_path(libpath + node.incfile + ".py")
       for toexport in toinclude["qolang_export"]:
         if callable(toinclude[toexport]):
           added = PythonFunc(toexport, toinclude[toexport])
