@@ -12,7 +12,7 @@ Function declaration
 */
 
 func print_text(whichone){
-  if (whichone == 1) { /* note the ". "1" and 1 are not the same. */
+  if (whichone == 1) {
     println("Hello, world!");
   } else if (whichone == 2) {
     println("Hello, QoLang!");
