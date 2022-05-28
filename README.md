@@ -1,4 +1,4 @@
-# QoLang version 0.1
+# QoLang version 0.2
 The Qo Programming Language, or QoLang.
 
 The project was inspired from [Let’s Build A Simple Interpreter.](https://ruslanspivak.com/lsbasi-part1/) article series.
