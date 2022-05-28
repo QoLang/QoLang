@@ -1,6 +1,7 @@
 from qclasses import *
 import os
 import sys
+import runpy
 
 class NodeVisitor:
   def visit(self, node):
@@ -12,9 +13,10 @@ class NodeVisitor:
     raise Exception(f"No visit_{type(node).__name__} method")
 
 class Interpreter(NodeVisitor):
-  def __init__(self, parser, variables):
+  def __init__(self, parser, variables, sourcefile):
     self.parser = parser
     self.Variables = variables
+    self.sourcefile = sourcefile
 
   def visit_BinOp(self, node):
     left = self.visit(node.left)
@@ -102,7 +104,7 @@ class Interpreter(NodeVisitor):
       if var is None:
         raise Exception("Function not found")
       else:
-        var = BuiltinFuncCall(var.func, node.args)
+        var = PythonFuncCall(var.func, node.args)
         return self.visit(var)
     if not len(node.args) == len(var.args):
       raise Exception(f"Expected {str(len(node.args))} args, got {str(len(var.args))}")
@@ -124,7 +126,7 @@ class Interpreter(NodeVisitor):
         self.visit(node)
     return node
 
-  def visit_BuiltinFuncCall(self, node):
+  def visit_PythonFuncCall(self, node):
     args = []
     i = 0
     for arg in node.args:
@@ -215,10 +217,20 @@ class Interpreter(NodeVisitor):
 
   def visit_Include(self, node):
     import qo
-    qo.run([sys.argv[0], node.incfile + ".qo"])
-    for variable in qo.Variables.vars:
-      if variable.name in qo.Variables.getVar("__export__").value:
-        self.Variables.setVar(variable)
+    sourcedir = os.path.dirname(os.path.realpath(self.sourcefile))
+    if os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".qo")):
+      qo.run([sys.argv[0], os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".qo")])
+      for variable in qo.Variables.getVar("__export__").value:
+        self.Variables.setVar(qo.Variables.getVar(variable))
+    elif os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".py")):
+      toinclude = runpy.run_path(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".py"))
+      for toexport in toinclude["qolang_export"]:
+        if callable(toinclude[toexport]):
+          added = PythonFunc(toexport, toinclude[toexport])
+        else:
+          added = VarVal(toexport, toinclude[toexport])
+        self.Variables.setVar(added)
+
 
   def interpret(self):
     tree = self.parser.parse()

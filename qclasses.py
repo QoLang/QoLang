@@ -133,13 +133,13 @@ class FncCall(AST):
     self.args = args
     self.value = None
 
-class BuiltinFunc(AST):
+class PythonFunc(AST):
   def __init__(self, name, func):
     self.name = name
     self.func = func
     self.args = list(func.__code__.co_varnames)[1:]
 
-class BuiltinFuncCall(AST):
+class PythonFuncCall(AST):
   def __init__(self, func, args):
     self.func = func
     self.args = args

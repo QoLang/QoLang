@@ -6,6 +6,7 @@ Importing, printing, input and if-elif-else statements
 */
 
 include testlib;
+include testpylib;
 
 println("commands:");
 println("  1  print 'Hello, world!'");
@@ -19,6 +20,7 @@ if(exitcode == 0){
 } else {
   println("Unsuccessful");
 };
+test();
 
 println("-------------------------------");
 /*

@@ -23,4 +23,4 @@ make uninstall
 A custom installer will be made in the future, with Windows support.
 
 ## Example
-For an example, see `test.qo`.
+For an example, see the `example` directory.

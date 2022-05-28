@@ -2,7 +2,7 @@
 from qclasses import VarVal, Var
 import sys
 
-available_functions = [
+qolang_export = [
   "func_print",
   "func_println",
   "func_input",
@@ -117,7 +117,7 @@ def func_exportAll(Variables, args:list):
   """
   export = []
   for variable in Variables.vars:
-    if not isinstance(variable, BuiltinFunc):
+    if not isinstance(variable, PythonFunc):
       export += [variable.name]
   
   Variables.setVar(VarVal("__export__", export))

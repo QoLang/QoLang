@@ -245,6 +245,7 @@ class Parser:
     self.eat(Tokens.FUNCCALL)
     self.eat(Tokens.LPAREN)
 
+    args = []
     if self.current_token.type != Tokens.RPAREN:
       args = [self.expr()]
       while self.current_token.type == Tokens.COMMA:
