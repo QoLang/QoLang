@@ -1,5 +1,3 @@
-import qstd
-
 #region Tokens
 
 class Tokens:
