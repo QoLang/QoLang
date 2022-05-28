@@ -237,7 +237,7 @@ class Interpreter(NodeVisitor):
         else:
           added = VarVal(toexport, toinclude[toexport])
         self.Variables.setVar(added)
-    elif os.path.isfile(libpath + node.incfile + ".qo")):
+    elif os.path.isfile(libpath + node.incfile + ".qo"):
       qo.run([sys.argv[0], libpath + node.incfile + ".qo")])
       for variable in qo.Variables.getVar("__export__").value:
         self.Variables.setVar(qo.Variables.getVar(variable))
