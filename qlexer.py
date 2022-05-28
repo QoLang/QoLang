@@ -118,6 +118,10 @@ class Lexer:
           currentstring += '\\'
         elif self.current_char == '$':
           currentstring += '$'
+        elif self.current_char == '\'':
+          currentstring += '\''
+        elif self.current_char == '"':
+          currentstring += '"'
         else:
           currentstring += '\\' + self.current_char
         escaped = False
