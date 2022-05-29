@@ -69,13 +69,15 @@ class Parser:
   def term(self):
     node = self.factor()
 
-    while self.current_token.type in (Tokens.MULTIPLY, Tokens.DIVIDE):
+    while self.current_token.type in (Tokens.MULTIPLY, Tokens.DIVIDE, Tokens.POWER):
       token = self.current_token
       match token.type:
         case Tokens.MULTIPLY:
           self.eat(Tokens.MULTIPLY)
         case Tokens.DIVIDE:
           self.eat(Tokens.DIVIDE)
+        case Tokens.POWER:
+          self.eat(Tokens.POWER)
       node = BinOp(node, token, self.factor())
     
     return node

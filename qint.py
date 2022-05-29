@@ -50,6 +50,8 @@ class Interpreter(NodeVisitor):
         return left and right
       case Tokens.OR:
         return left or right
+      case Tokens.POWER:
+        return left ** right
   
   def visit_Num(self, node):
     return node.value

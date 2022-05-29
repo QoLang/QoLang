@@ -189,6 +189,11 @@ class Lexer:
         self.advance()
         self.current_token = Token(Tokens.MINUS, '-', self.line, self.column)
 
+      elif self.current_char == '*' and self.peek() == '*':
+        self.advance()
+        self.advance()
+        self.current_token = Token(Tokens.POWER, '**', self.line, self.column)
+
       elif self.current_char == '*':
         self.advance()
         self.current_token = Token(Tokens.MULTIPLY, '*', self.line, self.column)

@@ -48,6 +48,7 @@ class Tokens:
   ADD           = "ADD"
   INCLUDE       = "INCLUDE"
   DEFINE        = "DEFINE"
+  POWER         = "POWER"
 
 class Token:
   def __init__(self, type, value, line, col):
