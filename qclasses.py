@@ -122,25 +122,29 @@ class NoOp(AST):
   pass
 
 class FncDec(AST):
-  def __init__(self, name, node, args):
+  def __init__(self, token, name, node, args):
+    self.token = token
     self.name = name
     self.node = node
     self.args = args
 
 class FncCall(AST):
-  def __init__(self, name, args):
+  def __init__(self, token, name, args):
+    self.token = token
     self.name = name
     self.args = args
     self.value = None
 
 class PythonFunc(AST):
-  def __init__(self, name, func):
+  def __init__(self, token, name, func):
+    self.token = token
     self.name = name
     self.func = func
     self.args = list(func.__code__.co_varnames)[1:]
 
 class PythonFuncCall(AST):
-  def __init__(self, func, args):
+  def __init__(self, token, func, args):
+    self.token = token
     self.func = func
     self.args = args
     self.value = None
@@ -161,25 +165,29 @@ class Pointer(AST):
     self.value = token.value
 
 class If_St(AST):
-  def __init__(self, condition, consequences, alternatives):
+  def __init__(self, token, condition, consequences, alternatives):
+    self.token = token
     self.condition = condition
     self.consequences = consequences
     self.alternatives = alternatives
 
 class For_St(AST):
-  def __init__(self, initial, condition, everyiter, statements):
+  def __init__(self, token, initial, condition, everyiter, statements):
+    self.token = token
     self.initial = initial
     self.condition = condition
     self.everyiter = everyiter # statement to run after every iteration
     self.statements = statements
 
 class While_St(AST):
-  def __init__(self, condition, statements):
+  def __init__(self, token, condition, statements):
+    self.token = token
     self.condition = condition
     self.statements = statements
 
 class Times_St(AST):
-  def __init__(self, times, statements, _as = None):
+  def __init__(self, token, times, statements, _as = None):
+    self.token = token
     self.times = times # run `times` times
     self._as = _as # how many times did we run yet
     self.statements = statements
@@ -206,7 +214,8 @@ class ListItem(AST):
     self.item = item
 
 class Foreach_St(AST):
-  def __init__(self, pointer, llist, statements):
+  def __init__(self, token, pointer, llist, statements):
+    self.token = token
     self.pointer = pointer
     self.llist = llist
     self.statements = statements

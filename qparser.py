@@ -5,9 +5,13 @@ class Parser:
     self.lexer = lexer
     self.current_token = self.lexer.next_token()
     self.next_token = self.lexer.next_token()
-  
+
   def error(self):
-    raise Exception(f'Syntax error, token: {str(self.current_token)}')
+    print("Parser Error")
+    print(self.lexer.text.splitlines()[self.current_token.line])
+    print(" " * self.current_token.col + "^")
+    print(f'Unexpected token on position {str(self.current_token.line)}:{str(self.current_token.col)}')
+    exit(1)
 
   def get_next_token(self):
     current_token = self.next_token
@@ -18,7 +22,11 @@ class Parser:
     if self.current_token.type == token_type:
       self.current_token = self.get_next_token()
     else:
-      raise Exception(f'Syntax error: Expected {str(token_type)} but found {str(self.current_token)}')
+      print("Parser Error")
+      print(self.lexer.text.splitlines()[self.current_token.line])
+      print(" " * self.current_token.col + "^")
+      print(f'Expected {str(token_type)} but found {str(self.current_token.type)} on position {str(self.current_token.line)}:{str(self.current_token.col)}')
+      exit(1)
 
   def factor(self):
     token = self.current_token
@@ -228,6 +236,7 @@ class Parser:
     return NoOp()
   
   def fncdec(self):
+    token = self.current_token
     self.eat(Tokens.FUNC)
     proc_name = self.current_token.value
     self.eat(Tokens.ID)
@@ -241,10 +250,11 @@ class Parser:
 
     self.eat(Tokens.RPAREN)
     node = self.compound_statement()
-    var = FncDec(proc_name, node, args)
+    var = FncDec(current_token, proc_name, node, args)
     return var
   
   def fnccall(self):
+    token = self.current_token
     proc_name = self.current_token.value
     self.eat(Tokens.FUNCCALL)
     self.eat(Tokens.LPAREN)
@@ -258,11 +268,12 @@ class Parser:
         args.append(toadd)
     self.eat(Tokens.RPAREN)
 
-    var = FncCall(proc_name, args)
+    var = FncCall(token, proc_name, args)
 
     return var
   
   def if_st(self):
+    token = self.current_token
     if self.current_token.type == Tokens.IF_ST:
       self.eat(Tokens.IF_ST)                 # if
     else:                                    # *or*
@@ -279,7 +290,7 @@ class Parser:
     elif self.current_token.type == Tokens.ELSE_ST:
       alternatives = self.else_st()
     
-    node = If_St(condition, consequences.children, alternatives)
+    node = If_St(token, condition, consequences.children, alternatives)
 
     return node
   
@@ -289,13 +300,16 @@ class Parser:
     return self.if_st()
   
   def else_st(self):
+    token = self.current_token
     self.eat(Tokens.ELSE_ST)      # else
     self.eat(Tokens.BEGIN)        # {
     nodes = self.statement_list() # code();
     self.eat(Tokens.END)          # }
+    nodes.token = token
     return nodes
 
   def for_st(self):
+    token = self.current_token
     self.eat(Tokens.FOR_ST)
     self.eat(Tokens.LPAREN)
     init = self.statement()
@@ -306,20 +320,22 @@ class Parser:
     self.eat(Tokens.RPAREN)
     statements = self.compound_statement()
 
-    node = For_St(init, condition, everyiter, statements.children)
+    node = For_St(token, init, condition, everyiter, statements.children)
     return node
 
   def while_st(self):
+    token = self.current_token
     self.eat(Tokens.WHILE_ST)
     self.eat(Tokens.LPAREN)
     condition = self.expr()
     self.eat(Tokens.RPAREN)
     statements = self.compound_statement()
 
-    node = While_St(condition, statements.children)
+    node = While_St(token, condition, statements.children)
     return node
 
   def times_st(self):
+    token = self.current_token
     self.eat(Tokens.TIMES_ST)
     times = self.arithmetic_expr()
     _as = None
@@ -329,7 +345,7 @@ class Parser:
       self.eat(Tokens.POINTER)
     statements = self.compound_statement()
 
-    node = Times_St(times, statements.children, _as)
+    node = Times_St(token, times, statements.children, _as)
     return node
 
   def _return(self):
@@ -366,6 +382,7 @@ class Parser:
     return node
 
   def foreach_st(self):
+    token = self.current_token
     self.eat(Tokens.FOREACH)
     pointer = self.current_token.value
     self.eat(Tokens.POINTER)
@@ -373,7 +390,7 @@ class Parser:
     llist = self.expr()
     statements = self.compound_statement()
 
-    node = Foreach_St(pointer, llist, statements.children)
+    node = Foreach_St(token, pointer, llist, statements.children)
     return node
   
   def include(self):

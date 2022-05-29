@@ -11,7 +11,11 @@ class Lexer:
     self.column = 0
   
   def error(self):
-    raise Exception(f'Invalid character, line: {str(self.line)}, col:{str(self.column)}')
+    print("Lexer Error")
+    print(self.text.splitlines()[self.line])
+    print(" " * self.column + "^")
+    print(f'Invalid character on position {str(self.line)}:{str(self.column)}')
+    exit(1)
 
   def advance(self):
     if self.current_char == '\n':
@@ -52,23 +56,25 @@ class Lexer:
       return self.text[peek_pos]
   
   def _id(self):
+    line = self.line
+    column = self.column
     reserved_keyws = {
-      "func": Token(Tokens.FUNC, "func", self.line, self.column),
-      "True": Token(Tokens.TRUE, "True", self.line, self.column),
-      "False": Token(Tokens.FALSE, "False", self.line, self.column),
-      "if": Token(Tokens.IF_ST, "if", self.line, self.column),
-      "elif": Token(Tokens.ELIF_ST, "elif", self.line, self.column),
-      "else": Token(Tokens.ELSE_ST, "else", self.line, self.column),
-      "for": Token(Tokens.FOR_ST, "for", self.line, self.column),
-      "while": Token(Tokens.WHILE_ST, "while", self.line, self.column),
-      "times": Token(Tokens.TIMES_ST, "times", self.line, self.column),
-      "as": Token(Tokens.AS, "as", self.line, self.column),
-      "return": Token(Tokens.RETURN, "return", self.line, self.column),
-      "in": Token(Tokens.IN, "in", self.line, self.column),
-      "foreach": Token(Tokens.FOREACH, "foreach", self.line, self.column),
-      "None": Token(Tokens.NONE, "None", self.line, self.column),
-      "include": Token(Tokens.INCLUDE, "include", self.line, self.column),
-      "define": Token(Tokens.DEFINE, "define", self.line, self.column),
+      "func": Token(Tokens.FUNC, "func", line, column),
+      "True": Token(Tokens.TRUE, "True", line, column),
+      "False": Token(Tokens.FALSE, "False", line, column),
+      "if": Token(Tokens.IF_ST, "if", line, column),
+      "elif": Token(Tokens.ELIF_ST, "elif", line, column),
+      "else": Token(Tokens.ELSE_ST, "else", line, column),
+      "for": Token(Tokens.FOR_ST, "for", line, column),
+      "while": Token(Tokens.WHILE_ST, "while", line, column),
+      "times": Token(Tokens.TIMES_ST, "times", line, column),
+      "as": Token(Tokens.AS, "as", line, column),
+      "return": Token(Tokens.RETURN, "return", line, column),
+      "in": Token(Tokens.IN, "in", line, column),
+      "foreach": Token(Tokens.FOREACH, "foreach", line, column),
+      "None": Token(Tokens.NONE, "None", line, column),
+      "include": Token(Tokens.INCLUDE, "include", line, column),
+      "define": Token(Tokens.DEFINE, "define", line, column),
     }
     isp = False
     if self.current_char == '&':
@@ -82,15 +88,17 @@ class Lexer:
 
     self.skipspace()
     if self.current_char == '(' and result not in reserved_keyws and (self.previous_token.type != Tokens.FUNC if self.previous_token else True):
-      token = Token(Tokens.FUNCCALL, result, self.line, self.column)
+      token = Token(Tokens.FUNCCALL, result, line, column)
     elif isp:
-      token = Token(Tokens.POINTER, result, self.line, self.column)
+      token = Token(Tokens.POINTER, result, line, column)
     else:
-      token = reserved_keyws.get(result, Token(Tokens.ID, result, self.line, self.column))
+      token = reserved_keyws.get(result, Token(Tokens.ID, result, line, column))
 
     return token
 
   def string(self, char):
+    line = self.line
+    column = self.column
     self.advance()
     
     result = ''
@@ -100,9 +108,11 @@ class Lexer:
         
     self.advance()
 
-    return Token(Tokens.STRING, result, self.line, self.column)
+    return Token(Tokens.STRING, result, line, column)
 
   def fstring(self, char):
+    line = self.line
+    column = self.column
     self.advance()
     
     result = []
@@ -130,7 +140,7 @@ class Lexer:
         if self.current_char == '\\':
           escaped = True
         elif self.current_char == '$':
-          result += [Token(Tokens.STRING, currentstring, self.line, self.column)]
+          result += [Token(Tokens.STRING, currentstring, line, column)]
           currentstring = ''
           self.advance()
           result += [self._id()]
@@ -140,17 +150,20 @@ class Lexer:
       if willadvance:
         self.advance()
 
-    result += [Token(Tokens.STRING, currentstring, self.line, self.column)]
+    result += [Token(Tokens.STRING, currentstring, line, column)]
         
     self.advance()
 
-    return Token(Tokens.FSTRING, result, self.line, self.column)
+    return Token(Tokens.FSTRING, result, line, column)
 
   def next_token(self):
     text = self.text
     self.previous_token = self.current_token
 
     while self.current_char is not None:
+      line = self.line
+      column = self.column
+      
       if self.current_char.isspace():
         self.skipspace()
         continue
@@ -160,7 +173,7 @@ class Lexer:
         continue
 
       elif self.current_char.isdigit():
-        self.current_token = Token(Tokens.INTEGER, self.integer(), self.line, self.column)
+        self.current_token = Token(Tokens.INTEGER, self.integer(), line, column)
         
       elif self.current_char == "'":
         self.current_token = self.string("'")
@@ -179,46 +192,46 @@ class Lexer:
       elif self.current_char == '+' and self.peek() == '=':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.ADD, '+=', self.line, self.column)
+        self.current_token = Token(Tokens.ADD, '+=', line, column)
 
       elif self.current_char == '+':
         self.advance()
-        self.current_token = Token(Tokens.PLUS, '+', self.line, self.column)
+        self.current_token = Token(Tokens.PLUS, '+', line, column)
 
       elif self.current_char == '-':
         self.advance()
-        self.current_token = Token(Tokens.MINUS, '-', self.line, self.column)
+        self.current_token = Token(Tokens.MINUS, '-', line, column)
 
       elif self.current_char == '*' and self.peek() == '*':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.POWER, '**', self.line, self.column)
+        self.current_token = Token(Tokens.POWER, '**', line, column)
 
       elif self.current_char == '*':
         self.advance()
-        self.current_token = Token(Tokens.MULTIPLY, '*', self.line, self.column)
+        self.current_token = Token(Tokens.MULTIPLY, '*', line, column)
 
       elif self.current_char == '/':
         self.advance()
-        self.current_token = Token(Tokens.DIVIDE, '/', self.line, self.column)
+        self.current_token = Token(Tokens.DIVIDE, '/', line, column)
 
       elif self.current_char == '(':
         self.advance()
-        self.current_token = Token(Tokens.LPAREN, '(', self.line, self.column)
+        self.current_token = Token(Tokens.LPAREN, '(', line, column)
 
       elif self.current_char == ')':
         self.advance()
-        self.current_token = Token(Tokens.RPAREN, ')', self.line, self.column)
+        self.current_token = Token(Tokens.RPAREN, ')', line, column)
 
       elif self.current_char == '&' and self.peek() == '&':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.AND, '&&', self.line, self.column)
+        self.current_token = Token(Tokens.AND, '&&', line, column)
       
       elif self.current_char == '|' and self.peek() == '|':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.OR, '||', self.line, self.column)
+        self.current_token = Token(Tokens.OR, '||', line, column)
       
       elif self.current_char.isalpha() or self.current_char == '_' or self.current_char == '&':
         self.current_token = self._id()
@@ -226,62 +239,62 @@ class Lexer:
       elif self.current_char == '=' and self.peek() == '=':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.EQUAL, '==', self.line, self.column)
+        self.current_token = Token(Tokens.EQUAL, '==', line, column)
 
       elif self.current_char == '=':
         self.advance()
-        self.current_token = Token(Tokens.ASSIGN, '=', self.line, self.column)
+        self.current_token = Token(Tokens.ASSIGN, '=', line, column)
 
       elif self.current_char == '<' and self.peek() == '=':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.LESS_EQUAL, '<=', self.line, self.column)
+        self.current_token = Token(Tokens.LESS_EQUAL, '<=', line, column)
 
       elif self.current_char == '>' and self.peek() == '=':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.GREATER_EQUAL, '>=', self.line, self.column)
+        self.current_token = Token(Tokens.GREATER_EQUAL, '>=', line, column)
 
       elif self.current_char == '!' and self.peek() == '=':
         self.advance()
         self.advance()
-        self.current_token = Token(Tokens.NOT_EQUAL, '!=', self.line, self.column)
+        self.current_token = Token(Tokens.NOT_EQUAL, '!=', line, column)
 
       elif self.current_char == ';':
         self.advance()
-        self.current_token = Token(Tokens.SEMI, ';', self.line, self.column)
+        self.current_token = Token(Tokens.SEMI, ';', line, column)
 
       elif self.current_char == '{':
         self.advance()
-        self.current_token = Token(Tokens.BEGIN, '{', self.line, self.column)
+        self.current_token = Token(Tokens.BEGIN, '{', line, column)
 
       elif self.current_char == '}':
         self.advance()
-        self.current_token = Token(Tokens.END, '}', self.line, self.column)
+        self.current_token = Token(Tokens.END, '}', line, column)
 
       elif self.current_char == ':':
         self.advance()
-        self.current_token = Token(Tokens.COL, ':', self.line, self.column)
+        self.current_token = Token(Tokens.COL, ':', line, column)
 
       elif self.current_char == ',':
         self.advance()
-        self.current_token = Token(Tokens.COMMA, ',', self.line, self.column)
+        self.current_token = Token(Tokens.COMMA, ',', line, column)
 
       elif self.current_char == '[':
         self.advance()
-        self.current_token = Token(Tokens.SBRACKETL, '[', self.line, self.column)
+        self.current_token = Token(Tokens.SBRACKETL, '[', line, column)
 
       elif self.current_char == ']':
         self.advance()
-        self.current_token = Token(Tokens.SBRACKETR, ']', self.line, self.column)
+        self.current_token = Token(Tokens.SBRACKETR, ']', line, column)
 
       elif self.current_char == '<':
         self.advance()
-        self.current_token = Token(Tokens.LESS_THAN, '<', self.line, self.column)
+        self.current_token = Token(Tokens.LESS_THAN, '<', line, column)
 
       elif self.current_char == '>':
         self.advance()
-        self.current_token = Token(Tokens.GREATER_THAN, '>', self.line, self.column)
+        self.current_token = Token(Tokens.GREATER_THAN, '>', line, column)
       
       else:
         self.error()

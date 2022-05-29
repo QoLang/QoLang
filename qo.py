@@ -1,6 +1,6 @@
 import qlexer
 import qparser
-from qclasses import PythonFunc, VarVal, Vars
+from qclasses import PythonFunc, VarVal, Vars, Token, Tokens
 Variables = Vars()
 import qint
 import sys
@@ -20,7 +20,7 @@ def run(args):
     sys.exit(1)
   for fn in toinclude["qolang_export"]:
     if callable(toinclude[fn]):
-      added = PythonFunc(fn, toinclude[fn])
+      added = PythonFunc(Token(Tokens.FUNCCALL, fn, 0, 0), fn, toinclude[fn])
     else:
       added = VarVal(fn, toinclude[fn])
     Variables.setVar(added)

@@ -10,7 +10,11 @@ class NodeVisitor:
     return visitor(node)
 
   def generic_visit(self, node):
-    raise Exception(f"No visit_{type(node).__name__} method")
+    print("Interpreter Error")
+    print(self.text.splitlines()[node.token.line])
+    print(" " * node.token.col + "^")
+    print(f'No visit_{type(node).__name__} method, error on position {str(node.token.line)}:{str(node.token.col)}')
+    exit(1)
 
 class Interpreter(NodeVisitor):
   def __init__(self, parser, variables, sourcefile):
@@ -92,7 +96,11 @@ class Interpreter(NodeVisitor):
     var_name = node.value
     val = self.Variables.getVar(var_name)
     if val is None:
-      raise NameError(repr(var_name))
+      print("Interpreter Error")
+      print(self.parser.lexer.text.splitlines()[node.token.line])
+      print(" " * node.token.col + "^")
+      print(f'Variable not found, error on position {str(node.token.line)}:{str(node.token.col)}')
+      exit(1)
     else:
       return val
 
@@ -104,12 +112,20 @@ class Interpreter(NodeVisitor):
     if var is None:
       var = self.Variables.getVar("func_" + node.name)
       if var is None:
-        raise Exception("Function not found")
+        print("Interpreter Error")
+        print(self.parser.lexer.text.splitlines()[node.token.line])
+        print(" " * node.token.col + "^")
+        print(f'Function not found, error on position {str(node.token.line)}:{str(node.token.col)}')
+        exit(1)
       else:
-        var = PythonFuncCall(var.func, node.args)
+        var = PythonFuncCall(node.token, var.func, node.args)
         return self.visit(var)
     if not len(node.args) == len(var.args):
-      raise Exception(f"Expected {str(len(node.args))} args, got {str(len(var.args))}")
+      print("Interpreter Error")
+      print(self.parser.lexer.text.splitlines()[node.token.line])
+      print(" " * node.token.col + "^")
+      print(f'Expected {str(len(node.args))} args, got {str(len(var.args))}, error on position {str(node.token.line)}:{str(node.token.col)}')
+      exit(1)
     
     i = 0
     for arg in node.args:
