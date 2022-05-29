@@ -7,8 +7,8 @@ class Lexer:
     self.current_token = None
     self.previous_token = None
     self.current_char = self.text[self.pos]
-    self.line = 1
-    self.column = 1
+    self.line = 0
+    self.column = 0
   
   def error(self):
     raise Exception(f'Invalid character, line: {str(self.line)}, col:{str(self.column)}')
