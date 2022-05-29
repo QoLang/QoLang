@@ -107,7 +107,7 @@ class Lexer:
     result = []
     currentstring = ''
     escaped = False
-    while self.current_char is not None and self.current_char != char:
+    while self.current_char is not None and (self.current_char != char or escaped):
       willadvance = True
       if escaped:
         if self.current_char == 'n':
