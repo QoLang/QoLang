@@ -47,6 +47,7 @@ class Tokens:
   NONE          = "NONE"
   ADD           = "ADD"
   INCLUDE       = "INCLUDE"
+  DEFINE        = "DEFINE"
 
 class Token:
   def __init__(self, type, value, line, col):
@@ -222,6 +223,21 @@ class Include(AST):
   def __init__(self, token):
     self.token = token
     self.incfile = token.value
+
+class Unique(AST): # str but not equal to str
+  def __init__(self, value):
+    self.value = value
+    
+  def __str__(self):
+    return self.value
+
+class Define(AST):
+  def __init__(self, token):
+    self.token = token
+    self.value = Unique(token.value)
+    
+  def __str__(self):
+    return str(self.value)
 
 #endregion
 #region Variables

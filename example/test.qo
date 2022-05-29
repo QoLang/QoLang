@@ -139,3 +139,13 @@ None
 */
 
 println("This is nothing:", None);
+
+println("-------------------------------");
+/*
+Define
+*/
+
+define SOMETHING;
+
+println("This is a variable created with define statement:", SOMETHING);
+println(%"SOMETHING == \"SOMETHING\":", SOMETHING == "SOMETHING");

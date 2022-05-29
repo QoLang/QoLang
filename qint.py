@@ -249,7 +249,9 @@ class Interpreter(NodeVisitor):
         else:
           added = VarVal(toexport, toinclude[toexport])
         self.Variables.setVar(added)
-
+        
+  def visit_Define(self, node):
+    self.Variables.setVar(VarVal(node.token.value, node.value))
 
   def interpret(self):
     tree = self.parser.parse()

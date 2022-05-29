@@ -68,6 +68,7 @@ class Lexer:
       "foreach": Token(Tokens.FOREACH, "foreach", self.line, self.column),
       "None": Token(Tokens.NONE, "None", self.line, self.column),
       "include": Token(Tokens.INCLUDE, "include", self.line, self.column),
+      "define": Token(Tokens.DEFINE, "define", self.line, self.column),
     }
     isp = False
     if self.current_char == '&':

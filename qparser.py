@@ -196,6 +196,8 @@ class Parser:
         node = self.foreach_st()
       case Tokens.INCLUDE:
         node = self.include()
+      case Tokens.DEFINE:
+        node = self.define()
       case _:
         node = self.empty()
     return node
@@ -377,6 +379,13 @@ class Parser:
     incfile = self.current_token
     self.eat(Tokens.ID)
     node = Include(incfile)
+    return node
+  
+  def define(self):
+    self.eat(Tokens.DEFINE)
+    defined = self.current_token
+    self.eat(Tokens.ID)
+    node = Define(defined)
     return node
 
   def parse(self):
