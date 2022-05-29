@@ -12,6 +12,7 @@ qolang_export = [
   "func_type",
   "func_exit",
   "func_mod",
+  "func_exportAll",
 ]
 
 def func_print(Variables, args:list):
