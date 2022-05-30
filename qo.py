@@ -9,7 +9,7 @@ import os
 
 VERSION = "0.3"
 
-def run(args):
+def run(args, main=False):
   # Load standard library
   if os.name == "nt":
     toinclude = runpy.run_path("C:\\qolang\\libs\\std.py")
@@ -24,6 +24,7 @@ def run(args):
     else:
       added = VarVal(fn, toinclude[fn])
     Variables.setVar(added)
+  Variables.setVar(VarVal("__main__", main))
 
   contents = open(args[1]).read()
   lexer = qlexer.Lexer(contents)
@@ -47,4 +48,4 @@ arguments:
       sys.exit(1)
     sys.exit(0)
   else:
-    run(sys.argv)
+    run(sys.argv, True)

@@ -1,4 +1,12 @@
 /*
+Disable running the file directly
+*/
+if(__main__){
+  println("You are not supposed to run this file.");
+  exit(1);
+};
+
+/*
 Exporting
 
 You can also use exportAll() function instead.

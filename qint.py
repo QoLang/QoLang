@@ -168,7 +168,7 @@ class Interpreter(NodeVisitor):
     return node.value
 
   def visit_If_St(self, node):
-    if self.visit(node.condition) == True:
+    if self.visit(node.condition).value if hasattr(self.visit(node.condition), "value") else self.visit(node.condition):
       for statement in node.consequences:
         self.visit(statement)
     else:
