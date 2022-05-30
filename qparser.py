@@ -250,7 +250,7 @@ class Parser:
 
     self.eat(Tokens.RPAREN)
     node = self.compound_statement()
-    var = FncDec(current_token, proc_name, node, args)
+    var = FncDec(token, proc_name, node, args)
     return var
   
   def fnccall(self):
@@ -305,7 +305,6 @@ class Parser:
     self.eat(Tokens.BEGIN)        # {
     nodes = self.statement_list() # code();
     self.eat(Tokens.END)          # }
-    nodes.token = token
     return nodes
 
   def for_st(self):

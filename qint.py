@@ -251,9 +251,9 @@ class Interpreter(NodeVisitor):
       toinclude = runpy.run_path(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".py"))
       for toexport in toinclude["qolang_export"]:
         if callable(toinclude[toexport]):
-          added = PythonFunc(toexport, toinclude[toexport])
+          added = PythonFunc(node.token, toexport, toinclude[toexport])
         else:
-          added = VarVal(toexport, toinclude[toexport])
+          added = VarVal(node.token, toexport, toinclude[toexport])
         self.Variables.setVar(added)
     elif os.path.isfile(libpath + node.incfile + ".qo"):
       qo.run([sys.argv[0], libpath + node.incfile + ".qo"])
@@ -263,9 +263,9 @@ class Interpreter(NodeVisitor):
       toinclude = runpy.run_path(libpath + node.incfile + ".py")
       for toexport in toinclude["qolang_export"]:
         if callable(toinclude[toexport]):
-          added = PythonFunc(toexport, toinclude[toexport])
+          added = PythonFunc(node.token, toexport, toinclude[toexport])
         else:
-          added = VarVal(toexport, toinclude[toexport])
+          added = VarVal(node.token, toexport, toinclude[toexport])
         self.Variables.setVar(added)
         
   def visit_Define(self, node):
