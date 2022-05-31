@@ -13,14 +13,14 @@ println("  1  print 'Hello, world!'");
 println("  2  print 'Hello, QoLang!'");
 println("  3  print 'Hello, Camroku.TECH!'");
 inp = toInt(input("> "));
-exitcode = print_text(inp);
+exitcode = testlib.print_text(inp);
 println("Exit code for previous function:", exitcode);
 if(exitcode == 0){
   println("Successful");
 } else {
   println("Unsuccessful");
 };
-test();
+testpylib.test();
 
 println("-------------------------------");
 /*

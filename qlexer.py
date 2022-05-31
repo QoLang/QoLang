@@ -82,9 +82,12 @@ class Lexer:
       self.advance()
     
     result = ''
-    while self.current_char is not None and (self.current_char.isalnum() or self.current_char == '_'):
+    while self.current_char is not None and (self.current_char.isalnum() or self.current_char in ['_', '.']):
       result += self.current_char
       self.advance()
+      
+    if result[-1] == '.':
+      self.error()
 
     self.skipspace()
     if self.current_char == '(' and result not in reserved_keyws and (self.previous_token.type != Tokens.FUNC if self.previous_token else True):

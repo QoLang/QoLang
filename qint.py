@@ -110,14 +110,13 @@ class Interpreter(NodeVisitor):
   def visit_FncCall(self, node):
     var = self.Variables.getVar(node.name)
     if var is None:
-      var = self.Variables.getVar("func_" + node.name)
-      if var is None:
-        print("Interpreter Error")
-        print(self.parser.lexer.text.splitlines()[node.token.line])
-        print(" " * node.token.col + "^")
-        print(f'Function not found, error on position {str(node.token.line)}:{str(node.token.col)}')
-        exit(1)
-      else:
+      print("Interpreter Error")
+      print(self.parser.lexer.text.splitlines()[node.token.line])
+      print(" " * node.token.col + "^")
+      print(f'Function {node.name} not found, error on position {str(node.token.line)}:{str(node.token.col)}')
+      exit(1)
+    else:
+      if isinstance(var, PythonFunc):
         var = PythonFuncCall(node.token, var.func, node.args)
         return self.visit(var)
     if not len(node.args) == len(var.args):
@@ -242,30 +241,36 @@ class Interpreter(NodeVisitor):
       libpath = "C:\\qolang\\libs\\"
     elif os.name == "posix":
       libpath = "/usr/lib/qo/"
+      
+    incfile = node.incfile.replace('.', os.sep)
 
-    if os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".qo")):
-      qo.run([sys.argv[0], os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".qo")])
+    if os.path.isfile(os.path.join(sourcedir, incfile + ".qo")):
+      qo.run([sys.argv[0], os.path.join(sourcedir, incfile + ".qo")])
       for variable in qo.Variables.getVar("__export__").value:
-        self.Variables.setVar(qo.Variables.getVar(variable))
-    elif os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".py")):
-      toinclude = runpy.run_path(os.path.join(os.path.dirname(os.path.realpath(self.sourcefile)), node.incfile + ".py"))
-      for toexport in toinclude["qolang_export"]:
-        if callable(toinclude[toexport]):
-          added = PythonFunc(node.token, toexport, toinclude[toexport])
+        var = qo.Variables.getVar(variable)
+        var.name = incfile.split('.')[-1] + '.' + var.name
+        self.Variables.setVar(var)
+    elif os.path.isfile(os.path.join(sourcedir, incfile + ".py")):
+      toinclude = runpy.run_path(os.path.join(sourcedir, incfile + ".py"))
+      for fn, fs in toinclude["qolang_export"].items():
+        if callable(toinclude[fn]):
+          added = PythonFunc(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         else:
-          added = VarVal(node.token, toexport, toinclude[toexport])
+          added = VarVal(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         self.Variables.setVar(added)
-    elif os.path.isfile(libpath + node.incfile + ".qo"):
-      qo.run([sys.argv[0], libpath + node.incfile + ".qo"])
+    elif os.path.isfile(libpath + incfile + ".qo"):
+      qo.run([sys.argv[0], libpath + incfile + ".qo"])
       for variable in qo.Variables.getVar("__export__").value:
-        self.Variables.setVar(qo.Variables.getVar(variable))
-    elif os.path.isfile(libpath + node.incfile + ".py"):
-      toinclude = runpy.run_path(libpath + node.incfile + ".py")
-      for toexport in toinclude["qolang_export"]:
-        if callable(toinclude[toexport]):
-          added = PythonFunc(node.token, toexport, toinclude[toexport])
+        var = qo.Variables.getVar(variable)
+        var.name = incfile.split('.')[-1] + '.' + var.name
+        self.Variables.setVar(var)
+    elif os.path.isfile(libpath + incfile + ".py"):
+      toinclude = runpy.run_path(libpath + incfile + ".py")
+      for fn, fs in toinclude["qolang_export"].items():
+        if callable(toinclude[fn]):
+          added = PythonFunc(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         else:
-          added = VarVal(node.token, toexport, toinclude[toexport])
+          added = VarVal(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         self.Variables.setVar(added)
         
   def visit_Define(self, node):

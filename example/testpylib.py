@@ -1,7 +1,7 @@
-qolang_export = [
-    "func_test",
-]
+qolang_export = {
+    "test": "test",
+}
 
-def func_test(Variables, args):
+def test(Variables, args):
     print("Python libraries work!")
     return (Variables, None)

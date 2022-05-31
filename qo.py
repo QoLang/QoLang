@@ -7,7 +7,7 @@ import sys
 import runpy
 import os
 
-VERSION = "0.3.1"
+VERSION = "0.4"
 
 def run(args, main=False):
   # Load standard library
@@ -18,11 +18,11 @@ def run(args, main=False):
   else:
     print("This OS is not supported, yet.")
     sys.exit(1)
-  for fn in toinclude["qolang_export"]:
+  for fn, fs in toinclude["qolang_export"].items():
     if callable(toinclude[fn]):
-      added = PythonFunc(Token(Tokens.FUNCCALL, fn, 0, 0), fn, toinclude[fn])
+      added = PythonFunc(Token(Tokens.FUNC, fs, 0, 0), fs, toinclude[fn])
     else:
-      added = VarVal(fn, toinclude[fn])
+      added = VarVal(fs, toinclude[fn])
     Variables.setVar(added)
   Variables.setVar(VarVal("__main__", main))
 

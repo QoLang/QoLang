@@ -2,18 +2,18 @@
 from qclasses import VarVal, Var
 import sys
 
-qolang_export = [
-  "func_print",
-  "func_println",
-  "func_input",
-  "func_toInt",
-  "func_toBool",
-  "func_toStr",
-  "func_type",
-  "func_exit",
-  "func_mod",
-  "func_exportAll",
-]
+qolang_export = {
+  "func_print": "print",
+  "func_println": "println",
+  "func_input": "input",
+  "func_toInt": "toInt",
+  "func_toBool": "toBool",
+  "func_toStr": "toStr",
+  "func_type": "type",
+  "func_exit": "exit",
+  "func_mod": "mod",
+  "func_exportAll": "exportAll",
+}
 
 def func_print(Variables, args:list):
   """
