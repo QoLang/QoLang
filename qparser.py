@@ -223,6 +223,8 @@ class Parser:
       self.eat(Tokens.ADD)
       right = self.expr()
       node = Add(left, token, right)
+    else:
+      self.error()
     return node
   
   def variable(self):
