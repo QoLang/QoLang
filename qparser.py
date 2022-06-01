@@ -1,4 +1,5 @@
 from qclasses import *
+import sys
 
 class Parser:
   def __init__(self, lexer):
@@ -11,7 +12,7 @@ class Parser:
     print(self.lexer.text.splitlines()[self.current_token.line])
     print(" " * self.current_token.col + "^")
     print(f'Unexpected token on position {str(self.current_token.line)}:{str(self.current_token.col)}')
-    exit(1)
+    sys.exit(1)
 
   def get_next_token(self):
     current_token = self.next_token
@@ -26,7 +27,7 @@ class Parser:
       print(self.lexer.text.splitlines()[self.current_token.line])
       print(" " * self.current_token.col + "^")
       print(f'Expected {str(token_type)} but found {str(self.current_token.type)} on position {str(self.current_token.line)}:{str(self.current_token.col)}')
-      exit(1)
+      sys.exit(1)
 
   def factor(self):
     token = self.current_token

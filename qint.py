@@ -14,7 +14,7 @@ class NodeVisitor:
     print(self.text.splitlines()[node.token.line])
     print(" " * node.token.col + "^")
     print(f'No visit_{type(node).__name__} method, error on position {str(node.token.line)}:{str(node.token.col)}')
-    exit(1)
+    sys.exit(1)
 
 class Interpreter(NodeVisitor):
   def __init__(self, parser, variables, sourcefile):
@@ -100,7 +100,7 @@ class Interpreter(NodeVisitor):
       print(self.parser.lexer.text.splitlines()[node.token.line])
       print(" " * node.token.col + "^")
       print(f'Variable not found, error on position {str(node.token.line)}:{str(node.token.col)}')
-      exit(1)
+      sys.exit(1)
     else:
       return val
 
@@ -114,7 +114,7 @@ class Interpreter(NodeVisitor):
       print(self.parser.lexer.text.splitlines()[node.token.line])
       print(" " * node.token.col + "^")
       print(f'Function {node.name} not found, error on position {str(node.token.line)}:{str(node.token.col)}')
-      exit(1)
+      sys.exit(1)
     else:
       if isinstance(var, PythonFunc):
         var = PythonFuncCall(node.token, var.func, node.args)
@@ -124,7 +124,7 @@ class Interpreter(NodeVisitor):
       print(self.parser.lexer.text.splitlines()[node.token.line])
       print(" " * node.token.col + "^")
       print(f'Expected {str(len(node.args))} args, got {str(len(var.args))}, error on position {str(node.token.line)}:{str(node.token.col)}')
-      exit(1)
+      sys.exit(1)
     
     i = 0
     for arg in node.args:

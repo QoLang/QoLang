@@ -1,4 +1,5 @@
 from qclasses import *
+import sys
 
 class Lexer:
   def __init__(self, text):
@@ -15,7 +16,7 @@ class Lexer:
     print(self.text.splitlines()[self.line])
     print(" " * self.column + "^")
     print(f'Invalid character on position {str(self.line)}:{str(self.column)}')
-    exit(1)
+    sys.exit(1)
 
   def advance(self):
     if self.current_char == '\n':
