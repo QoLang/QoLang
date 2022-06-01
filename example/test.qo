@@ -2,11 +2,12 @@ println("QoLang test");
 println("-------------------------------");
 
 /*
-Importing, printing, input and if-elif-else statements
+Including, printing, input and if-elif-else statements
 */
 
 include testlib;
 include testpylib;
+include qo;
 
 println("commands:");
 println("  1  print 'Hello, world!'");
@@ -149,3 +150,10 @@ define SOMETHING;
 
 println("This is a variable created with define statement:", SOMETHING);
 println(%"SOMETHING == \"SOMETHING\":", SOMETHING == "SOMETHING");
+
+println("-------------------------------");
+/*
+Define
+*/
+
+println("Arguments:", qo.args);

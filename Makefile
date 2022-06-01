@@ -9,6 +9,7 @@ build:
 
 install: $(OUTPUT)
 	cp $(OUTPUT) $(PREFIX)/qo
+	rm -rf $(LIBPREFIX)
 	mkdir -p $(LIBPREFIX)
 	cp $(LIBS) $(LIBPREFIX)/
 

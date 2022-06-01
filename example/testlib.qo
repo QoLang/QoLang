@@ -7,15 +7,6 @@ if(__main__){
 };
 
 /*
-Exporting
-
-You can also use exportAll() function instead.
-*/
-__export__ = [
-  "print_text"
-];
-
-/*
 Function declaration
 */
 
@@ -32,3 +23,12 @@ func print_text(whichone){
   };
   return 0;
 };
+
+/*
+Exporting
+
+You can also set the __export__ variable yourself instead.
+That way, you can export everything before defining them.
+*/
+include qo;
+qo.exportAll();

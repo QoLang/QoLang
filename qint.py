@@ -256,7 +256,7 @@ class Interpreter(NodeVisitor):
         if callable(toinclude[fn]):
           added = PythonFunc(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         else:
-          added = VarVal(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
+          added = VarVal(incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         self.Variables.setVar(added)
     elif os.path.isfile(libpath + incfile + ".qo"):
       qo.run([sys.argv[0], libpath + incfile + ".qo"])
@@ -270,7 +270,7 @@ class Interpreter(NodeVisitor):
         if callable(toinclude[fn]):
           added = PythonFunc(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         else:
-          added = VarVal(node.token, incfile.split('.')[-1] + '.' + fs, toinclude[fn])
+          added = VarVal(incfile.split('.')[-1] + '.' + fs, toinclude[fn])
         self.Variables.setVar(added)
         
   def visit_Define(self, node):

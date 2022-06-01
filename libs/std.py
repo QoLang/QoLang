@@ -12,7 +12,6 @@ qolang_export = {
   "func_type": "type",
   "func_exit": "exit",
   "func_mod": "mod",
-  "func_exportAll": "exportAll",
 }
 
 def func_print(Variables, args:list):
@@ -111,15 +110,3 @@ def func_mod(Variables, args:list):
   """
   out = args[0] % args[1]
   return (Variables, out)
-
-def func_exportAll(Variables, args:list):
-  """
-  Export all variables.
-  """
-  export = []
-  for variable in Variables.vars:
-    if not isinstance(variable, PythonFunc):
-      export += [variable.name]
-  
-  Variables.setVar(VarVal("__export__", export))
-  return (Variables, None)
