@@ -7,9 +7,9 @@ import sys
 import runpy
 import os
 
-VERSION = "0.4.1"
+VERSION = "0.5"
 
-def run(args, main=False):
+def run(args, main=False, qcf=False):
   # Load standard library
   if os.name == "nt":
     toinclude = runpy.run_path("C:\\qolang\\libs\\std.py")
@@ -25,10 +25,11 @@ def run(args, main=False):
       added = VarVal(fs, toinclude[fn])
     Variables.setVar(added)
   Variables.setVar(VarVal("__main__", main))
+  Variables.setVar(VarVal("__qcf__", qcf))
 
   contents = open(args[1]).read()
   lexer = qlexer.Lexer(contents)
-  parser = qparser.Parser(lexer)
+  parser = qparser.Parser(lexer, qcf=qcf)
   interpreter = qint.Interpreter(parser, Variables, args[1])
   interpreter.interpret()
 

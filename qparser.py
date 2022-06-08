@@ -2,10 +2,11 @@ from qclasses import *
 import sys
 
 class Parser:
-  def __init__(self, lexer):
+  def __init__(self, lexer, qcf=False):
     self.lexer = lexer
     self.current_token = self.lexer.next_token()
     self.next_token = self.lexer.next_token()
+    self.qcf = qcf
 
   def error(self):
     print("Parser Error")
@@ -13,6 +14,25 @@ class Parser:
     print(" " * self.current_token.col + "^")
     print(f'Unexpected token on position {str(self.current_token.line)}:{str(self.current_token.col)}')
     sys.exit(1)
+
+  def qcfcheck(self):
+    if self.current_token.type in ( # Disallowed statements for QCF
+      Tokens.BEGIN,
+      Tokens.FUNC,
+      Tokens.FUNCCALL,
+      Tokens.IF_ST,
+      Tokens.FOR_ST,
+      Tokens.WHILE_ST,
+      Tokens.TIMES_ST,
+      Tokens.RETURN,
+      Tokens.FOREACH,
+      Tokens.INCLUDE,
+    ) and self.qcf:
+      print("Parser Error")
+      print(self.lexer.text.splitlines()[self.current_token.line])
+      print(" " * self.current_token.col + "^")
+      print(f'Disallowed QCF statement on position {str(self.current_token.line)}:{str(self.current_token.col)}')
+      sys.exit(1)
 
   def get_next_token(self):
     current_token = self.next_token
@@ -184,6 +204,7 @@ class Parser:
     return results
   
   def statement(self):
+    self.qcfcheck()
     match self.current_token.type:
       case Tokens.BEGIN:
         node = self.compound_statement()
