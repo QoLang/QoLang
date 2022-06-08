@@ -12,6 +12,7 @@ qolang_export = {
   "func_type": "type",
   "func_exit": "exit",
   "func_mod": "mod",
+  "func_hasAttr": "hasAttr",
 }
 
 def func_print(Variables, args:list):
@@ -109,4 +110,11 @@ def func_mod(Variables, args:list):
   Math modulus function.
   """
   out = args[0] % args[1]
+  return (Variables, out)
+
+def func_hasAttr(Variables, args:list):
+  """
+  Check if a variable has an attribute.
+  """
+  out = Variables.hasAttr(args[0], args[1])
   return (Variables, out)

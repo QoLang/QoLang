@@ -297,6 +297,12 @@ class Vars:
     else:
       added = VarVal(f"{root}.{var}", val)
     self.setVar(added)
+  
+  def hasAttr(self, root, var):
+    for vvar in self.vars:
+      if vvar.name.split('.') == [root, var]:
+        return True
+    return False
     
 
 #endregion
