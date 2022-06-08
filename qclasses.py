@@ -289,5 +289,14 @@ class Vars:
         return
       i += 1
     self.vars += [var]
+  
+  def setAttr(self, root, var, val):
+    # This function will not be available in QoLang, so we can just don't care about VarFnc.
+    if callable(val):
+      added = PythonFunc(Token(Tokens.FUNC, f"{root}.{var}", 0, 0), f"{root}.{var}", val)
+    else:
+      added = VarVal(f"{root}.{var}", val)
+    self.setVar(added)
+    
 
 #endregion
