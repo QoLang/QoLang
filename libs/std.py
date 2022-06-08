@@ -13,6 +13,8 @@ qolang_export = {
   "func_exit": "exit",
   "func_mod": "mod",
   "func_hasAttr": "hasAttr",
+  "func_exists": "exists",
+  "func_remove": "remove",
 }
 
 def func_print(Variables, args:list):
