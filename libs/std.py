@@ -118,3 +118,17 @@ def func_hasAttr(Variables, args:list):
   """
   out = Variables.hasAttr(args[0], args[1])
   return (Variables, out)
+
+def func_exists(Variables, args:list):
+  """
+  Check if a variable has an attribute.
+  """
+  out = Variables.exists(args[0])
+  return (Variables, out)
+
+def func_remove(Variables, args:list):
+  """
+  Remove a variable.
+  """
+  Variables.remove(args[0])
+  return (Variables, None)

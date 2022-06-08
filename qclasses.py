@@ -303,6 +303,25 @@ class Vars:
       if vvar.name.split('.') == [root, var]:
         return True
     return False
-    
+  
+  def hasAnyAttr(self, root):
+    for vvar in self.vars:
+      if '.' in vvar.name and vvar.name.split('.')[0] == root:
+        return True
+    return False
+  
+  def exists(self, root):
+    for var in self.vars:
+      if var.name == name:
+        return True
+    return False
+  
+  def remove(self, root):
+    i = 0
+    for vvar in self.vars:
+      if vvar.name == var.name:
+        del self.vars[i]
+        return
+      i += 1
 
 #endregion
