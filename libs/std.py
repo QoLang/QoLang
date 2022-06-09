@@ -123,7 +123,7 @@ def func_hasAttr(Variables, args:list):
 
 def func_exists(Variables, args:list):
   """
-  Check if a variable has an attribute.
+  Check if a variable exists.
   """
   out = Variables.exists(args[0])
   return (Variables, out)
