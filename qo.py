@@ -7,7 +7,7 @@ import sys
 import runpy
 import os
 
-VERSION = "0.5.1"
+VERSION = "0.5.2"
 
 def run(args, main=False, qcf=False):
   # Load standard library
