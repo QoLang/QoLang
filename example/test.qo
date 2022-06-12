@@ -173,3 +173,23 @@ testqcf.set("mypassword", "newValue");
 println("A variable from test.qcf:", testqcf.get("mypassword"));
 println("Does testqcf have an attribute named set?", hasAttr(&testqcf, "set"));
 println("Does testqcf have an attribute named hello?", hasAttr(&testqcf, "hello"));
+
+println("-------------------------------");
+/*
+Stack Library
+*/
+
+include stack;
+
+times 5 {
+  myVariable = input("Enter a variable: ");
+  stack.push(&myVariable);
+  println("Pushed myVariable");
+};
+
+println("Stack:", stack.get(&myVariable));
+
+times 5 {
+  stack.pop(&myVariable);
+  println("Popped myVariable:", myVariable);
+};
