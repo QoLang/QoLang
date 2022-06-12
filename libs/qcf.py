@@ -10,7 +10,7 @@ class QCFInstance:
     def __init__(self, name, file, Variables):
         self.name = name
         self.file = file
-        self.Variables = Variables
+        self.value = self.Variables = Variables
     
     def __str__(self):
         return f"QCFI({self.name})"
