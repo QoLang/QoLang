@@ -15,6 +15,7 @@ qolang_export = {
   "func_hasAttr": "hasAttr",
   "func_exists": "exists",
   "func_remove": "remove",
+  "func_move": "move",
 }
 
 def func_print(Variables, args:list):
@@ -133,4 +134,11 @@ def func_remove(Variables, args:list):
   Remove a variable.
   """
   Variables.remove(args[0])
+  return (Variables, None)
+
+def func_move(Variables, args:list):
+  """
+  Move a variable with attributes.
+  """
+  Variables.move(args[0], args[1])
   return (Variables, None)

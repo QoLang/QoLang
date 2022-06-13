@@ -319,9 +319,17 @@ class Vars:
   def remove(self, root):
     i = 0
     for vvar in self.vars:
-      if vvar.name == var.name:
+      if vvar.name == root or ('.' in vvar.name and vvar.name.split('.')[0] == root):
         del self.vars[i]
-        return
+      i += 1
+  
+  def move(self, source, newname):
+    i = 0
+    for vvar in self.vars:
+      if vvar.name == source:
+        vvar.name = newname
+      elif '.' in vvar.name and vvar.name.split('.')[0] == source:
+        vvar.name = newname + '.' + '.'.join(vvar.name.split('.')[1:])
       i += 1
 
 #endregion
