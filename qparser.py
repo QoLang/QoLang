@@ -420,7 +420,15 @@ class Parser:
     self.eat(Tokens.INCLUDE)
     incfile = self.current_token
     self.eat(Tokens.ID)
-    node = Include(incfile)
+    if self.current_token.type == Tokens.AS:
+      self.eat(Tokens.AS)
+      node = Include(incfile, self.current_token)
+      self.eat(Tokens.ID)
+    else:
+      outvar = incfile
+      outvar.value = outvar.value.split('.')[-1]
+      node = Include(incfile, outvar)
+      
     return node
   
   def define(self):

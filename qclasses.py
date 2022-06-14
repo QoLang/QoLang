@@ -230,9 +230,11 @@ class Add(AST):
     self.right = right
 
 class Include(AST):
-  def __init__(self, token):
+  def __init__(self, token, _as):
     self.token = token
     self.incfile = token.value
+    self._as_token = _as
+    self._as = _as.value
 
 class Unique(AST): # str but not equal to str
   def __init__(self, value):

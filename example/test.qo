@@ -5,7 +5,7 @@ println("-------------------------------");
 Including, printing, input and if-elif-else statements
 */
 
-include testlib;
+include testlib as test;
 include testpylib;
 include qo;
 
@@ -14,7 +14,7 @@ println("  1  print 'Hello, world!'");
 println("  2  print 'Hello, QoLang!'");
 println("  3  print 'Hello, Camroku.TECH!'");
 inp = toInt(input("> "));
-exitcode = testlib.print_text(inp);
+exitcode = test.print_text(inp);
 println("Exit code for previous function:", exitcode);
 if(exitcode == 0){
   println("Successful");
