@@ -248,31 +248,27 @@ class Interpreter(NodeVisitor):
     if os.path.isfile(os.path.join(sourcedir, incfile + ".qo")):
       qo.run([sys.argv[0], os.path.join(sourcedir, incfile + ".qo")])
       for variable in qo.Variables.getVar("__export__").value:
-        var = qo.Variables.getVar(variable)
-        var.name = outvar + '.' + var.name
-        self.Variables.setVar(var)
+        self.Variables.setExistingAttr(outvar, qo.Variables.getVar(variable))
     elif os.path.isfile(os.path.join(sourcedir, incfile + ".py")):
       toinclude = runpy.run_path(os.path.join(sourcedir, incfile + ".py"))
       for fn, fs in toinclude["qolang_export"].items():
         if callable(toinclude[fn]):
-          added = PythonFunc(node.token, outvar + '.' + fs, toinclude[fn])
+          added = PythonFunc(node.token, fs, toinclude[fn])
         else:
-          added = VarVal(outvar + '.' + fs, toinclude[fn])
-        self.Variables.setVar(added)
+          added = VarVal(fs, toinclude[fn])
+        self.Variables.setExistingAttr(outvar, added)
     elif os.path.isfile(libpath + incfile + ".qo"):
       qo.run([sys.argv[0], libpath + incfile + ".qo"])
       for variable in qo.Variables.getVar("__export__").value:
-        var = qo.Variables.getVar(variable)
-        var.name = outvar + '.' + var.name
-        self.Variables.setVar(var)
+        self.Variables.setExistingAttr(outvar, qo.Variables.getVar(variable))
     elif os.path.isfile(libpath + incfile + ".py"):
       toinclude = runpy.run_path(libpath + incfile + ".py")
       for fn, fs in toinclude["qolang_export"].items():
         if callable(toinclude[fn]):
-          added = PythonFunc(node.token, outvar + '.' + fs, toinclude[fn])
+          added = PythonFunc(node.token, fs, toinclude[fn])
         else:
-          added = VarVal(outvar + '.' + fs, toinclude[fn])
-        self.Variables.setVar(added)
+          added = VarVal(fs, toinclude[fn])
+        self.Variables.setExistingAttr(outvar, added)
         
   def visit_Define(self, node):
     self.Variables.setVar(VarVal(node.token.value, node.value))

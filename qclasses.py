@@ -265,14 +265,6 @@ class VarVal(Variable):
   def __str__(self):
     return f"VarVal({self.name}, {self.value})"
 
-class VarFnc(Variable):
-  def __init__(self, name, node):
-    self.name = name
-    self.node = node
-  
-  def __str__(self):
-    return f"VarFnc({self.name})"
-
 class Vars:
   def __init__(self):
     self.vars = []
@@ -293,7 +285,6 @@ class Vars:
     self.vars += [var]
   
   def setAttr(self, root, var, val):
-    # This function will not be available in QoLang, so we can just don't care about VarFnc.
     if callable(val):
       added = PythonFunc(Token(Tokens.FUNC, f"{root}.{var}", 0, 0), f"{root}.{var}", val)
     else:
@@ -333,5 +324,9 @@ class Vars:
       elif '.' in vvar.name and vvar.name.split('.')[0] == source:
         vvar.name = newname + '.' + '.'.join(vvar.name.split('.')[1:])
       i += 1
+  
+  def setExistingAttr(self, root, var):
+    var.name = root + '.' + var
+    self.setVar(var)
 
 #endregion
