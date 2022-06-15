@@ -6,35 +6,39 @@ qolang_export = {
     "newqcf": "new"
 }
 
+
 class QCFInstance:
     def __init__(self, name, file, Variables):
         self.name = name
         self.file = file
         self.value = self.Variables = Variables
-    
+
     def __str__(self):
         return f"QCFI({self.name})"
+
 
 class QCFGet:
     def __init__(self, QCFI):
         self.QCFI = QCFI
-    
+
     def __call__(self, Variables, args):
         return (Variables, Variables.getVar(self.QCFI).Variables.getVar(args[0]).value)
-    
+
     __code__ = __call__.__code__
+
 
 class QCFSet:
     def __init__(self, QCFI):
         self.QCFI = QCFI
-    
+
     def __call__(self, Variables, args):
         qcfi = Variables.getVar(self.QCFI)
         qcfi.Variables.setVar(VarVal(args[0], args[1]))
         Variables.setVar(qcfi)
         return (Variables, None)
-    
+
     __code__ = __call__.__code__
+
 
 def newqcf(Variables, args):
     """

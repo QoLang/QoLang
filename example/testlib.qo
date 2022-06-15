@@ -2,8 +2,8 @@
 Disable running the file directly
 */
 if(__main__){
-  println("You are not supposed to run this file.");
-  exit(1);
+    println("You are not supposed to run this file.");
+    exit(1);
 };
 
 /*
@@ -11,17 +11,17 @@ Function declaration
 */
 
 func print_text(whichone){
-  if (whichone == 1) {
-    println("Hello, world!");
-  } else if (whichone == 2) {
-    println("Hello, QoLang!");
-  } else if (whichone == 3) {
-    println("Hello, Camroku.TECH!");
-  } else {
-    println("Invalid input!");
-    return 1;
-  };
-  return 0;
+    if (whichone == 1) {
+        println("Hello, world!");
+    } else if (whichone == 2) {
+        println("Hello, QoLang!");
+    } else if (whichone == 3) {
+        println("Hello, Camroku.TECH!");
+    } else {
+        println("Invalid input!");
+        return 1;
+    };
+    return 0;
 };
 
 /*

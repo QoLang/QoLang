@@ -17,9 +17,9 @@ inp = toInt(input("> "));
 exitcode = test.print_text(inp);
 println("Exit code for previous function:", exitcode);
 if(exitcode == 0){
-  println("Successful");
+    println("Successful");
 } else {
-  println("Unsuccessful");
+    println("Unsuccessful");
 };
 testpylib.test();
 
@@ -43,30 +43,30 @@ Loops
 
 print("Some numbers printed with for loop: ");
 for(i = 0; i < 5; i = i + 1){
-  print(i);
+    print(i);
 };
 println("");
 
 print("Some numbers printed with while loop: ");
 i = 0;
 while(i < 5){
-  print(i);
-  i = i + 1;
+    print(i);
+    i = i + 1;
 };
 println("");
 
 print("Some numbers printed with times loop: ");
 i = 0;
 times 5{
-  print(i);
-  i = i + 1;
+    print(i);
+    i = i + 1;
 };
 println("");
 
 
 print("Some numbers printed with times as loop: ");
 times 5 as &i{
-  print(i);
+    print(i);
 };
 println("");
 
@@ -74,7 +74,7 @@ println("");
 print("Some numbers printed with foreach loop: ");
 numbers = [0, 1, 2, 3, 4];
 foreach &num in numbers{
-  print(num);
+    print(num);
 };
 println("");
 
@@ -86,17 +86,17 @@ println("-------------------------------");
 btest1 = toInt(input("Enter a number: "));
 
 if(btest1 >= 1 && btest1 <= 10){
-  println("Your number is between 1 and 10.");
+    println("Your number is between 1 and 10.");
 } else {
-  println("Your number is not between 1 and 10.");
+    println("Your number is not between 1 and 10.");
 };
 
 btest2 = toInt(input("Enter a number: "));
 
 if(btest2 >= 20 || btest2 <= 10){
-  println("Your number is bigger than 20 or smaller than 10.");
+    println("Your number is bigger than 20 or smaller than 10.");
 } else {
-  println("Your number is not bigger than 20 or smaller than 10.");
+    println("Your number is not bigger than 20 or smaller than 10.");
 };
 
 println("-------------------------------");
@@ -123,7 +123,7 @@ println("You'll enter 3 values that are going to be added to a list.");
 
 list = [];
 times 3 as &valn{
-  list = list + [input(%"Number $valn: ")];
+    list = list + [input(%"Number $valn: ")];
 };
 
 println("List:", list);
@@ -184,14 +184,14 @@ Stack Library
 include stack;
 
 times 5 {
-  myVariable = input("Enter a variable: ");
-  stack.push(&myVariable);
-  println("Pushed myVariable");
+    myVariable = input("Enter a variable: ");
+    stack.push(&myVariable);
+    println("Pushed myVariable");
 };
 
 println("Stack:", stack.get(&myVariable));
 
 times 5 {
-  stack.pop(&myVariable);
-  println("Popped myVariable:", myVariable);
+    stack.pop(&myVariable);
+    println("Popped myVariable:", myVariable);
 };

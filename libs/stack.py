@@ -10,6 +10,7 @@ qolang_export = {
 
 stack = {}
 
+
 def pushstack(Variables, args):
     """
     Push a variable into its stack.
@@ -18,6 +19,7 @@ def pushstack(Variables, args):
         stack[args[0]] = []
     stack[args[0]].append(Variables.getVar(args[0]))
     return (Variables, None)
+
 
 def popstack(Variables, args):
     """
@@ -31,6 +33,7 @@ def popstack(Variables, args):
         if stack[args[0]] == []:
             del stack[args[0]]
     return (Variables, None)
+
 
 def getstack(Variables, args):
     """
