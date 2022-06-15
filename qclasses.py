@@ -360,7 +360,7 @@ class Vars:
             i += 1
 
     def setExistingAttr(self, root, var):
-        var.name = root + '.' + var
+        var.name = root + '.' + var.name
         self.setVar(var)
 
 # endregion
