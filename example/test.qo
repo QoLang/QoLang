@@ -123,7 +123,7 @@ println("You'll enter 3 values that are going to be added to a list.");
 
 list = [];
 times 3 as &valn{
-    list = list + [input(%"Number $valn: ")];
+    list += [input(%"Number $valn: ")];
 };
 
 println("List:", list);
@@ -133,6 +133,34 @@ list[0] = 45;
 println("List:", list);
 list += [20];
 println("Added 20 to the list:", list);
+
+println("-------------------------------");
+/*
+All ways to get something from a list
+*/
+println("All ways to get something from a list");
+
+list = [];
+times 32 as &valn{
+    list += [valn];
+}; /* 0, 1, 2, ..., 29, 30, 31 */
+
+print("1: ");
+println(list[3]);
+print("2: ");
+println(list[3:]);
+print("3: ");
+println(list[3:13]);
+print("4: ");
+println(list[3::2]);
+print("5: ");
+println(list[3:13:2]);
+print("6: ");
+println(list[:13]);
+print("7: ");
+println(list[::2]);
+print("8: ");
+println(list[:13:2]);
 
 println("-------------------------------");
 /*

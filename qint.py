@@ -216,7 +216,23 @@ class Interpreter(NodeVisitor):
         return [self.visit(nnode) for nnode in node.values]
 
     def visit_ListItem(self, node):
-        return self.Variables.getVar(node.value).value[self.visit(node.item)]
+        if node.attributes.slice is None:
+            return self.Variables.getVar(node.value).value[self.visit(node.item)]
+        elif node.attributes.steps is None:
+            start = self.visit(node.attributes.slice[0])
+            stop = self.visit(node.attributes.slice[1])
+            if stop is None:
+                return [val.value for val in self.Variables.getVar(node.value).value[start:]]
+            else:
+                return [val.value for val in self.Variables.getVar(node.value).value[start:stop]]
+        else:
+            start = self.visit(node.attributes.slice[0])
+            stop = self.visit(node.attributes.slice[1])
+            steps = self.visit(node.attributes.steps)
+            if stop is None:
+                return [val.value for val in self.Variables.getVar(node.value).value[start::steps]]
+            else:
+                return [val.value for val in self.Variables.getVar(node.value).value[start:stop:steps]]
 
     def visit_Foreach_St(self, node):
         for item in self.visit(node.llist).value:

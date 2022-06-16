@@ -232,10 +232,17 @@ class List(AST):
 
 
 class ListItem(AST):
-    def __init__(self, token, item):
+    def __init__(self, token, item, attributes):
         self.token = token
         self.value = token.value
         self.item = item
+        self.attributes = attributes
+
+
+class ListItemAttributes(AST):
+    def __init__(self):
+        self.slice = None  # [startIndex, endIndex]
+        self.steps = None
 
 
 class Foreach_St(AST):

@@ -399,13 +399,27 @@ class Parser:
         return node
 
     def listitem(self):
+        attrs = ListItemAttributes()
         token = self.current_token
         token.type = Tokens.LISTITEM
         self.eat(Tokens.LISTITEM)
         self.eat(Tokens.SBRACKETL)
-        item = self.expr()
+        if self.current_token.type == Tokens.COL:
+            item = Num(Token(Tokens.INTEGER, 0, self.current_token.line-1, self.current_token.col-1))
+        else:
+            item = self.expr()
+        if self.current_token.type == Tokens.COL:
+            self.eat(Tokens.COL)
+            if self.current_token.type in [Tokens.SBRACKETR, Tokens.COL]:
+                attrs.slice = [item, None_Type()]
+            else:
+                attrs.slice = [item, self.expr()]
+            
+            if self.current_token.type == Tokens.COL:
+                self.eat(Tokens.COL)
+                attrs.steps = self.expr()
         self.eat(Tokens.SBRACKETR)
-        node = ListItem(token, item)
+        node = ListItem(token, item, attrs)
         return node
 
     def foreach_st(self):
