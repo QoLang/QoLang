@@ -12,7 +12,7 @@ class NodeVisitor:
 
     def generic_visit(self, node):
         print("Interpreter Error")
-        print(self.text.splitlines()[node.token.line])
+        print(self.parser.lexer.text.splitlines()[node.token.line])
         print(" " * node.token.col + "^")
         print(
             f'No visit_{type(node).__name__} method, error on position {str(node.token.line)}:{str(node.token.col)}')
