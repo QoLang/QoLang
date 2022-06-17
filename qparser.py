@@ -65,6 +65,9 @@ class Parser:
             case Tokens.INTEGER:
                 self.eat(Tokens.INTEGER)
                 return Num(token)
+            case Tokens.FLOAT:
+                self.eat(Tokens.FLOAT)
+                return Float(token)
             case Tokens.LPAREN:
                 self.eat(Tokens.LPAREN)
                 node = self.expr()

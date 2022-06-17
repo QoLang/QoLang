@@ -49,6 +49,7 @@ class Tokens:
     INCLUDE = "INCLUDE"
     DEFINE = "DEFINE"
     POWER = "POWER"
+    FLOAT = "FLOAT"
 
 
 class Token:
@@ -89,6 +90,15 @@ class Num(AST):
 
     def __str__(self):
         return f"Num({self.token}, {self.value})"
+
+
+class Float(AST):
+    def __init__(self, token):
+        self.token = token
+        self.value = token.value
+
+    def __str__(self):
+        return f"Float({self.token}, {self.value})"
 
 
 class UnaryOp(AST):

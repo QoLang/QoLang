@@ -45,11 +45,27 @@ class Lexer:
         self.advance()
 
     def integer(self):
+        token = Token(None, None, self.line, self.column)
         result = ''
         while self.current_char is not None and self.current_char.isdigit():
             result += self.current_char
             self.advance()
-        return int(result)
+
+        if self.current_char == '.':
+            result += self.current_char
+            self.advance()
+
+            while self.current_char is not None and self.current_char.isdigit():
+                result += self.current_char
+                self.advance()
+
+            token.type = Tokens.FLOAT
+            token.value = float(result)
+        else:
+            token.type = Tokens.INTEGER
+            token.value = int(result)
+
+        return token
 
     def peek(self):
         peek_pos = self.pos + 1
@@ -181,8 +197,7 @@ class Lexer:
                 continue
 
             elif self.current_char.isdigit():
-                self.current_token = Token(
-                    Tokens.INTEGER, self.integer(), line, column)
+                self.current_token = self.integer()
 
             elif self.current_char == "'":
                 self.current_token = self.string("'")
