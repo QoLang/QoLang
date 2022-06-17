@@ -1,6 +1,7 @@
 # QoLang Standart Library
 from qclasses import VarVal, Var
 import sys
+import time
 
 qolang_export = {
     "func_print": "print",
@@ -16,6 +17,7 @@ qolang_export = {
     "func_exists": "exists",
     "func_remove": "remove",
     "func_move": "move",
+    "func_sleep": "sleep",
 }
 
 
@@ -154,4 +156,12 @@ def func_move(Variables, args: list):
     Move a variable with attributes.
     """
     Variables.move(args[0], args[1])
+    return (Variables, None)
+
+
+def func_sleep(Variables, args: list):
+    """
+    Sleep n seconds.
+    """
+    time.sleep(args[0])
     return (Variables, None)
