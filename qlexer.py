@@ -218,6 +218,11 @@ class Lexer:
                 self.advance()
                 self.current_token = Token(Tokens.ADD, '+=', line, column)
 
+            elif self.current_char == '-' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                self.current_token = Token(Tokens.SUB, '-=', line, column)
+
             elif self.current_char == '+':
                 self.advance()
                 self.current_token = Token(Tokens.PLUS, '+', line, column)

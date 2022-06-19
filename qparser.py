@@ -252,6 +252,10 @@ class Parser:
             self.eat(Tokens.ADD)
             right = self.expr()
             node = Add(left, token, right)
+        elif token.type == Tokens.SUB:
+            self.eat(Tokens.SUB)
+            right = self.expr()
+            node = Sub(left, token, right)
         else:
             self.error()
         return node

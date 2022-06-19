@@ -320,6 +320,17 @@ class Interpreter(NodeVisitor):
     def visit_Define(self, node):
         self.Variables.setVar(VarVal(node.token.value, node.value))
 
+    def visit_Sub(self, node):
+        if node.left.token.type == Tokens.LISTITEM:
+            llist = self.Variables.getVar(node.left.value)
+            llist.value[self.visit(node.left.item)] -= self.visit(node.right)
+            self.Variables.setVar(llist)
+        else:
+            var_old = self.Variables.getVar(node.left.value).value
+            var_new = self.visit(node.right)
+            var = VarVal(node.left.value, var_old - var_new)
+            self.Variables.setVar(var)
+
     def interpret(self):
         tree = self.parser.parse()
         if tree is None:
