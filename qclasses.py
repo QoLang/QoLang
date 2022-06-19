@@ -354,7 +354,7 @@ class Vars:
                 return True
         return False
 
-    def exists(self, root):
+    def exists(self, name):
         for var in self.vars:
             if var.name == name:
                 return True
