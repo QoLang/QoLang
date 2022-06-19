@@ -134,7 +134,7 @@ class Interpreter(NodeVisitor):
             print(
                 f'Expected {str(len(node.args))} args, got {str(len(var.args))}, error on position {str(node.token.line)}:{str(node.token.col)}')
             sys.exit(1)
-            
+
         # local variables
         actualvariables = self.Variables
         self.Variables = Vars()
@@ -142,7 +142,7 @@ class Interpreter(NodeVisitor):
             toinclude = runpy.run_path("C:\\qolang\\libs\\std.py")
         elif os.name == "posix":
             toinclude = runpy.run_path("/usr/lib/qo/std.py")
-        
+
         for fn, fs in toinclude["qolang_export"].items():
             if callable(toinclude[fn]):
                 added = PythonFunc(node.token, fs, toinclude[fn])
@@ -151,7 +151,7 @@ class Interpreter(NodeVisitor):
             self.Variables.setVar(added)
         self.Variables.setVar(actualvariables.getVar("__main__"))
         self.Variables.setVar(actualvariables.getVar("__qcf__"))
-        
+
         i = 0
         for arg in node.args:
             toadd = arg
@@ -168,7 +168,7 @@ class Interpreter(NodeVisitor):
                 return self.visit(node)
             else:
                 self.visit(node)
-        
+
         self.Variables = actualvariables
 
     def visit_PythonFuncCall(self, node):

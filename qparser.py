@@ -412,7 +412,8 @@ class Parser:
         self.eat(Tokens.LISTITEM)
         self.eat(Tokens.SBRACKETL)
         if self.current_token.type == Tokens.COL:
-            item = Num(Token(Tokens.INTEGER, 0, self.current_token.line-1, self.current_token.col-1))
+            item = Num(Token(Tokens.INTEGER, 0,
+                       self.current_token.line-1, self.current_token.col-1))
         else:
             item = self.expr()
         if self.current_token.type == Tokens.COL:
@@ -421,7 +422,7 @@ class Parser:
                 attrs.slice = [item, None_Type()]
             else:
                 attrs.slice = [item, self.expr()]
-            
+
             if self.current_token.type == Tokens.COL:
                 self.eat(Tokens.COL)
                 attrs.steps = self.expr()
