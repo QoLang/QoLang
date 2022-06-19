@@ -23,6 +23,8 @@ qolang_export = {
     "func_read": "read",
     "func_readlines": "readlines",
     "func_len": "len",
+    "func_chr": "chr",
+    "func_ord": "ord",
 }
 
 
@@ -37,7 +39,7 @@ def func_print(Variables, args: list):
         else:
             toprint += [str(arg)]
 
-    print(" ".join(toprint), end="")
+    print(" ".join(toprint), end="", flush=True)
     return (Variables, None)
 
 
@@ -204,7 +206,7 @@ def func_read(Variables, args: list):
 
 def func_readlines(Variables, args: list):
     """
-    Read lines a file.
+    Read lines from a file.
     """
     output = None
     if os.path.isfile(args[0]):
@@ -218,3 +220,17 @@ def func_len(Variables, args: list):
     Get length of something.
     """
     return (Variables, len(args[0]))
+
+
+def func_chr(Variables, args: list):
+    """
+    Get character by ASCII value.
+    """
+    return (Variables, chr(args[0]))
+
+
+def func_ord(Variables, args: list):
+    """
+    Get ASCII value of character.
+    """
+    return (Variables, ord(args[0]))
