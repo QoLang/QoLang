@@ -198,6 +198,7 @@ include qcf;
 println("Opening test.qcf");
 qcf.new("test.qcf", &testqcf);
 println("A variable from test.qcf:", testqcf.get("mypassword"));
+println("Length of a variable from test.qcf:", len(testqcf.get("mypassword")));
 println("Setting a variable..");
 testqcf.set("mypassword", "newValue");
 println("A variable from test.qcf:", testqcf.get("mypassword"));

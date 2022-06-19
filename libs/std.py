@@ -22,6 +22,7 @@ qolang_export = {
     "func_sleep": "sleep",
     "func_read": "read",
     "func_readlines": "readlines",
+    "func_len": "len",
 }
 
 
@@ -210,3 +211,10 @@ def func_readlines(Variables, args: list):
         with open(args[0]) as f:
             output = f.readlines()
     return (Variables, output)
+
+
+def func_len(Variables, args: list):
+    """
+    Get length of something.
+    """
+    return (Variables, len(args[0]))
