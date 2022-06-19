@@ -2,6 +2,7 @@
 from qclasses import VarVal, Var
 import sys
 import time
+import os
 
 qolang_export = {
     "func_print": "print",
@@ -19,6 +20,8 @@ qolang_export = {
     "func_remove": "remove",
     "func_move": "move",
     "func_sleep": "sleep",
+    "func_read": "read",
+    "func_readlines": "readlines",
 }
 
 
@@ -185,3 +188,25 @@ def func_sleep(Variables, args: list):
     """
     time.sleep(args[0])
     return (Variables, None)
+
+
+def func_read(Variables, args: list):
+    """
+    Read a file.
+    """
+    output = None
+    if os.path.isfile(args[0]):
+        with open(args[0]) as f:
+            output = f.read()
+    return (Variables, output)
+
+
+def func_readlines(Variables, args: list):
+    """
+    Read lines a file.
+    """
+    output = None
+    if os.path.isfile(args[0]):
+        with open(args[0]) as f:
+            output = f.readlines()
+    return (Variables, output)
