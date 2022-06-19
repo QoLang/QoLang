@@ -209,7 +209,7 @@ def func_readlines(Variables, args: list):
     output = None
     if os.path.isfile(args[0]):
         with open(args[0]) as f:
-            output = f.readlines()
+            output = f.read().splitlines()
     return (Variables, output)
 
 
