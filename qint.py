@@ -109,7 +109,7 @@ class Interpreter(NodeVisitor):
                 f'Variable not found, error on position {str(node.token.line)}:{str(node.token.col)}')
             sys.exit(1)
         else:
-            return val
+            return val.value
 
     def visit_FncDec(self, node):
         self.Variables.setVar(node)
@@ -228,7 +228,7 @@ class Interpreter(NodeVisitor):
                 case Tokens.STRING:
                     result += nod.value
                 case Tokens.ID:
-                    result += str(self.visit(Var(nod)).value)
+                    result += str(self.visit(Var(nod)))
         return result
 
     def visit_Return(self, node):
@@ -244,20 +244,20 @@ class Interpreter(NodeVisitor):
             start = self.visit(node.attributes.slice[0])
             stop = self.visit(node.attributes.slice[1])
             if stop is None:
-                return [val.value for val in self.Variables.getVar(node.value).value[start:]]
+                return [val for val in self.Variables.getVar(node.value).value[start:]]
             else:
-                return [val.value for val in self.Variables.getVar(node.value).value[start:stop]]
+                return [val for val in self.Variables.getVar(node.value).value[start:stop]]
         else:
             start = self.visit(node.attributes.slice[0])
             stop = self.visit(node.attributes.slice[1])
             steps = self.visit(node.attributes.steps)
             if stop is None:
-                return [val.value for val in self.Variables.getVar(node.value).value[start::steps]]
+                return [val for val in self.Variables.getVar(node.value).value[start::steps]]
             else:
-                return [val.value for val in self.Variables.getVar(node.value).value[start:stop:steps]]
+                return [val for val in self.Variables.getVar(node.value).value[start:stop:steps]]
 
     def visit_Foreach_St(self, node):
-        for item in self.visit(node.llist).value:
+        for item in self.visit(node.llist):
             self.Variables.setVar(VarVal(node.pointer, item))
             for statement in node.statements:
                 self.visit(statement)
