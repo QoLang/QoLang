@@ -1,4 +1,4 @@
-# QoLang Standart Library
+# QoLang Standard Library
 from qclasses import VarVal, Var
 import sys
 import time
