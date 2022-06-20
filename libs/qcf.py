@@ -1,4 +1,4 @@
-# QoLang Configuration File library
+# QoLang Standard Library - qcf.py
 from qclasses import VarVal, Tokens, PythonFunc, Token
 import sys
 import os

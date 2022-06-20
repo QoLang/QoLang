@@ -1,4 +1,4 @@
-# QoLang Stack Library
+# QoLang Standard Library - stack.py
 from qclasses import VarVal, Tokens, PythonFunc, Token
 import sys
 import os
