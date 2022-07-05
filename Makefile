@@ -7,6 +7,9 @@ OUTPUT=dist/qo
 build:
 	pyinstaller -F $(SOURCE)
 
+winebuild: # Install PyInstaller: https://www.makeworld.space/2021/10/linux-wine-pyinstaller.html
+	wine C:/Python310/Scripts/pyinstaller.exe -F $(SOURCE)
+
 install: $(OUTPUT)
 	cp $(OUTPUT) $(PREFIX)/qo
 	rm -rf $(LIBPREFIX)
