@@ -1,3 +1,4 @@
+#!/usr/local/bin/qo
 println("QoLang test");
 println("-------------------------------");
 

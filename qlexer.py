@@ -44,6 +44,12 @@ class Lexer:
         self.advance()
         self.advance()
 
+    def skipinlinecomment(self):
+        self.advance()
+        while self.current_char != '\n':
+            self.advance()
+        self.advance()
+
     def integer(self):
         token = Token(None, None, self.line, self.column)
         result = ''
@@ -194,6 +200,10 @@ class Lexer:
 
             elif self.current_char == '/' and self.peek() == '*':
                 self.skipcomment()
+                continue
+
+            elif self.current_char == '#':
+                self.skipinlinecomment()
                 continue
 
             elif self.current_char.isdigit():
