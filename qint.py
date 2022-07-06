@@ -157,6 +157,8 @@ class Interpreter(NodeVisitor):
             toadd = arg
             if isinstance(arg, Var):
                 toadd = actualvariables.getVar(arg.value).value
+            else:
+                toadd = self.visit(toadd)
             nvar = VarVal(var.args[i].value, toadd)
             self.Variables.setVar(nvar)
             i += 1
