@@ -1,8 +1,10 @@
 # QoLang Standard Library
-from qclasses import VarVal, Var
+from qclasses import VarVal, Fstring
 import sys
 import time
 import os
+import qlexer
+import qint
 
 qolang_export = {
     "func_print": "print",
@@ -28,6 +30,8 @@ qolang_export = {
     "func_getAfter": "getAfter",
     "func_deleteAfter": "deleteAfter",
     "func_split": "split",
+    "func_replace": "replace",
+    "func_format": "format",
 }
 
 
@@ -258,3 +262,23 @@ def func_split(Variables, args: list):
     Split a string with specified seperator.
     """
     return (Variables, args[0].split(args[1]))
+
+
+def func_replace(Variables, args: list):
+    """
+    Replace something with something else in a string.
+    """
+    return (Variables, args[0].replace(args[1], args[2]))
+
+
+def func_format(Variables, args: list):
+    """
+    Format a string.
+    """
+    out = ""
+    lexer = qlexer.Lexer("\0" + args[0] + "\0")
+    token = lexer.fstring('\0')
+    astnode = Fstring(token)
+    interpreter = qint.Interpreter(None, Variables, "String")
+    out = interpreter.visit(astnode)
+    return (Variables, out)
