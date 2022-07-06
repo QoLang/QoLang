@@ -276,7 +276,8 @@ class Parser:
         proc_name = self.current_token.value
         self.eat(Tokens.ID)
         self.eat(Tokens.LPAREN)
-
+        
+        args = []
         if self.current_token.type == Tokens.ID:
             args = [self.variable()]
             while self.current_token.type == Tokens.COMMA:
