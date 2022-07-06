@@ -291,9 +291,11 @@ class Interpreter(NodeVisitor):
 
         if os.path.isfile(os.path.join(sourcedir, incfile + ".qo")):
             qo.run([sys.argv[0], os.path.join(sourcedir, incfile + ".qo")])
-            for variable in qo.Variables.getVar("__export__").value:
-                self.Variables.setExistingAttr(
-                    outvar, qo.Variables.getVar(variable))
+            exported = qo.Variables.getVar("__export__")
+            if exported is not None:
+                for variable in exported.value:
+                    self.Variables.setExistingAttr(
+                        outvar, qo.Variables.getVar(variable))
         elif os.path.isfile(os.path.join(sourcedir, incfile + ".py")):
             toinclude = runpy.run_path(
                 os.path.join(sourcedir, incfile + ".py"))
@@ -305,9 +307,11 @@ class Interpreter(NodeVisitor):
                 self.Variables.setExistingAttr(outvar, added)
         elif os.path.isfile(libpath + incfile + ".qo"):
             qo.run([sys.argv[0], libpath + incfile + ".qo"])
-            for variable in qo.Variables.getVar("__export__").value:
-                self.Variables.setExistingAttr(
-                    outvar, qo.Variables.getVar(variable))
+            exported = qo.Variables.getVar("__export__")
+            if exported is not None:
+                for variable in exported.value:
+                    self.Variables.setExistingAttr(
+                        outvar, qo.Variables.getVar(variable))
         elif os.path.isfile(libpath + incfile + ".py"):
             toinclude = runpy.run_path(libpath + incfile + ".py")
             for fn, fs in toinclude["qolang_export"].items():
