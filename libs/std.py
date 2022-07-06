@@ -25,6 +25,9 @@ qolang_export = {
     "func_len": "len",
     "func_chr": "chr",
     "func_ord": "ord",
+    "func_getAfter": "getAfter",
+    "func_deleteAfter": "deleteAfter",
+    "func_split": "split",
 }
 
 
@@ -234,3 +237,24 @@ def func_ord(Variables, args: list):
     Get ASCII value of character.
     """
     return (Variables, ord(args[0]))
+
+
+def func_getAfter(Variables, args: list):
+    """
+    Get the content after a seperator in a string.
+    """
+    return (Variables, args[1].join(args[0].split(args[1])[1:]))
+
+
+def func_deleteAfter(Variables, args: list):
+    """
+    Delete the content after a seperator in a string.
+    """
+    return (Variables, args[0].split(args[1])[0])
+
+
+def func_split(Variables, args: list):
+    """
+    Split a string with specified seperator.
+    """
+    return (Variables, args[0].split(args[1]))
