@@ -6,6 +6,7 @@ import os
 import qlexer
 import qint
 import qparser
+import datetime
 
 qolang_export = {
     "func_print": "print",
@@ -33,6 +34,9 @@ qolang_export = {
     "func_split": "split",
     "func_replace": "replace",
     "func_format": "format",
+    "func_filelist": "filelist",
+    "func_join": "join",
+    "func_formatdate": "formatdate",
 }
 
 
@@ -284,3 +288,24 @@ def func_format(Variables, args: list):
     interpreter = qint.Interpreter(parser, Variables, "String")
     out = interpreter.visit(astnode)
     return (Variables, out)
+
+
+def func_filelist(Variables, args: list = ["."]):
+    """
+    Get file list in a directory.
+    """
+    return (Variables, os.listdir(args[0]))
+
+
+def func_join(Variables, args: list):
+    """
+    Join a list with a delimeter.
+    """
+    return (Variables, args[1].join(args[0]))
+
+
+def func_formatdate(Variables, args: list):
+    """
+    Format unix timestamp.
+    """
+    return (Variables, datetime.datetime.utcfromtimestamp(args[0]).strftime(args[1]))
