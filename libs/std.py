@@ -37,6 +37,7 @@ qolang_export = {
     "func_filelist": "filelist",
     "func_join": "join",
     "func_formatdate": "formatdate",
+    "func_readlinef": "readlinef",
 }
 
 
@@ -309,3 +310,14 @@ def func_formatdate(Variables, args: list):
     Format unix timestamp.
     """
     return (Variables, datetime.datetime.utcfromtimestamp(args[0]).strftime(args[1]))
+
+
+def func_readlinef(Variables, args: list):
+    """
+    Read a line from a file.
+    """
+    output = None
+    if os.path.isfile(args[0]):
+        with open(args[0]) as f:
+            output = f.readline()
+    return (Variables, output)
