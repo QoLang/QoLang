@@ -166,8 +166,9 @@ class Interpreter(NodeVisitor):
         ret = 0
         for node in var.node.children:
             if isinstance(node, Return):
+                returned = self.visit(node)
                 self.Variables = actualvariables
-                return self.visit(node)
+                return returned
             else:
                 self.visit(node)
 
