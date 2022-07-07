@@ -5,6 +5,7 @@ import time
 import os
 import qlexer
 import qint
+import qparser
 
 qolang_export = {
     "func_print": "print",
@@ -278,7 +279,8 @@ def func_format(Variables, args: list):
     out = ""
     lexer = qlexer.Lexer("\0" + args[0] + "\0")
     token = lexer.fstring('\0')
+    parser = qparser.Parser(lexer)
     astnode = Fstring(token)
-    interpreter = qint.Interpreter(None, Variables, "String")
+    interpreter = qint.Interpreter(parser, Variables, "String")
     out = interpreter.visit(astnode)
     return (Variables, out)

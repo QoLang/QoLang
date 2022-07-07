@@ -114,7 +114,6 @@ class Lexer:
         if result[-1] == '.':
             self.error()
 
-        self.skipspace()
         if self.current_char == '(' and result not in reserved_keyws and (self.previous_token.type != Tokens.FUNC if self.previous_token else True):
             token = Token(Tokens.FUNCCALL, result, line, column)
         elif isp:
