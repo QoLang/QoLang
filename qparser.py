@@ -1,5 +1,6 @@
 from qclasses import *
 import sys
+import copy
 
 
 class Parser:
@@ -452,7 +453,7 @@ class Parser:
             node = Include(incfile, self.current_token)
             self.eat(Tokens.ID)
         else:
-            outvar = incfile
+            outvar = copy.deepcopy(incfile)
             outvar.value = outvar.value.split('.')[-1]
             node = Include(incfile, outvar)
 
