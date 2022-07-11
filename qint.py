@@ -135,9 +135,21 @@ class Interpreter(NodeVisitor):
                 f'Expected {str(len(node.args))} args, got {str(len(var.args))}, error on position {str(node.token.line)}:{str(node.token.col)}')
             sys.exit(1)
 
+        newvars = Vars()
+        i = 0
+        for arg in node.args:
+            toadd = arg
+            if isinstance(arg, Var):
+                toadd = self.Variables.getVar(arg.value).value
+            else:
+                toadd = self.visit(toadd)
+            nvar = VarVal(var.args[i].value, toadd)
+            newvars.setVar(nvar)
+            i += 1
+
         # local variables
         actualvariables = self.Variables
-        self.Variables = Vars()
+        self.Variables = newvars
         if os.name == "nt":
             toinclude = runpy.run_path("C:\\qolang\\libs\\std.py")
         elif os.name == "posix":
@@ -151,17 +163,6 @@ class Interpreter(NodeVisitor):
             self.Variables.setVar(added)
         self.Variables.setVar(actualvariables.getVar("__main__"))
         self.Variables.setVar(actualvariables.getVar("__qcf__"))
-
-        i = 0
-        for arg in node.args:
-            toadd = arg
-            if isinstance(arg, Var):
-                toadd = actualvariables.getVar(arg.value).value
-            else:
-                toadd = self.visit(toadd)
-            nvar = VarVal(var.args[i].value, toadd)
-            self.Variables.setVar(nvar)
-            i += 1
 
         ret = 0
         for node in var.node.children:
