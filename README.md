@@ -20,7 +20,7 @@ To uninstall, run this command as root:
 make uninstall
 ```
 
-A custom installer will be made in the future, with Windows support.
+If you need other Python libraries in QoLang (like requests), you can add them as a space-seperated list to `IMPORTS` variable in Makefile.
 
 ## Example
 For an example, see the `example` directory.
