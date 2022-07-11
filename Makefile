@@ -6,10 +6,10 @@ LIBS=libs/*
 OUTPUT=dist/qo
 
 build:
-	pyinstaller -F $(SOURCE) $(addprefix "--hidden-import ",$(IMPORTS))
+	pyinstaller $(addprefix --hidden-import ,$(IMPORTS)) -F $(SOURCE)
 
 winebuild: # Install PyInstaller: https://www.makeworld.space/2021/10/linux-wine-pyinstaller.html
-	wine C:/Python310/Scripts/pyinstaller.exe -F $(SOURCE) $(addprefix "--hidden-import ",$(IMPORTS))
+	wine C:/Python310/Scripts/pyinstaller.exe $(addprefix --hidden-import ,$(IMPORTS)) -F $(SOURCE)
 
 install: $(OUTPUT)
 	cp $(OUTPUT) $(PREFIX)/qo
