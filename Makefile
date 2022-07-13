@@ -4,7 +4,7 @@ PREFIX=/usr/local/bin
 LIBPREFIX=/usr/lib/qo
 LIBS=libs/*
 OUTPUT=dist/qo
-PYI_FLAGS=$(addprefix --hidden-import ,$(IMPORTS)) --paths=./ -F
+PYI_FLAGS=$(addprefix --hidden-import ,$(IMPORTS)) -F
 
 build:
 	pyinstaller $(PYI_FLAGS) $(SOURCE)
