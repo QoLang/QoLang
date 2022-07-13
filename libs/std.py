@@ -38,6 +38,8 @@ qolang_export = {
     "func_join": "join",
     "func_formatdate": "formatdate",
     "func_readlinef": "readlinef",
+    "func_writef": "writef",
+    "func_appendf": "appendf",
 }
 
 
@@ -321,3 +323,21 @@ def func_readlinef(Variables, args: list):
         with open(args[0]) as f:
             output = f.readline()
     return (Variables, output)
+
+
+def func_writef(Variables, args: list):
+    """
+    Write to a file.
+    """
+    with open(args[0], "w") as f:
+        f.write(args[1])
+    return (Variables, None)
+
+
+def func_appendf(Variables, args: list):
+    """
+    Append to a file.
+    """
+    with open(args[0], "a") as f:
+        f.write(args[1])
+    return (Variables, None)
