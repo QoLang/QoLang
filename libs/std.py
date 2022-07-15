@@ -89,7 +89,7 @@ def func_toInt(Variables, args: list):
         out = int(args[0])
     elif type(args[0]) == str:
         try:
-            out = int(args[0])
+            out = int(args[0], 0)
         except:
             out = 0 if args[0] == "" else 1
     elif type(args[0]) == bool:
