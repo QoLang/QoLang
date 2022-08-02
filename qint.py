@@ -140,11 +140,7 @@ class Interpreter(NodeVisitor):
         newvars = Vars()
         i = 0
         for arg in node.args:
-            toadd = arg
-            if isinstance(arg, Var):
-                toadd = self.Variables.getVar(arg.value).value
-            else:
-                toadd = self.visit(toadd)
+            toadd = self.visit(arg)
             nvar = VarVal(var.args[i].value, toadd)
             newvars.setVar(nvar)
             i += 1

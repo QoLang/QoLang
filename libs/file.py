@@ -69,6 +69,15 @@ def func_write(Variables, args: list):
     return (Variables, None)
 
 
+def func_close(Variables, args: list):
+    """
+    Close a file.
+    """
+    if isinstance(args[0], io.TextIOWrapper):
+        args[0].close()
+    return (Variables, None)
+
+
 def func_isfile(Variables, args: list):
     """
     Check if a path is a file.
