@@ -2,14 +2,16 @@
 from qclasses import PythonFunc, VarVal
 import sys
 import os
+import qo
 
 qolang_export = {
-    "args": "args",
+    "var_args": "args",
     "func_exportAll": "exportAll",
     "func_env": "env",
+    "func_version": "version",
 }
 
-args = sys.argv[1:]
+var_args = sys.argv[1:]
 
 
 def func_exportAll(Variables, args: list):
@@ -30,3 +32,10 @@ def func_env(Variables, args: list):
     Get an environment variable.
     """
     return (Variables, os.environ.get(args[0], None))
+
+
+def func_version(Variables, args: list):
+    """
+    QoLang version.
+    """
+    return (Variables, qo.VERSION)
