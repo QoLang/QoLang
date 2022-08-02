@@ -19,10 +19,8 @@ def func_open(Variables, args: list):
     """
     Open a file.
     """
-    output = None
-    if os.path.isfile(args[0]):
-        output = open(args[0])
-    return (Variables, output)
+    mode = args[1] if len(args) > 1 else "r"
+    return (Variables, open(args[0], mode))
 
 
 def func_read(Variables, args: list):
