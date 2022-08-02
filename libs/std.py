@@ -40,6 +40,8 @@ qolang_export = {
     "func_readlinef": "readlinef",
     "func_writef": "writef",
     "func_appendf": "appendf",
+    "func_startsWith": "startsWith",
+    "func_endsWith": "endsWith",
 }
 
 
@@ -341,3 +343,16 @@ def func_appendf(Variables, args: list):
     with open(args[0], "a") as f:
         f.write(args[1])
     return (Variables, None)
+
+
+def func_startsWith(Variables, args: list):
+    """
+    Check if string starts with another string.
+    """
+    return (Variables, args[0].startswith(args[1]))
+
+def func_endsWith(Variables, args: list):
+    """
+    Check if string ends with another string.
+    """
+    return (Variables, args[0].endswith(args[1]))

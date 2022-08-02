@@ -22,4 +22,4 @@ uninstall:
 	rm -f $(PREFIX)/qo
 
 clean:
-	rm -rf build dist qo.spec
+	rm -rf build dist qo.spec __pycache__
