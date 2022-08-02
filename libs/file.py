@@ -6,7 +6,7 @@ qolang_export = {
     "func_open": "open",
     "func_read": "read",
     "func_readlines": "readlines",
-    "func_filelist": "filelist",
+    "func_list": "list",
     "func_readline": "readline",
     "func_write": "write",
     "func_close": "close",
