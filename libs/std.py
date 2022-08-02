@@ -16,16 +16,10 @@ qolang_export = {
     "func_remove": "remove",
     "func_move": "move",
     "func_sleep": "sleep",
-    "func_read": "read",
-    "func_readlines": "readlines",
     "func_len": "len",
     "func_chr": "chr",
     "func_ord": "ord",
-    "func_filelist": "filelist",
     "func_formatdate": "formatdate",
-    "func_readlinef": "readlinef",
-    "func_writef": "writef",
-    "func_appendf": "appendf",
 }
 
 
@@ -121,28 +115,6 @@ def func_sleep(Variables, args: list):
     return (Variables, None)
 
 
-def func_read(Variables, args: list):
-    """
-    Read a file.
-    """
-    output = None
-    if os.path.isfile(args[0]):
-        with open(args[0]) as f:
-            output = f.read()
-    return (Variables, output)
-
-
-def func_readlines(Variables, args: list):
-    """
-    Read lines from a file.
-    """
-    output = None
-    if os.path.isfile(args[0]):
-        with open(args[0]) as f:
-            output = f.read().splitlines()
-    return (Variables, output)
-
-
 def func_len(Variables, args: list):
     """
     Get length of something.
@@ -164,44 +136,8 @@ def func_ord(Variables, args: list):
     return (Variables, ord(args[0]))
 
 
-def func_filelist(Variables, args: list = ["."]):
-    """
-    Get file list in a directory.
-    """
-    return (Variables, os.listdir(args[0]))
-
-
 def func_formatdate(Variables, args: list):
     """
     Format unix timestamp.
     """
     return (Variables, datetime.datetime.utcfromtimestamp(args[0]).strftime(args[1]))
-
-
-def func_readlinef(Variables, args: list):
-    """
-    Read a line from a file.
-    """
-    output = None
-    if os.path.isfile(args[0]):
-        with open(args[0]) as f:
-            output = f.readline()
-    return (Variables, output)
-
-
-def func_writef(Variables, args: list):
-    """
-    Write to a file.
-    """
-    with open(args[0], "w") as f:
-        f.write(args[1])
-    return (Variables, None)
-
-
-def func_appendf(Variables, args: list):
-    """
-    Append to a file.
-    """
-    with open(args[0], "a") as f:
-        f.write(args[1])
-    return (Variables, None)
