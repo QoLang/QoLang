@@ -10,7 +10,6 @@ qolang_export = {
     "func_println": "println",
     "func_input": "input",
     "func_exit": "exit",
-    "func_mod": "mod",
     "func_hasAttr": "hasAttr",
     "func_exists": "exists",
     "func_remove": "remove",
@@ -65,14 +64,6 @@ def func_exit(Variables, args: list = [0]):
     Exit with code.
     """
     sys.exit(args[0])
-
-
-def func_mod(Variables, args: list):
-    """
-    Math modulus function.
-    """
-    out = args[0] % args[1]
-    return (Variables, out)
 
 
 def func_hasAttr(Variables, args: list):

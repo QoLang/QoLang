@@ -115,6 +115,8 @@ class Parser:
                     self.eat(Tokens.DIVIDE)
                 case Tokens.POWER:
                     self.eat(Tokens.POWER)
+                case Tokens.PERCENT:
+                    self.eat(Tokens.PERCENT)
             node = BinOp(node, token, self.factor())
 
         return node

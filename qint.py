@@ -59,6 +59,8 @@ class Interpreter(NodeVisitor):
                 return left or right
             case Tokens.POWER:
                 return left ** right
+            case Tokens.PERCENT:
+                return left % right
 
     def visit_Num(self, node):
         return node.value

@@ -218,9 +218,11 @@ class Lexer:
                 self.advance()
                 if self.current_char == "'":
                     self.current_token = self.fstring("'")
-
                 elif self.current_char == "\"":
                     self.current_token = self.fstring("\"")
+                else:
+                    self.current_token = Token(
+                        Tokens.PERCENT, '%', line, column)
 
             elif self.current_char == '+' and self.peek() == '=':
                 self.advance()

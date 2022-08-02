@@ -51,6 +51,7 @@ class Tokens:
     POWER = "POWER"
     FLOAT = "FLOAT"
     SUB = "SUB"
+    PERCENT = "PERCENT"
 
 
 class Token:
