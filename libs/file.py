@@ -1,4 +1,7 @@
-# QoLang Standard Library - file.py
+"""
+The file module provides functions for working with files.
+"""
+
 import os
 import io
 from qclasses import Define, Token, Tokens
@@ -29,10 +32,22 @@ qolang_export = {
 const_SEEK_SET = Define(Token(Tokens.ID, "SEEK_SET", 0, 0))
 const_SEEK_CUR = Define(Token(Tokens.ID, "SEEK_CUR", 0, 0))
 const_SEEK_END = Define(Token(Tokens.ID, "SEEK_END", 0, 0))
+const_SEEK_SET.__doc__ = const_SEEK_CUR.__doc__ = const_SEEK_END.__doc__ = \
+    """
+    file.SEEK_*
+
+    <code>file.SEEK_SET</code>: Seek from the beginning of the file.
+    <code>file.SEEK_CUR</code>: Seek from the current position.
+    <code>file.SEEK_END</code>: Seek from the end of the file.
+
+    Mode variables for file.seek(file, offset, mode).
+    """
 
 
 def func_open(Variables, args: list):
     """
+    file.open(path, mode)
+
     Open a file.
     """
     mode = args[1] if len(args) > 1 else "r"
@@ -41,6 +56,8 @@ def func_open(Variables, args: list):
 
 def func_read(Variables, args: list):
     """
+    file.read(file)
+    
     Read a file.
     """
     output = None
@@ -51,6 +68,8 @@ def func_read(Variables, args: list):
 
 def func_readlines(Variables, args: list):
     """
+    file.readlines(file)
+
     Read lines from a file.
     """
     output = None
@@ -61,6 +80,8 @@ def func_readlines(Variables, args: list):
 
 def func_list(Variables, args: list = ["."]):
     """
+    file.list(path)
+
     Get file list in a directory.
     """
     return (Variables, os.listdir(args[0]))
@@ -68,6 +89,8 @@ def func_list(Variables, args: list = ["."]):
 
 def func_readline(Variables, args: list):
     """
+    file.readline(file)
+
     Read a line from a file.
     """
     output = None
@@ -78,6 +101,8 @@ def func_readline(Variables, args: list):
 
 def func_write(Variables, args: list):
     """
+    file.write(file, data)
+
     Write to a file.
     """
     if isinstance(args[0], io.TextIOWrapper):
@@ -87,6 +112,8 @@ def func_write(Variables, args: list):
 
 def func_close(Variables, args: list):
     """
+    file.close(file)
+
     Close a file.
     """
     if isinstance(args[0], io.TextIOWrapper):
@@ -96,6 +123,8 @@ def func_close(Variables, args: list):
 
 def func_isfile(Variables, args: list):
     """
+    file.isfile(path)
+
     Check if a path is a file.
     """
     return (Variables, os.path.isfile(args[0]))
@@ -103,6 +132,8 @@ def func_isfile(Variables, args: list):
 
 def func_isdir(Variables, args: list):
     """
+    file.isdir(path)
+
     Check if a path is a directory.
     """
     return (Variables, os.path.isdir(args[0]))
@@ -110,6 +141,8 @@ def func_isdir(Variables, args: list):
 
 def func_readable(Variables, args: list):
     """
+    file.readable(file)
+
     Check if a file is readable.
     """
     output = False
@@ -120,6 +153,8 @@ def func_readable(Variables, args: list):
 
 def func_writable(Variables, args: list):
     """
+    file.writable(file)
+
     Check if a file is writable.
     """
     output = False
@@ -130,6 +165,8 @@ def func_writable(Variables, args: list):
 
 def func_seekable(Variables, args: list):
     """
+    file.seekable(file)
+
     Check if a file is seekable.
     """
     output = False
@@ -140,6 +177,8 @@ def func_seekable(Variables, args: list):
 
 def func_fd(Variables, args: list):
     """
+    file.fd(file)
+
     Get a file's file descriptor.
     """
     output = -1
@@ -150,6 +189,8 @@ def func_fd(Variables, args: list):
 
 def func_truncate(Variables, args: list):
     """
+    file.truncate(file, size)
+
     Resize a file.
     """
     if isinstance(args[0], io.TextIOWrapper):
@@ -159,6 +200,8 @@ def func_truncate(Variables, args: list):
 
 def func_flush(Variables, args: list):
     """
+    file.flush(file)
+
     Flush the write buffers of the file.
     """
     if isinstance(args[0], io.TextIOWrapper):
@@ -168,6 +211,8 @@ def func_flush(Variables, args: list):
 
 def func_tell(Variables, args: list):
     """
+    file.tell(file)
+
     Get the current position of the file.
     """
     output = -1
@@ -178,6 +223,8 @@ def func_tell(Variables, args: list):
 
 def func_seek(Variables, args: list):
     """
+    file.seek(file, offset, mode)
+
     Seek to a position in a file.
     """
     modemap = {

@@ -1,4 +1,7 @@
-# QoLang Standart Library - qo.py
+"""
+The qo module provides functions for working with the current QoLang environment.
+"""
+
 from qclasses import PythonFunc, VarVal
 import sys
 import os
@@ -11,11 +14,24 @@ qolang_export = {
     "func_version": "version",
 }
 
-var_args = sys.argv[1:]
+class var_args:
+    """
+    qo.args
+
+    The arguments passed to the script.
+    """
+    theargs = sys.argv[1:]
+    def __getter__(self):
+        return self.theargs
+    
+    def __setter__(self, value):
+        self.theargs = value
 
 
 def func_exportAll(Variables, args: list):
     """
+    qo.exportAll()
+
     Export all variables.
     """
     export = []
@@ -29,6 +45,8 @@ def func_exportAll(Variables, args: list):
 
 def func_env(Variables, args: list):
     """
+    qo.env(variable)
+    
     Get an environment variable.
     """
     return (Variables, os.environ.get(args[0], None))
@@ -36,6 +54,8 @@ def func_env(Variables, args: list):
 
 def func_version(Variables, args: list):
     """
+    qo.version()
+    
     QoLang version.
     """
     return (Variables, qo.VERSION)

@@ -1,4 +1,7 @@
-# QoLang Standard Library - types.py
+"""
+The types module contains functions for working with types.
+"""
+
 qolang_export = {
     "func_toInt": "toInt",
     "func_toBool": "toBool",
@@ -10,6 +13,8 @@ qolang_export = {
 
 def func_toInt(Variables, args: list):
     """
+    types.toInt(variable)
+
     Convert any type of variable to Int.
     """
     out = 0
@@ -28,6 +33,8 @@ def func_toInt(Variables, args: list):
 
 def func_toBool(Variables, args: list):
     """
+    types.toBool(variable)
+
     Convert any type of variable to Bool.
     """
     out = False
@@ -43,6 +50,8 @@ def func_toBool(Variables, args: list):
 
 def func_toStr(Variables, args: list):
     """
+    types.toStr(variable)
+
     Convert any type of variable to Str.
     """
     out = str(args[0])
@@ -51,6 +60,8 @@ def func_toStr(Variables, args: list):
 
 def func_toFloat(Variables, args: list):
     """
+    types.toFloat(variable)
+
     Convert any type of variable to Float.
     """
     out = 0.0
@@ -69,6 +80,8 @@ def func_toFloat(Variables, args: list):
 
 def func_type(Variables, args: list):
     """
+    types.type(variable)
+
     Get type of something.
     """
     types = {

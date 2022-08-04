@@ -1,4 +1,7 @@
-# QoLang Standard Library - stack.py
+"""
+The stack module implements stacks for variables.
+"""
+
 from qclasses import VarVal, Tokens, PythonFunc, Token
 import sys
 import os
@@ -13,6 +16,8 @@ stack = {}
 
 def pushstack(Variables, args):
     """
+    stack.push(variable)
+
     Push a variable into its stack.
     """
     if not args[0] in stack:
@@ -23,6 +28,8 @@ def pushstack(Variables, args):
 
 def popstack(Variables, args):
     """
+    stack.pop(variable)
+
     Pop a variable from its stack.
     """
     if not args[0] in stack:
@@ -37,6 +44,8 @@ def popstack(Variables, args):
 
 def getstack(Variables, args):
     """
+    stack.get(variable)
+
     Get the stack of a variable.
     """
     if not args[0] in stack:

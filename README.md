@@ -24,3 +24,11 @@ If you need other Python libraries in QoLang (like requests), you can add them a
 
 ## Example
 For an example, see the `example` directory.
+
+## Documentation
+For documentation, see the [website](https://qolang.camroku.tech/docs).
+
+The documentation can be generated with this command:
+```
+make docs
+```

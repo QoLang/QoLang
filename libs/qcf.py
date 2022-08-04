@@ -1,4 +1,7 @@
-# QoLang Standard Library - qcf.py
+"""
+The qcf module provides functions for working with QCF files.
+"""
+
 from qclasses import VarVal, Tokens, PythonFunc, Token
 import sys
 import os
@@ -42,6 +45,8 @@ class QCFSet:
 
 def newqcf(Variables, args):
     """
+    newqcf(file, &variable)
+
     Create a new QCF instance.
     """
     import qo
