@@ -29,10 +29,8 @@ qolang_export = {
     "func_seek": "seek",
 }
 
-const_SEEK_SET = Define(Token(Tokens.ID, "SEEK_SET", 0, 0))
-const_SEEK_CUR = Define(Token(Tokens.ID, "SEEK_CUR", 0, 0))
-const_SEEK_END = Define(Token(Tokens.ID, "SEEK_END", 0, 0))
-const_SEEK_SET.__doc__ = const_SEEK_CUR.__doc__ = const_SEEK_END.__doc__ = \
+
+class SEEK_MODE(Define):
     """
     file.SEEK_*
 
@@ -42,6 +40,18 @@ const_SEEK_SET.__doc__ = const_SEEK_CUR.__doc__ = const_SEEK_END.__doc__ = \
 
     Mode variables for file.seek(file, offset, mode).
     """
+    qo_callable = False
+
+    def __getter__(self):
+        return self.value
+
+    def __setter__(self, value):
+        self.__init__(Token(Tokens.ID, value, 0, 0))
+
+
+const_SEEK_SET = SEEK_MODE(Token(Tokens.ID, "SEEK_SET", 0, 0))
+const_SEEK_CUR = SEEK_MODE(Token(Tokens.ID, "SEEK_CUR", 0, 0))
+const_SEEK_END = SEEK_MODE(Token(Tokens.ID, "SEEK_END", 0, 0))
 
 
 def func_open(Variables, args: list):
@@ -57,7 +67,7 @@ def func_open(Variables, args: list):
 def func_read(Variables, args: list):
     """
     file.read(file)
-    
+
     Read a file.
     """
     output = None

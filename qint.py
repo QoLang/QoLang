@@ -302,7 +302,7 @@ class Interpreter(NodeVisitor):
             toinclude = runpy.run_path(
                 os.path.join(sourcedir, incfile + ".py"))
             for fn, fs in toinclude["qolang_export"].items():
-                if callable(toinclude[fn]):
+                if callable(toinclude[fn]) and (toinclude[fn].qo_callable if hasattr(toinclude[fn], "qo_callable") else True):
                     added = PythonFunc(node.token, fs, toinclude[fn])
                 else:
                     added = VarVal(fs, toinclude[fn])
@@ -317,7 +317,7 @@ class Interpreter(NodeVisitor):
         elif os.path.isfile(libpath + incfile + ".py"):
             toinclude = runpy.run_path(libpath + incfile + ".py")
             for fn, fs in toinclude["qolang_export"].items():
-                if callable(toinclude[fn]):
+                if callable(toinclude[fn]) and (toinclude[fn].qo_callable if hasattr(toinclude[fn], "qo_callable") else True):
                     added = PythonFunc(node.token, fs, toinclude[fn])
                 else:
                     added = VarVal(fs, toinclude[fn])

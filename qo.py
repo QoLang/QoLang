@@ -7,7 +7,7 @@ import qparser
 from qclasses import PythonFunc, VarVal, Vars, Token, Tokens
 Variables = Vars()
 
-VERSION = "0.8.4"
+VERSION = "0.8.5"
 
 
 def run(args, main=False, qcf=False):
@@ -20,7 +20,7 @@ def run(args, main=False, qcf=False):
         print("This OS is not supported, yet.")
         sys.exit(1)
     for fn, fs in toinclude["qolang_export"].items():
-        if callable(toinclude[fn]):
+        if callable(toinclude[fn]) and (toinclude[fn].qo_callable if hasattr(toinclude[fn], "qo_callable") else True):
             added = PythonFunc(Token(Tokens.FUNC, fs, 0, 0), fs, toinclude[fn])
         else:
             added = VarVal(fs, toinclude[fn])
