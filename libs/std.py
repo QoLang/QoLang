@@ -5,7 +5,6 @@ The standard library.
 from qclasses import VarVal
 import sys
 import time
-import os
 import datetime
 
 qolang_export = {
