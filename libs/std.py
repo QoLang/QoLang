@@ -20,7 +20,6 @@ qolang_export = {
     "func_len": "len",
     "func_chr": "chr",
     "func_ord": "ord",
-    "func_formatdate": "formatdate",
 }
 
 
@@ -151,12 +150,3 @@ def func_ord(Variables, args: list):
     Get ASCII value of character.
     """
     return (Variables, ord(args[0]))
-
-
-def func_formatdate(Variables, args: list):
-    """
-    formatdate(date, format)
-
-    Format UNIX timestamp.
-    """
-    return (Variables, datetime.datetime.utcfromtimestamp(args[0]).strftime(args[1]))
