@@ -7,10 +7,13 @@ import qparser
 from qclasses import PythonFunc, VarVal, Vars, Token, Tokens
 Variables = Vars()
 
-VERSION = "0.9-wip3"
+VERSION = "0.9-wip4"
 
 
 def run(args, main=False, qcf=False):
+    if not os.path.isfile(args[1]):
+        print("File not found: " + args[1])
+        sys.exit(1)
     # Load standard library
     if os.name == "nt":
         toinclude = runpy.run_path("C:\\qolang\\libs\\std.py")
