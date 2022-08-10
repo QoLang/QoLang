@@ -7,6 +7,9 @@ qolang_export = {
     "func_toBool": "toBool",
     "func_toStr": "toStr",
     "func_toFloat": "toFloat",
+    "func_dictValues": "dictValues",
+    "func_dictKeys": "dictKeys",
+    "func_dictItems": "dictItems",
     "func_type": "type",
 }
 
@@ -78,6 +81,45 @@ def func_toFloat(Variables, args: list):
     return (Variables, out)
 
 
+def func_dictValues(Variables, args: list):
+    """
+    types.dictValues(dictionary)
+
+    Get values of a dictionary as a List.
+    """
+    out = []
+    if type(args[0]) == dict:
+        out = list(args[0].values())
+
+    return (Variables, out)
+
+
+def func_dictKeys(Variables, args: list):
+    """
+    types.dictValues(dictionary)
+
+    Get keys of a dictionary as a List.
+    """
+    out = []
+    if type(args[0]) == dict:
+        out = list(args[0].keys())
+
+    return (Variables, out)
+
+
+def func_dictItems(Variables, args: list):
+    """
+    types.dictItems(dictionary)
+
+    Get items of a dictionary as two Lists.
+    """
+    out = []
+    if type(args[0]) == dict:
+        out = [list(args[0].keys()), list(args[0].values())]
+
+    return (Variables, out)
+
+
 def func_type(Variables, args: list):
     """
     types.type(variable)
@@ -88,7 +130,8 @@ def func_type(Variables, args: list):
         int: "Int",
         str: "Str",
         bool: "Bool",
-        float: "Float"
+        float: "Float",
+        dict: "Dict",
     }
-    out = types[type(args[0])]
+    out = types.get(type(args[0]), type(args[0]))
     return (Variables, out)

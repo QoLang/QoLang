@@ -9,8 +9,8 @@ class Tokens:
     DIVIDE = "DIVIDE"
     LPAREN = "LPAREN"
     RPAREN = "RPAREN"
-    BEGIN = "BEGIN"
-    END = "END"
+    CBRACKETL = "CBRACKETL"
+    CBRACKETR = "CBRACKETR"
     ASSIGN = "ASSIGN"
     SEMI = "SEMI"
     ID = "ID"
@@ -306,6 +306,12 @@ class Sub(AST):
         self.left = left
         self.token = self.op = op
         self.right = right
+
+
+class Dict(AST):
+    def __init__(self, token, values):
+        self.token = token
+        self.values = values
 
 # endregion
 # region Variables

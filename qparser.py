@@ -20,7 +20,7 @@ class Parser:
 
     def qcfcheck(self):
         if self.current_token.type in (  # Disallowed statements for QCF
-            Tokens.BEGIN,
+            Tokens.CBRACKETL,
             Tokens.FUNC,
             Tokens.FUNCCALL,
             Tokens.IF_ST,
@@ -98,6 +98,9 @@ class Parser:
             case Tokens.NONE:
                 self.eat(Tokens.NONE)
                 node = None_Type()
+                return node
+            case Tokens.CBRACKETL:
+                node = self.dict()
                 return node
             case _:
                 node = self.variable()
@@ -186,9 +189,9 @@ class Parser:
         return root
 
     def compound_statement(self):
-        self.eat(Tokens.BEGIN)
+        self.eat(Tokens.CBRACKETL)
         nodes = self.statement_list()
-        self.eat(Tokens.END)
+        self.eat(Tokens.CBRACKETR)
 
         root = Compound()
         for node in nodes:
@@ -216,7 +219,7 @@ class Parser:
     def statement(self):
         self.qcfcheck()
         match self.current_token.type:
-            case Tokens.BEGIN:
+            case Tokens.CBRACKETL:
                 node = self.compound_statement()
             case Tokens.ID:
                 node = self.assignment_statement()
@@ -341,9 +344,9 @@ class Parser:
     def else_st(self):
         token = self.current_token
         self.eat(Tokens.ELSE_ST)      # else
-        self.eat(Tokens.BEGIN)        # {
+        self.eat(Tokens.CBRACKETL)        # {
         nodes = self.statement_list()  # code();
-        self.eat(Tokens.END)          # }
+        self.eat(Tokens.CBRACKETR)          # }
         return nodes
 
     def for_st(self):
@@ -466,6 +469,28 @@ class Parser:
         defined = self.current_token
         self.eat(Tokens.ID)
         node = Define(defined)
+        return node
+
+    def dict(self):
+        token = self.current_token
+        self.eat(Tokens.CBRACKETL)
+
+        result = {}
+
+        if self.current_token.type != Tokens.CBRACKETR:
+            key = self.variable()
+            self.eat(Tokens.COL)
+            value = self.expr()
+            result[key.value] = value
+            while self.current_token.type == Tokens.COMMA:
+                self.eat(Tokens.COMMA)
+                key = self.variable()
+                self.eat(Tokens.COL)
+                value = self.expr()
+                result[key.value] = value
+
+        self.eat(Tokens.CBRACKETR)
+        node = Dict(token, result)
         return node
 
     def parse(self):

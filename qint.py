@@ -337,6 +337,9 @@ class Interpreter(NodeVisitor):
             var = VarVal(node.left.value, var_old - var_new)
             self.Variables.setVar(var)
 
+    def visit_Dict(self, node):
+        return {k: self.visit(v) for k, v in node.values.items()}
+
     def interpret(self):
         tree = self.parser.parse()
         if tree is None:

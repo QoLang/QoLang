@@ -228,3 +228,18 @@ times 5 {
     stack.pop(&myVariable);
     println("Popped myVariable:", myVariable);
 };
+
+println("-------------------------------");
+/*
+Dictionaries
+*/
+
+abc = {
+    abc: "def",
+    ghi: "jkl"
+};
+
+println("abc['ghi']:", abc["ghi"]);
+println("Items of abc:", types.dictItems(abc));
+println("Keys of abc:", types.dictKeys(abc));
+println("Values of abc:", types.dictValues(abc));

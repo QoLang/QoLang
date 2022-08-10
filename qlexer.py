@@ -309,11 +309,11 @@ class Lexer:
 
             elif self.current_char == '{':
                 self.advance()
-                self.current_token = Token(Tokens.BEGIN, '{', line, column)
+                self.current_token = Token(Tokens.CBRACKETL, '{', line, column)
 
             elif self.current_char == '}':
                 self.advance()
-                self.current_token = Token(Tokens.END, '}', line, column)
+                self.current_token = Token(Tokens.CBRACKETR, '}', line, column)
 
             elif self.current_char == ':':
                 self.advance()
