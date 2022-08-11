@@ -243,3 +243,26 @@ println("abc['ghi']:", abc["ghi"]);
 println("Items of abc:", types.dictItems(abc));
 println("Keys of abc:", types.dictKeys(abc));
 println("Values of abc:", types.dictValues(abc));
+
+println("-------------------------------");
+/*
+Nested lists and dictionaries
+*/
+
+nlist = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+println("nlist[1][1]:", nlist[1][1]);
+
+ndict = {
+    a: {
+        b: {
+            c: "d"
+        }
+    }
+};
+
+println("ndict['a']['b']['c']:", ndict["a"]["b"]["c"]);

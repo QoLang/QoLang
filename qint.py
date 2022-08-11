@@ -91,7 +91,7 @@ class Interpreter(NodeVisitor):
 
     def visit_Assign(self, node):
         if node.left.token.type == Tokens.LISTITEM:
-            llist = self.Variables.getVar(node.left.value)
+            llist = self.Variables.getVar(node.left.token.value)
             llist.value[self.visit(node.left.item)] = self.visit(node.right)
             self.Variables.setVar(llist)
         else:
@@ -241,22 +241,22 @@ class Interpreter(NodeVisitor):
 
     def visit_ListItem(self, node):
         if node.attributes.slice is None:
-            return self.Variables.getVar(node.value).value[self.visit(node.item)]
+            return self.visit(node.left)[self.visit(node.item)]
         elif node.attributes.steps is None:
             start = self.visit(node.attributes.slice[0])
             stop = self.visit(node.attributes.slice[1])
             if stop is None:
-                return [val for val in self.Variables.getVar(node.value).value[start:]]
+                return [val for val in self.visit(node.left)[start:]]
             else:
-                return [val for val in self.Variables.getVar(node.value).value[start:stop]]
+                return [val for val in self.visit(node.left)[start:stop]]
         else:
             start = self.visit(node.attributes.slice[0])
             stop = self.visit(node.attributes.slice[1])
             steps = self.visit(node.attributes.steps)
             if stop is None:
-                return [val for val in self.Variables.getVar(node.value).value[start::steps]]
+                return [val for val in self.visit(node.left)[start::steps]]
             else:
-                return [val for val in self.Variables.getVar(node.value).value[start:stop:steps]]
+                return [val for val in self.visit(node.left)[start:stop:steps]]
 
     def visit_Foreach_St(self, node):
         for item in self.visit(node.llist):

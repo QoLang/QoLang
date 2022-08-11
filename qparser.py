@@ -417,24 +417,26 @@ class Parser:
         token = self.current_token
         token.type = Tokens.LISTITEM
         self.eat(Tokens.LISTITEM)
-        self.eat(Tokens.SBRACKETL)
-        if self.current_token.type == Tokens.COL:
-            item = Num(Token(Tokens.INTEGER, 0,
-                       self.current_token.line-1, self.current_token.col-1))
-        else:
-            item = self.expr()
-        if self.current_token.type == Tokens.COL:
-            self.eat(Tokens.COL)
-            if self.current_token.type in [Tokens.SBRACKETR, Tokens.COL]:
-                attrs.slice = [item, None_Type()]
+        node = Var(token)
+        while self.current_token.type == Tokens.SBRACKETL:
+            self.eat(Tokens.SBRACKETL)
+            if self.current_token.type == Tokens.COL:
+                item = Num(Token(Tokens.INTEGER, 0,
+                        self.current_token.line-1, self.current_token.col-1))
             else:
-                attrs.slice = [item, self.expr()]
-
+                item = self.expr()
             if self.current_token.type == Tokens.COL:
                 self.eat(Tokens.COL)
-                attrs.steps = self.expr()
-        self.eat(Tokens.SBRACKETR)
-        node = ListItem(token, item, attrs)
+                if self.current_token.type in [Tokens.SBRACKETR, Tokens.COL]:
+                    attrs.slice = [item, None_Type()]
+                else:
+                    attrs.slice = [item, self.expr()]
+
+                if self.current_token.type == Tokens.COL:
+                    self.eat(Tokens.COL)
+                    attrs.steps = self.expr()
+            self.eat(Tokens.SBRACKETR)
+            node = ListItem(token, node, item, attrs)
         return node
 
     def foreach_st(self):

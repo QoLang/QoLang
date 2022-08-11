@@ -244,9 +244,9 @@ class List(AST):
 
 
 class ListItem(AST):
-    def __init__(self, token, item, attributes):
+    def __init__(self, token, left, item, attributes):
         self.token = token
-        self.value = token.value
+        self.left = left
         self.item = item
         self.attributes = attributes
 
