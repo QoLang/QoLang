@@ -14,7 +14,7 @@ template = """<!DOCTYPE html>
 <div class="w3-container border-bottom mid head">
   <h1><img src="https://qolang.camroku.tech/images/qolang.png" width="32"/> The Qo Programming Language Documentation</h1>
 </div>
-<div class="sidebar" style="width:25%">
+<div class="sidebar">
 <!--NAV-->
 </div>
 <div class="w3-container mid" style="margin-left: 200px;">
