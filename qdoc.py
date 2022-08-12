@@ -17,7 +17,7 @@ template = """<!DOCTYPE html>
 <div class="sidebar">
 <!--NAV-->
 </div>
-<div class="w3-container mid" style="margin-left: 200px;">
+<div class="w3-container" style="margin-left: 200px;">
 <!--CONTENTS-->
 </div>
 <script>
