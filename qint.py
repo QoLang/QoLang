@@ -114,7 +114,7 @@ class Interpreter(NodeVisitor):
             return val.value
 
     def visit_FncDec(self, node):
-        self.Variables.setVar(node)
+        self.Variables.setVar(VarVal(node.name, node))
 
     def visit_FncCall(self, node):
         var = self.Variables.getVar(node.name)
@@ -129,19 +129,19 @@ class Interpreter(NodeVisitor):
             if isinstance(var, PythonFunc):
                 var = PythonFuncCall(node.token, var.func, node.args)
                 return self.visit(var)
-        if not len(node.args) == len(var.args):
+        if not len(node.args) == len(var.value.args):
             print("Interpreter Error")
             print(self.parser.lexer.text.splitlines()[node.token.line])
             print(" " * node.token.col + "^")
             print(
-                f'Expected {str(len(node.args))} args, got {str(len(var.args))}, error on position {str(node.token.line)}:{str(node.token.col)}')
+                f'Expected {str(len(node.args))} args, got {str(len(var.value.args))}, error on position {str(node.token.line)}:{str(node.token.col)}')
             sys.exit(1)
 
         newvars = Vars()
         i = 0
         for arg in node.args:
             toadd = self.visit(arg)
-            nvar = VarVal(var.args[i].value, toadd)
+            nvar = VarVal(var.value.args[i].value, toadd)
             newvars.setVar(nvar)
             i += 1
 
@@ -163,7 +163,7 @@ class Interpreter(NodeVisitor):
         self.Variables.setVar(actualvariables.getVar("__qcf__"))
 
         ret = 0
-        for node in var.node.children:
+        for node in var.value.node.children:
             if isinstance(node, Return):
                 returned = self.visit(node)
                 self.Variables = actualvariables
