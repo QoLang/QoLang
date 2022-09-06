@@ -193,6 +193,8 @@ class Lexer:
             line = self.line
             column = self.column
 
+            # Special
+
             if self.current_char.isspace():
                 self.skipspace()
                 continue
@@ -207,6 +209,11 @@ class Lexer:
 
             elif self.current_char.isdigit():
                 self.current_token = self.integer()
+
+            elif self.current_char.isalpha() or self.current_char == '_' or self.current_char == '&':
+                self.current_token = self._id()
+
+            # Strings
 
             elif self.current_char == "'":
                 self.current_token = self.string("'")
@@ -224,6 +231,8 @@ class Lexer:
                     self.current_token = Token(
                         Tokens.PERCENT, '%', line, column)
 
+            # Two char tokens
+
             elif self.current_char == '+' and self.peek() == '=':
                 self.advance()
                 self.advance()
@@ -234,34 +243,10 @@ class Lexer:
                 self.advance()
                 self.current_token = Token(Tokens.SUB, '-=', line, column)
 
-            elif self.current_char == '+':
-                self.advance()
-                self.current_token = Token(Tokens.PLUS, '+', line, column)
-
-            elif self.current_char == '-':
-                self.advance()
-                self.current_token = Token(Tokens.MINUS, '-', line, column)
-
             elif self.current_char == '*' and self.peek() == '*':
                 self.advance()
                 self.advance()
                 self.current_token = Token(Tokens.POWER, '**', line, column)
-
-            elif self.current_char == '*':
-                self.advance()
-                self.current_token = Token(Tokens.MULTIPLY, '*', line, column)
-
-            elif self.current_char == '/':
-                self.advance()
-                self.current_token = Token(Tokens.DIVIDE, '/', line, column)
-
-            elif self.current_char == '(':
-                self.advance()
-                self.current_token = Token(Tokens.LPAREN, '(', line, column)
-
-            elif self.current_char == ')':
-                self.advance()
-                self.current_token = Token(Tokens.RPAREN, ')', line, column)
 
             elif self.current_char == '&' and self.peek() == '&':
                 self.advance()
@@ -273,17 +258,10 @@ class Lexer:
                 self.advance()
                 self.current_token = Token(Tokens.OR, '||', line, column)
 
-            elif self.current_char.isalpha() or self.current_char == '_' or self.current_char == '&':
-                self.current_token = self._id()
-
             elif self.current_char == '=' and self.peek() == '=':
                 self.advance()
                 self.advance()
                 self.current_token = Token(Tokens.EQUAL, '==', line, column)
-
-            elif self.current_char == '=':
-                self.advance()
-                self.current_token = Token(Tokens.ASSIGN, '=', line, column)
 
             elif self.current_char == '<' and self.peek() == '=':
                 self.advance()
@@ -302,6 +280,26 @@ class Lexer:
                 self.advance()
                 self.current_token = Token(
                     Tokens.NOT_EQUAL, '!=', line, column)
+
+            elif self.current_char == '{' and self.peek() == ':':
+                self.advance()
+                self.advance()
+                self.current_token = Token(
+                    Tokens.INLINEFUNC_L, '{:', line, column)
+
+            elif self.current_char == ':' and self.peek() == '}':
+                self.advance()
+                self.advance()
+                self.current_token = Token(
+                    Tokens.INLINEFUNC_R, ':}', line, column)
+
+            elif self.current_char == '-' and self.peek() == '>':
+                self.advance()
+                self.advance()
+                self.current_token = Token(
+                    Tokens.ARROW, '->', line, column)
+
+            # One char tokens
 
             elif self.current_char == ';':
                 self.advance()
@@ -339,6 +337,34 @@ class Lexer:
                 self.advance()
                 self.current_token = Token(
                     Tokens.GREATER_THAN, '>', line, column)
+
+            elif self.current_char == '+':
+                self.advance()
+                self.current_token = Token(Tokens.PLUS, '+', line, column)
+
+            elif self.current_char == '-':
+                self.advance()
+                self.current_token = Token(Tokens.MINUS, '-', line, column)
+
+            elif self.current_char == '*':
+                self.advance()
+                self.current_token = Token(Tokens.MULTIPLY, '*', line, column)
+
+            elif self.current_char == '/':
+                self.advance()
+                self.current_token = Token(Tokens.DIVIDE, '/', line, column)
+
+            elif self.current_char == '(':
+                self.advance()
+                self.current_token = Token(Tokens.LPAREN, '(', line, column)
+
+            elif self.current_char == ')':
+                self.advance()
+                self.current_token = Token(Tokens.RPAREN, ')', line, column)
+
+            elif self.current_char == '=':
+                self.advance()
+                self.current_token = Token(Tokens.ASSIGN, '=', line, column)
 
             else:
                 self.error()

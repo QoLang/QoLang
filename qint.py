@@ -116,6 +116,9 @@ class Interpreter(NodeVisitor):
     def visit_FncDec(self, node):
         self.Variables.setVar(VarVal(node.name, node))
 
+    def visit_InlineFunc(self, node):
+        return node
+
     def visit_FncCall(self, node):
         var = self.Variables.getVar(node.name)
         if var is None:
@@ -162,7 +165,6 @@ class Interpreter(NodeVisitor):
         self.Variables.setVar(actualvariables.getVar("__main__"))
         self.Variables.setVar(actualvariables.getVar("__qcf__"))
 
-        ret = 0
         for node in var.value.node.children:
             if isinstance(node, Return):
                 returned = self.visit(node)

@@ -3,3 +3,4 @@ build
 dist
 qo.spec
 docs.html
+.vscode

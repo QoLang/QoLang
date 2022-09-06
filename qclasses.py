@@ -52,6 +52,9 @@ class Tokens:
     FLOAT = "FLOAT"
     SUB = "SUB"
     PERCENT = "PERCENT"
+    INLINEFUNC_L = "INLINEFUNC_L"
+    INLINEFUNC_R = "INLINEFUNC_R"
+    ARROW = "ARROW"
 
 
 class Token:
@@ -312,6 +315,13 @@ class Dict(AST):
     def __init__(self, token, values):
         self.token = token
         self.values = values
+
+
+class InlineFunc(AST):
+    def __init__(self, token, node, args):
+        self.token = token
+        self.node = node
+        self.args = args
 
 # endregion
 # region Variables

@@ -102,6 +102,9 @@ class Parser:
             case Tokens.CBRACKETL:
                 node = self.dict()
                 return node
+            case Tokens.INLINEFUNC_L:
+                node = self.inlinefunc()
+                return node
             case _:
                 node = self.variable()
                 return node
@@ -494,6 +497,22 @@ class Parser:
         self.eat(Tokens.CBRACKETR)
         node = Dict(token, result)
         return node
+
+    def inlinefunc(self):
+        token = self.current_token
+        self.eat(Tokens.INLINEFUNC_L)
+        args = []
+        if self.current_token.type == Tokens.ID:
+            args = [self.variable()]
+            while self.current_token.type == Tokens.COMMA:
+                self.eat(Tokens.COMMA)
+                args.append(self.variable())
+
+        self.eat(Tokens.ARROW)
+        node = self.program() # "program" because "compound statement without brackets" is what we're looking for
+        self.eat(Tokens.INLINEFUNC_R)
+        var = InlineFunc(token, node, args)
+        return var
 
     def parse(self):
         node = self.program()
