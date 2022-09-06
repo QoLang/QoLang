@@ -105,8 +105,9 @@ class Interpreter(NodeVisitor):
         val = self.Variables.getVar(var_name)
         if val is None:
             print("Interpreter Error")
-            print(self.parser.lexer.text.splitlines()[node.token.line])
-            print(" " * node.token.col + "^")
+            if self.parser is not None:
+                print(self.parser.lexer.text.splitlines()[node.token.line])
+                print(" " * node.token.col + "^")
             print(
                 f'Variable not found, error on position {str(node.token.line)}:{str(node.token.col)}')
             sys.exit(1)

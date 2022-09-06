@@ -9,7 +9,7 @@ class Lexer:
         self.current_token = None
         self.previous_token = None
         self.current_char = self.text[self.pos]
-        self.line = 0
+        self.line = 1
         self.column = 0
 
     def error(self):
