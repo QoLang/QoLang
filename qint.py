@@ -15,7 +15,7 @@ class NodeVisitor:
         print(self.parser.lexer.text.splitlines()[node.token.line])
         print(" " * node.token.col + "^")
         print(
-            f'No visit_{type(node).__name__} method, error on position {str(node.token.line)}:{str(node.token.col)}')
+            f'No visit_{type(node).__name__} method, error on position {str(node.token.line + 1)}:{str(node.token.col)}')
         sys.exit(1)
 
 
@@ -109,7 +109,7 @@ class Interpreter(NodeVisitor):
                 print(self.parser.lexer.text.splitlines()[node.token.line])
                 print(" " * node.token.col + "^")
             print(
-                f'Variable not found, error on position {str(node.token.line)}:{str(node.token.col)}')
+                f'Variable not found, error on position {str(node.token.line + 1)}:{str(node.token.col)}')
             sys.exit(1)
         else:
             return val.value

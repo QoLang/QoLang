@@ -15,7 +15,7 @@ class Parser:
         print(self.lexer.text.splitlines()[self.current_token.line])
         print(" " * self.current_token.col + "^")
         print(
-            f'Unexpected token on position {str(self.current_token.line)}:{str(self.current_token.col)}')
+            f'Unexpected token on position {str(self.current_token.line + 1)}:{str(self.current_token.col)}')
         sys.exit(1)
 
     def qcfcheck(self):

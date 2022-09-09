@@ -9,7 +9,7 @@ class Lexer:
         self.current_token = None
         self.previous_token = None
         self.current_char = self.text[self.pos]
-        self.line = 1
+        self.line = 0
         self.column = 0
 
     def error(self):
@@ -17,7 +17,7 @@ class Lexer:
         print(self.text.splitlines()[self.line])
         print(" " * self.column + "^")
         print(
-            f'Invalid character on position {str(self.line)}:{str(self.column)}')
+            f'Invalid character on position {str(self.line + 1)}:{str(self.column)}')
         sys.exit(1)
 
     def advance(self):
