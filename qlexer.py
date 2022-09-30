@@ -299,6 +299,12 @@ class Lexer:
                 self.current_token = Token(
                     Tokens.ARROW, '->', line, column)
 
+            elif self.current_char == '?' and self.peek() == '?':
+                self.advance()
+                self.advance()
+                self.current_token = Token(
+                    Tokens.TIN_OP, '??', line, column)
+
             # One char tokens
 
             elif self.current_char == ';':

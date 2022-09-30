@@ -61,6 +61,8 @@ class Interpreter(NodeVisitor):
                 return left ** right
             case Tokens.PERCENT:
                 return left % right
+            case Tokens.TIN_OP:
+                return right if left is None else left
 
     def visit_Num(self, node):
         return node.value
@@ -69,18 +71,27 @@ class Interpreter(NodeVisitor):
         return node.value
 
     def visit_UnaryOp(self, node):
-        op = node.op.type
         match node.op.type:
             case Tokens.PLUS:
                 val = self.visit(node.expr)
                 if isinstance(val, VarVal):
-                    val = val.value
+                    val = val.value 
                 return +val
             case Tokens.MINUS:
                 val = self.visit(node.expr)
                 if isinstance(val, VarVal):
                     val = val.value
                 return -val
+            case Tokens.TIN_OP:
+                val = self.visit(node.expr)
+                if isinstance(val, VarVal):
+                    val = val.value
+                ret = None
+                for v in val:
+                    if v is not None:
+                        ret = v
+                        break
+                return ret
 
     def visit_Compound(self, node):
         for child in node.children:

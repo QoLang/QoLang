@@ -55,6 +55,7 @@ class Tokens:
     INLINEFUNC_L = "INLINEFUNC_L"
     INLINEFUNC_R = "INLINEFUNC_R"
     ARROW = "ARROW"
+    TIN_OP = "TIN_OP"
 
 
 class Token:

@@ -105,6 +105,9 @@ class Parser:
             case Tokens.INLINEFUNC_L:
                 node = self.inlinefunc()
                 return node
+            case Tokens.TIN_OP:
+                self.eat(Tokens.TIN_OP)
+                return UnaryOp(token, self.factor())
             case _:
                 node = self.variable()
                 return node
@@ -112,7 +115,7 @@ class Parser:
     def term(self):
         node = self.factor()
 
-        while self.current_token.type in (Tokens.MULTIPLY, Tokens.DIVIDE, Tokens.POWER):
+        while self.current_token.type in (Tokens.MULTIPLY, Tokens.DIVIDE, Tokens.POWER, Tokens.TIN_OP):
             token = self.current_token
             match token.type:
                 case Tokens.MULTIPLY:
@@ -123,6 +126,8 @@ class Parser:
                     self.eat(Tokens.POWER)
                 case Tokens.PERCENT:
                     self.eat(Tokens.PERCENT)
+                case Tokens.TIN_OP:
+                    self.eat(Tokens.TIN_OP)
             node = BinOp(node, token, self.factor())
 
         return node
