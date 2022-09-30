@@ -73,6 +73,8 @@ Output:
 42
 ```
 
+*New in 0.9*
+
 ## Comparison Operators
 ### `<` operator ("less than")
 Returns `True` if left statement is smaller than the right one.
