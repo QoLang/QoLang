@@ -115,7 +115,7 @@ class Parser:
     def term(self):
         node = self.factor()
 
-        while self.current_token.type in (Tokens.MULTIPLY, Tokens.DIVIDE, Tokens.POWER, Tokens.TIN_OP):
+        while self.current_token.type in (Tokens.MULTIPLY, Tokens.DIVIDE, Tokens.POWER, Tokens.PERCENT, Tokens.TIN_OP):
             token = self.current_token
             match token.type:
                 case Tokens.MULTIPLY:
