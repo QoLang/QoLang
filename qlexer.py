@@ -210,7 +210,7 @@ class Lexer:
             elif self.current_char.isdigit():
                 self.current_token = self.integer()
 
-            elif self.current_char.isalpha() or self.current_char == '_' or self.current_char == '&':
+            elif self.current_char.isalpha() or self.current_char == '_' or (self.current_char == '&' and self.peek().isalpha()):
                 self.current_token = self._id()
 
             # Strings
