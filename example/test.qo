@@ -235,8 +235,8 @@ Dictionaries
 */
 
 abc = {
-    abc: "def",
-    ghi: "jkl"
+    "abc": "def",
+    "ghi": "jkl"
 };
 
 println("abc['ghi']:", abc["ghi"]);
@@ -258,9 +258,9 @@ nlist = [
 println("nlist[1][1]:", nlist[1][1]);
 
 ndict = {
-    a: {
-        b: {
-            c: "d"
+    "a": {
+        "b": {
+            "c": "d"
         }
     }
 };

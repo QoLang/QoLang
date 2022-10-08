@@ -488,13 +488,15 @@ class Parser:
         result = {}
 
         if self.current_token.type != Tokens.CBRACKETR:
-            key = self.variable()
+            key = self.current_token
+            self.eat(Tokens.STRING)
             self.eat(Tokens.COL)
             value = self.expr()
             result[key.value] = value
             while self.current_token.type == Tokens.COMMA:
                 self.eat(Tokens.COMMA)
-                key = self.variable()
+                key = self.current_token
+                self.eat(Tokens.STRING)
                 self.eat(Tokens.COL)
                 value = self.expr()
                 result[key.value] = value
