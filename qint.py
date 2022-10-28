@@ -26,43 +26,32 @@ class Interpreter(NodeVisitor):
         self.sourcefile = sourcefile
 
     def visit_BinOp(self, node):
-        left = self.visit(node.left)
-        right = self.visit(node.right)
+        a = self.visit(node.left)
+        b = self.visit(node.right)
         if isinstance(left, VarVal):
-            left = left.value
+            a = left.value
         if isinstance(right, VarVal):
-            right = right.value
-        match node.op.type:
-            case Tokens.PLUS:
-                return left + right
-            case Tokens.MINUS:
-                return left - right
-            case Tokens.MULTIPLY:
-                return left * right
-            case Tokens.DIVIDE:
-                return left / right
-            case Tokens.LESS_THAN:
-                return left < right
-            case Tokens.GREATER_THAN:
-                return left > right
-            case Tokens.EQUAL:
-                return left == right
-            case Tokens.LESS_EQUAL:
-                return left <= right
-            case Tokens.GREATER_EQUAL:
-                return left >= right
-            case Tokens.NOT_EQUAL:
-                return left != right
-            case Tokens.AND:
-                return left and right
-            case Tokens.OR:
-                return left or right
-            case Tokens.POWER:
-                return left ** right
-            case Tokens.PERCENT:
-                return left % right
-            case Tokens.TIN_OP:
-                return right if left is None else left
+            b = right.value
+
+        ops = {
+            Tokens.PLUS: lambda a, b: a + b,
+            Tokens.MINUS: lambda a, b: a - b,
+            Tokens.MULTIPLY: lambda a, b: a * b,
+            Tokens.DIVIDE: lambda a, b: a / b,
+            Tokens.LESS_THAN: lambda a, b: a < b,
+            Tokens.GREATER_THAN: lambda a, b: a > b,
+            Tokens.EQUAL: lambda a, b: a == b,
+            Tokens.LESS_EQUAL: lambda a, b: a <= b,
+            Tokens.GREATER_EQUAL: lambda a, b: a >= b,
+            Tokens.NOT_EQUAL: lambda a, b: a != b,
+            Tokens.AND: lambda a, b: a and b,
+            Tokens.OR: lambda a, b: a or b,
+            Tokens.POWER: lambda a, b: a ** b,
+            Tokens.PERCENT: lambda a, b: a % b,
+            Tokens.TIN_OP: lambda a, b: b if a is None else a
+        }
+
+        return ops.get(node.op.type, lambda a, b: None)(a, b)
 
     def visit_Num(self, node):
         return node.value

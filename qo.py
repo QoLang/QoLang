@@ -7,7 +7,7 @@ import qparser
 from qclasses import PythonFunc, VarVal, Vars, Token, Tokens
 Variables = Vars()
 
-VERSION = "0.9-wip15"
+VERSION = "0.9-wip16"
 
 
 def run(args, main=False, qcf=False):
