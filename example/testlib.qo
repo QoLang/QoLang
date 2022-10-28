@@ -4,7 +4,7 @@ Disable running the file directly
 if(__main__){
     println("You are not supposed to run this file.");
     exit(1);
-};
+}
 
 /*
 Function declaration
@@ -20,9 +20,9 @@ func print_text(whichone){
     } else {
         println("Invalid input!");
         return 1;
-    };
+    }
     return 0;
-};
+}
 
 /*
 Exporting

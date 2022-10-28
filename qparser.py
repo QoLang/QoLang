@@ -9,13 +9,14 @@ class Parser:
         self.current_token = self.lexer.next_token()
         self.next_token = self.lexer.next_token()
         self.qcf = qcf
+        self.skip_semi = False
 
     def error(self):
         print("Parser Error")
         print(self.lexer.text.splitlines()[self.current_token.line])
         print(" " * self.current_token.col + "^")
         print(
-            f'Unexpected token on position {str(self.current_token.line + 1)}:{str(self.current_token.col)}')
+            f'Unexpected token {self.current_token.type} on position {str(self.current_token.line + 1)}:{str(self.current_token.col)}')
         sys.exit(1)
 
     def qcfcheck(self):
@@ -205,6 +206,8 @@ class Parser:
         for node in nodes:
             root.children.append(node)
 
+        self.skip_semi = True
+
         return root
 
     def statement_list(self):
@@ -212,8 +215,10 @@ class Parser:
 
         results = [node]
 
-        while self.current_token.type == Tokens.SEMI:
-            self.eat(Tokens.SEMI)
+        while self.current_token.type == Tokens.SEMI or self.skip_semi:
+            if not self.skip_semi:
+                self.eat(Tokens.SEMI)
+            self.skip_semi = False
             results.append(self.statement())
 
         if self.current_token.type == Tokens.ID:
@@ -348,9 +353,7 @@ class Parser:
     def else_st(self):
         token = self.current_token
         self.eat(Tokens.ELSE_ST)      # else
-        self.eat(Tokens.CBRACKETL)        # {
-        nodes = self.statement_list()  # code();
-        self.eat(Tokens.CBRACKETR)          # }
+        nodes = self.compound_statement().children  # {} code(); }
         return nodes
 
     def for_st(self):

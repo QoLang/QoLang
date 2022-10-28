@@ -22,7 +22,7 @@ if(exitcode == 0){
     println("Successful");
 } else {
     println("Unsuccessful");
-};
+}
 testpylib.test();
 
 println("-------------------------------");
@@ -48,7 +48,7 @@ Loops
 print("Some numbers printed with for loop: ");
 for(i = 0; i < 5; i = i + 1){
     print(i);
-};
+}
 println("");
 
 print("Some numbers printed with while loop: ");
@@ -56,7 +56,7 @@ i = 0;
 while(i < 5){
     print(i);
     i = i + 1;
-};
+}
 println("");
 
 print("Some numbers printed with times loop: ");
@@ -64,14 +64,14 @@ i = 0;
 times 5{
     print(i);
     i = i + 1;
-};
+}
 println("");
 
 
 print("Some numbers printed with times as loop: ");
 times 5 as &i{
     print(i);
-};
+}
 println("");
 
 
@@ -79,7 +79,7 @@ print("Some numbers printed with foreach loop: ");
 numbers = [0, 1, 2, 3, 4];
 foreach &num in numbers{
     print(num);
-};
+}
 println("");
 
 println("-------------------------------");
@@ -93,7 +93,7 @@ if(btest1 >= 1 && btest1 <= 10){
     println("Your number is between 1 and 10.");
 } else {
     println("Your number is not between 1 and 10.");
-};
+}
 
 btest2 = types.toInt(input("Enter a number: "));
 
@@ -101,7 +101,7 @@ if(btest2 >= 20 || btest2 <= 10){
     println("Your number is bigger than 20 or smaller than 10.");
 } else {
     println("Your number is not bigger than 20 or smaller than 10.");
-};
+}
 
 println("-------------------------------");
 /*
@@ -128,7 +128,7 @@ println("You'll enter 3 values that are going to be added to a list.");
 list = [];
 times 3 as &valn{
     list += [input(%"Number $valn: ")];
-};
+}
 
 println("List:", list);
 println("list[1]:", list[1]);
@@ -147,7 +147,7 @@ println("All ways to get something from a list");
 list = [];
 times 32 as &valn{
     list += [valn];
-}; /* 0, 1, 2, ..., 29, 30, 31 */
+} /* 0, 1, 2, ..., 29, 30, 31 */
 
 print("1: ");
 println(list[3]);
@@ -220,14 +220,14 @@ times 5 {
     myVariable = input("Enter a variable: ");
     stack.push(&myVariable);
     println("Pushed myVariable");
-};
+}
 
 println("Stack:", stack.get(&myVariable));
 
 times 5 {
     stack.pop(&myVariable);
     println("Popped myVariable:", myVariable);
-};
+}
 
 println("-------------------------------");
 /*
