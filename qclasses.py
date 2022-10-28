@@ -56,6 +56,9 @@ class Tokens:
     INLINEFUNC_R = "INLINEFUNC_R"
     ARROW = "ARROW"
     TIN_OP = "TIN_OP"
+    AMUL = "AMUL"
+    ADIV = "ADIV"
+    AMOD = "AMOD"
 
 
 class Token:
@@ -132,6 +135,41 @@ class Assign(AST):
 
     def __str__(self):
         return f"Assign({self.left}, {self.op}, {self.right})"
+
+
+class Add(AST):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.token = self.op = op
+        self.right = right
+
+
+class Sub(AST):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.token = self.op = op
+        self.right = right
+
+
+class Multiply(AST):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.token = self.op = op
+        self.right = right
+
+
+class Divide(AST):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.token = self.op = op
+        self.right = right
+
+
+class Modulus(AST):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.token = self.op = op
+        self.right = right
 
 
 class Var(AST):
@@ -273,13 +311,6 @@ class None_Type(AST):
     pass
 
 
-class Add(AST):
-    def __init__(self, left, op, right):
-        self.left = left
-        self.token = self.op = op
-        self.right = right
-
-
 class Include(AST):
     def __init__(self, token, _as):
         self.token = token
@@ -303,13 +334,6 @@ class Define(AST):
 
     def __str__(self):
         return str(self.value)
-
-
-class Sub(AST):
-    def __init__(self, left, op, right):
-        self.left = left
-        self.token = self.op = op
-        self.right = right
 
 
 class Dict(AST):

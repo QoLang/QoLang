@@ -284,7 +284,7 @@ Output:
 ```
 
 ### `+=` operator ("add")
-Add the right value to the value of the variable, and assign it.
+Add the value on right to the value of the variable, and assign it.
 
 Example code:
 ```
@@ -298,7 +298,7 @@ Output:
 ```
 
 ### `-=` operator ("subtract")
-Subtract the right value from the value of the variable, and assign it.
+Subtract the value on right from the value of the variable, and assign it.
 
 Example code:
 ```
@@ -309,4 +309,46 @@ println(a);
 Output:
 ```
 -5
+```
+
+### `*=` operator ("multiply")
+Multiply the value of the variable by the value on right, and assign it.
+
+Example code:
+```
+a = 5;
+a *= 10;
+println(a);
+```
+Output:
+```
+50
+```
+
+### `/=` operator ("divide")
+Divide the value of the variable by the value on right, and assign it.
+
+Example code:
+```
+a = 5;
+a /= 10;
+println(a);
+```
+Output:
+```
+0.5
+```
+
+### `%=` operator ("modulus")
+Calculate the remainer of division the variable by the value on right, and assign it.
+
+Example code:
+```
+a = 74;
+a %= 5;
+println(a);
+```
+Output:
+```
+4
 ```

@@ -221,15 +221,9 @@ class Lexer:
             elif self.current_char == "\"":
                 self.current_token = self.string("\"")
 
-            elif self.current_char == "%":
+            elif self.current_char == "%" and self.peek() in ['"', "'"]:
                 self.advance()
-                if self.current_char == "'":
-                    self.current_token = self.fstring("'")
-                elif self.current_char == "\"":
-                    self.current_token = self.fstring("\"")
-                else:
-                    self.current_token = Token(
-                        Tokens.PERCENT, '%', line, column)
+                self.current_token = self.fstring(self.current_char)
 
             # Two char tokens
 
@@ -242,6 +236,21 @@ class Lexer:
                 self.advance()
                 self.advance()
                 self.current_token = Token(Tokens.SUB, '-=', line, column)
+
+            elif self.current_char == '*' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                self.current_token = Token(Tokens.AMUL, '*=', line, column)
+
+            elif self.current_char == '/' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                self.current_token = Token(Tokens.ADIV, '/=', line, column)
+
+            elif self.current_char == '%' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                self.current_token = Token(Tokens.AMOD, '%=', line, column)
 
             elif self.current_char == '*' and self.peek() == '*':
                 self.advance()
@@ -371,6 +380,10 @@ class Lexer:
             elif self.current_char == '=':
                 self.advance()
                 self.current_token = Token(Tokens.ASSIGN, '=', line, column)
+
+            elif self.current_char == '%':
+                self.advance()
+                self.current_token = Token(Tokens.PERCENT, '%', line, column)
 
             else:
                 self.error()

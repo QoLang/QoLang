@@ -125,6 +125,61 @@ class Interpreter(NodeVisitor):
         else:
             return val.value
 
+    def visit_Add(self, node):
+        if node.left.token.type == Tokens.LISTITEM:
+            llist = self.Variables.getVar(node.left.value)
+            llist.value[self.visit(node.left.item)] += self.visit(node.right)
+            self.Variables.setVar(llist)
+        else:
+            var_old = self.Variables.getVar(node.left.value).value
+            var_new = self.visit(node.right)
+            var = VarVal(node.left.value, var_old + var_new)
+            self.Variables.setVar(var)
+
+    def visit_Sub(self, node):
+        if node.left.token.type == Tokens.LISTITEM:
+            llist = self.Variables.getVar(node.left.value)
+            llist.value[self.visit(node.left.item)] -= self.visit(node.right)
+            self.Variables.setVar(llist)
+        else:
+            var_old = self.Variables.getVar(node.left.value).value
+            var_new = self.visit(node.right)
+            var = VarVal(node.left.value, var_old - var_new)
+            self.Variables.setVar(var)
+
+    def visit_Multiply(self, node):
+        if node.left.token.type == Tokens.LISTITEM:
+            llist = self.Variables.getVar(node.left.value)
+            llist.value[self.visit(node.left.item)] *= self.visit(node.right)
+            self.Variables.setVar(llist)
+        else:
+            var_old = self.Variables.getVar(node.left.value).value
+            var_new = self.visit(node.right)
+            var = VarVal(node.left.value, var_old * var_new)
+            self.Variables.setVar(var)
+
+    def visit_Divide(self, node):
+        if node.left.token.type == Tokens.LISTITEM:
+            llist = self.Variables.getVar(node.left.value)
+            llist.value[self.visit(node.left.item)] /= self.visit(node.right)
+            self.Variables.setVar(llist)
+        else:
+            var_old = self.Variables.getVar(node.left.value).value
+            var_new = self.visit(node.right)
+            var = VarVal(node.left.value, var_old / var_new)
+            self.Variables.setVar(var)
+
+    def visit_Modulus(self, node):
+        if node.left.token.type == Tokens.LISTITEM:
+            llist = self.Variables.getVar(node.left.value)
+            llist.value[self.visit(node.left.item)] %= self.visit(node.right)
+            self.Variables.setVar(llist)
+        else:
+            var_old = self.Variables.getVar(node.left.value).value
+            var_new = self.visit(node.right)
+            var = VarVal(node.left.value, var_old % var_new)
+            self.Variables.setVar(var)
+
     def visit_FncDec(self, node):
         self.Variables.setVar(VarVal(node.name, node))
 
@@ -281,17 +336,6 @@ class Interpreter(NodeVisitor):
     def visit_None_Type(self, node):
         return None
 
-    def visit_Add(self, node):
-        if node.left.token.type == Tokens.LISTITEM:
-            llist = self.Variables.getVar(node.left.value)
-            llist.value[self.visit(node.left.item)] += self.visit(node.right)
-            self.Variables.setVar(llist)
-        else:
-            var_old = self.Variables.getVar(node.left.value).value
-            var_new = self.visit(node.right)
-            var = VarVal(node.left.value, var_old + var_new)
-            self.Variables.setVar(var)
-
     def visit_Include(self, node):
         import qo
         sourcedir = os.path.dirname(os.path.realpath(self.sourcefile))
@@ -339,17 +383,6 @@ class Interpreter(NodeVisitor):
 
     def visit_Define(self, node):
         self.Variables.setVar(VarVal(node.token.value, node.value))
-
-    def visit_Sub(self, node):
-        if node.left.token.type == Tokens.LISTITEM:
-            llist = self.Variables.getVar(node.left.value)
-            llist.value[self.visit(node.left.item)] -= self.visit(node.right)
-            self.Variables.setVar(llist)
-        else:
-            var_old = self.Variables.getVar(node.left.value).value
-            var_new = self.visit(node.right)
-            var = VarVal(node.left.value, var_old - var_new)
-            self.Variables.setVar(var)
 
     def visit_Dict(self, node):
         return {k: self.visit(v) for k, v in node.values.items()}

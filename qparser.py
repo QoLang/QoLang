@@ -258,18 +258,18 @@ class Parser:
     def assignment_statement(self):
         left = self.variable()
         token = self.current_token
-        if token.type == Tokens.ASSIGN:
-            self.eat(Tokens.ASSIGN)
+        tok_ast = {
+            Tokens.ASSIGN: Assign,
+            Tokens.ADD: Add,
+            Tokens.SUB: Sub,
+            Tokens.AMUL: Multiply,
+            Tokens.ADIV: Divide,
+            Tokens.AMOD: Modulus,
+        }
+        if token.type in (Tokens.ASSIGN, Tokens.ADD, Tokens.SUB, Tokens.AMUL, Tokens.ADIV, Tokens.AMOD):
+            self.eat(token.type)
             right = self.expr()
-            node = Assign(left, token, right)
-        elif token.type == Tokens.ADD:
-            self.eat(Tokens.ADD)
-            right = self.expr()
-            node = Add(left, token, right)
-        elif token.type == Tokens.SUB:
-            self.eat(Tokens.SUB)
-            right = self.expr()
-            node = Sub(left, token, right)
+            node = tok_ast[token.type](left, token, right)
         else:
             self.error()
         return node
@@ -290,7 +290,7 @@ class Parser:
         proc_name = self.current_token.value
         self.eat(Tokens.ID)
         self.eat(Tokens.LPAREN)
-        
+
         args = []
         if self.current_token.type == Tokens.ID:
             args = [self.variable()]
@@ -430,7 +430,7 @@ class Parser:
             self.eat(Tokens.SBRACKETL)
             if self.current_token.type == Tokens.COL:
                 item = Num(Token(Tokens.INTEGER, 0,
-                        self.current_token.line-1, self.current_token.col-1))
+                                 self.current_token.line-1, self.current_token.col-1))
             else:
                 item = self.expr()
             if self.current_token.type == Tokens.COL:
@@ -516,7 +516,8 @@ class Parser:
                 args.append(self.variable())
 
         self.eat(Tokens.ARROW)
-        node = self.program() # "program" because "compound statement without brackets" is what we're looking for
+        # "program" because "compound statement without brackets" is what we're looking for
+        node = self.program()
         self.eat(Tokens.INLINEFUNC_R)
         var = InlineFunc(token, node, args)
         return var
