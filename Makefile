@@ -25,4 +25,4 @@ clean:
 	rm -rf build dist qo.spec __pycache__
 
 docs:
-	cd libs && python3 ../qdoc.py $(addsuffix .py,std file qcf qo random stack string types) > ../docs.html
+	cd libs && python3 ../qdoc.py $(addsuffix .py,std date file qcf qo random stack string types) > ../docs.html
