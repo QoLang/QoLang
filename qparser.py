@@ -258,18 +258,14 @@ class Parser:
     def assignment_statement(self):
         left = self.variable()
         token = self.current_token
-        tok_ast = {
-            Tokens.ASSIGN: Assign,
-            Tokens.ADD: Add,
-            Tokens.SUB: Sub,
-            Tokens.AMUL: Multiply,
-            Tokens.ADIV: Divide,
-            Tokens.AMOD: Modulus,
-        }
-        if token.type in (Tokens.ASSIGN, Tokens.ADD, Tokens.SUB, Tokens.AMUL, Tokens.ADIV, Tokens.AMOD):
+        if token.type == Tokens.ASSIGN:
             self.eat(token.type)
             right = self.expr()
-            node = tok_ast[token.type](left, token, right)
+            node = Assign(left, token, right)
+        elif token.type in (Tokens.ADD, Tokens.SUB, Tokens.AMUL, Tokens.ADIV, Tokens.AMOD):
+            self.eat(token.type)
+            right = self.expr()
+            node = AssignOp(left, token, right)
         else:
             self.error()
         return node

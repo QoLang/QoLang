@@ -75,7 +75,7 @@ class Interpreter(NodeVisitor):
             case Tokens.PLUS:
                 val = self.visit(node.expr)
                 if isinstance(val, VarVal):
-                    val = val.value 
+                    val = val.value
                 return +val
             case Tokens.MINUS:
                 val = self.visit(node.expr)
@@ -125,59 +125,23 @@ class Interpreter(NodeVisitor):
         else:
             return val.value
 
-    def visit_Add(self, node):
+    def visit_AssignOp(self, node):
+        ops = {
+            Tokens.ADD: lambda a, b: a + b,
+            Tokens.SUB: lambda a, b: a - b,
+            Tokens.AMUL: lambda a, b: a * b,
+            Tokens.ADIV: lambda a, b: a / b,
+            Tokens.AMOD: lambda a, b: a % b,
+        }
         if node.left.token.type == Tokens.LISTITEM:
             llist = self.Variables.getVar(node.left.value)
-            llist.value[self.visit(node.left.item)] += self.visit(node.right)
+            llist.value[self.visit(node.left.item)] = ops[node.token.type](
+                self.visit(node.left.item), self.visit(node.right))
             self.Variables.setVar(llist)
         else:
             var_old = self.Variables.getVar(node.left.value).value
             var_new = self.visit(node.right)
-            var = VarVal(node.left.value, var_old + var_new)
-            self.Variables.setVar(var)
-
-    def visit_Sub(self, node):
-        if node.left.token.type == Tokens.LISTITEM:
-            llist = self.Variables.getVar(node.left.value)
-            llist.value[self.visit(node.left.item)] -= self.visit(node.right)
-            self.Variables.setVar(llist)
-        else:
-            var_old = self.Variables.getVar(node.left.value).value
-            var_new = self.visit(node.right)
-            var = VarVal(node.left.value, var_old - var_new)
-            self.Variables.setVar(var)
-
-    def visit_Multiply(self, node):
-        if node.left.token.type == Tokens.LISTITEM:
-            llist = self.Variables.getVar(node.left.value)
-            llist.value[self.visit(node.left.item)] *= self.visit(node.right)
-            self.Variables.setVar(llist)
-        else:
-            var_old = self.Variables.getVar(node.left.value).value
-            var_new = self.visit(node.right)
-            var = VarVal(node.left.value, var_old * var_new)
-            self.Variables.setVar(var)
-
-    def visit_Divide(self, node):
-        if node.left.token.type == Tokens.LISTITEM:
-            llist = self.Variables.getVar(node.left.value)
-            llist.value[self.visit(node.left.item)] /= self.visit(node.right)
-            self.Variables.setVar(llist)
-        else:
-            var_old = self.Variables.getVar(node.left.value).value
-            var_new = self.visit(node.right)
-            var = VarVal(node.left.value, var_old / var_new)
-            self.Variables.setVar(var)
-
-    def visit_Modulus(self, node):
-        if node.left.token.type == Tokens.LISTITEM:
-            llist = self.Variables.getVar(node.left.value)
-            llist.value[self.visit(node.left.item)] %= self.visit(node.right)
-            self.Variables.setVar(llist)
-        else:
-            var_old = self.Variables.getVar(node.left.value).value
-            var_new = self.visit(node.right)
-            var = VarVal(node.left.value, var_old % var_new)
+            var = VarVal(node.left.value, ops[node.token.type](var_old, var_new))
             self.Variables.setVar(var)
 
     def visit_FncDec(self, node):

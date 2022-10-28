@@ -137,28 +137,7 @@ class Assign(AST):
         return f"Assign({self.left}, {self.op}, {self.right})"
 
 
-class Add(AST):
-    def __init__(self, left, op, right):
-        self.left = left
-        self.token = self.op = op
-        self.right = right
-
-
-class Sub(AST):
-    def __init__(self, left, op, right):
-        self.left = left
-        self.token = self.op = op
-        self.right = right
-
-
-class Multiply(AST):
-    def __init__(self, left, op, right):
-        self.left = left
-        self.token = self.op = op
-        self.right = right
-
-
-class Divide(AST):
+class AssignOp(AST):
     def __init__(self, left, op, right):
         self.left = left
         self.token = self.op = op
