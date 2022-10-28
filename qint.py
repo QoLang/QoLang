@@ -28,10 +28,10 @@ class Interpreter(NodeVisitor):
     def visit_BinOp(self, node):
         a = self.visit(node.left)
         b = self.visit(node.right)
-        if isinstance(left, VarVal):
-            a = left.value
-        if isinstance(right, VarVal):
-            b = right.value
+        if isinstance(a, VarVal):
+            a = a.value
+        if isinstance(a, VarVal):
+            b = a.value
 
         ops = {
             Tokens.PLUS: lambda a, b: a + b,
