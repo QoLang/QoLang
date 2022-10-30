@@ -4,7 +4,6 @@ Categories:
 * [Logical Operators](#logical-operators)
 * [Comparison Operators](#comparison-operators)
 * [Arithmetic Operators](#arithmetic-operators)
-* [Assignment Operators](#assignment-operators)
 
 ## Logical Operators
 ### `&&` operator ("and")
@@ -267,88 +266,4 @@ println(75427 % 4424);
 Output:
 ```
 219
-```
-
-## Assignment Operators
-### `=` operator ("assign")
-Assign the right value to the variable.
-
-Example code:
-```
-a = 5;
-println(a);
-```
-Output:
-```
-5
-```
-
-### `+=` operator ("add")
-Add the value on right to the value of the variable, and assign it.
-
-Example code:
-```
-a = 5;
-a += 10;
-println(a);
-```
-Output:
-```
-15
-```
-
-### `-=` operator ("subtract")
-Subtract the value on right from the value of the variable, and assign it.
-
-Example code:
-```
-a = 5;
-a -= 10;
-println(a);
-```
-Output:
-```
--5
-```
-
-### `*=` operator ("multiply")
-Multiply the value of the variable by the value on right, and assign it.
-
-Example code:
-```
-a = 5;
-a *= 10;
-println(a);
-```
-Output:
-```
-50
-```
-
-### `/=` operator ("divide")
-Divide the value of the variable by the value on right, and assign it.
-
-Example code:
-```
-a = 5;
-a /= 10;
-println(a);
-```
-Output:
-```
-0.5
-```
-
-### `%=` operator ("modulus")
-Calculate the remainer of division the variable by the value on right, and assign it.
-
-Example code:
-```
-a = 74;
-a %= 5;
-println(a);
-```
-Output:
-```
-4
 ```

@@ -5,3 +5,4 @@ Note: This documentation is **only** for the syntax of QoLang. For standard libr
 
 ## Other Pages in Documentation
 * [Operators](Operators.md)
+* [Statements](Statements.md)
