@@ -6,7 +6,11 @@ template = """<!DOCTYPE html>
 <html>
 <title>QoLang Docs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+<link href="https://prismjs.com/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet" />
+<link href="https://prismjs.com/plugins/toolbar/prism-toolbar.css" rel="stylesheet" />
+<link href="/style/prism-apprentice/prism-apprentice.css" rel="stylesheet" />
+<link href="/style/prism-apprentice/prism-apprentice.css" rel="stylesheet" />
 <link href="https://qolang.camroku.tech/style/index.css" rel="stylesheet" />
 <link href="https://qolang.camroku.tech/style/apprentice.css" rel="stylesheet" />
 <body class="">
@@ -86,7 +90,7 @@ for file in sys.argv[1:]:
         if contents[fpy].__doc__ in added:
             continue
         added.append(contents[fpy].__doc__)
-        out += f"<li><a href=\"#docs.{file[:-3]}.{fqo}\"><code>{contents[fpy].__doc__.splitlines()[1].strip()}</code></a></li>"
+        out += f"<li><a href=\"#docs.{file[:-3]}.{fqo}\"><code class=\"language-qo\">{contents[fpy].__doc__.splitlines()[1].strip()}</code></a></li>"
     out += "</ul><h1>Documentation</h1>"
     added = []
     for fpy, fqo in contents["qolang_export"].items():
