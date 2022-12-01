@@ -1,10 +1,12 @@
-IMPORTS=
+IMPORTS=sqlite3
 SOURCE=qo.py
 PREFIX=/usr/local/bin
 LIBPREFIX=/usr/lib/qo
 LIBS=libs/*
 OUTPUT=dist/qo
 PYI_FLAGS=$(addprefix --hidden-import ,$(IMPORTS)) -F
+
+.PHONY: build clean install uninstall winebuild docs
 
 build:
 	pyinstaller $(PYI_FLAGS) $(SOURCE)

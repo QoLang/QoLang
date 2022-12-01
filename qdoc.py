@@ -35,8 +35,8 @@ if (window.location.hash && window.location.hash.startsWith("#docs.")) {
   for (i = 0; i < x.length; i++) {
     tablinks[i].className = tablinks[i].className.replace("side-active", "");
   }
-  document.getElementById(window.location.hash.substr(1)).style.display = "block";
-  document.getElementById(window.location.hash.substr(1) + "Tab").className += " side-active";
+  document.getElementById("docs." + window.location.hash.split(".")[1]).style.display = "block";
+  document.getElementById("docs." + window.location.hash.split(".")[1] + "Tab").className += " side-active";
   document.getElementById(window.location.hash.substr(1)).scrollIntoView();
 }
 
