@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 import sys
 import runpy
+from qo import VERSION as QO_VERSION
 
-template = """<!DOCTYPE html>
+template = f"""<!DOCTYPE html>
 <html>
-<title>QoLang Docs</title>
+<title>QoLang v{QO_VERSION} docs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
 <link href="https://prismjs.com/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet" />
@@ -16,7 +17,7 @@ template = """<!DOCTYPE html>
 <body class="">
 <!-- Page Content -->
 <div class="w3-container border-bottom mid head">
-  <h1><img src="https://qolang.camroku.tech/images/qolang.png" width="32"/> The Qo Programming Language Documentation</h1>
+  <h1><img src="https://qolang.camroku.tech/images/qolang.png" width="32"/> The Qo Programming Language Documentation version {QO_VERSION}</h1>
 </div>
 <div class="sidebar">
 <!--NAV-->
@@ -25,39 +26,39 @@ template = """<!DOCTYPE html>
 <!--CONTENTS-->
 </div>
 <script>
-if (window.location.hash && document.getElementById(window.location.hash.substring(1) + "Tab")) {
+if (window.location.hash && document.getElementById(window.location.hash.substring(1) + "Tab")) {{
   document.getElementById(window.location.hash.substring(1) + "Tab").click();
-}
+}}
 
-if (window.location.hash && window.location.hash.startsWith("#docs.")) {
+if (window.location.hash && window.location.hash.startsWith("#docs.")) {{
   var i, x, tablinks;
   x = document.getElementsByClassName("section");
-  for (i = 0; i < x.length; i++) {
+  for (i = 0; i < x.length; i++) {{
     x[i].style.display = "none";
-  }
+  }}
   tablinks = document.getElementsByClassName("side");
-  for (i = 0; i < x.length; i++) {
+  for (i = 0; i < x.length; i++) {{
     tablinks[i].className = tablinks[i].className.replace("side-active", "");
-  }
+  }}
   document.getElementById("docs." + window.location.hash.split(".")[1]).style.display = "block";
   document.getElementById("docs." + window.location.hash.split(".")[1] + "Tab").className += " side-active";
   document.getElementById(window.location.hash.substr(1)).scrollIntoView();
-}
+}}
 
-function chTab(evt, tab) {
+function chTab(evt, tab) {{
   var i, x, tablinks;
   x = document.getElementsByClassName("section");
-  for (i = 0; i < x.length; i++) {
+  for (i = 0; i < x.length; i++) {{
     x[i].style.display = "none";
-  }
+  }}
   tablinks = document.getElementsByClassName("side");
-  for (i = 0; i < x.length; i++) {
+  for (i = 0; i < x.length; i++) {{
     tablinks[i].className = tablinks[i].className.replace("side-active", "");
-  }
+  }}
   document.getElementById(tab).style.display = "block";
   evt.currentTarget.className += " side-active";
-  history.pushState({}, "", "#" + tab);
-}
+  history.pushState({{}}, "", "#" + tab);
+}}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
 <script src="https://prismjs.com/plugins/toolbar/prism-toolbar.js"></script>
