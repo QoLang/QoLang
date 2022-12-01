@@ -56,5 +56,6 @@ arguments:
     else:
         try:
             run(sys.argv, True)
-        except KeyboardInterrupt:
-            print("\nRuntime Error: KeyboardInterrupt exception")
+        except Exception as e:
+            print(f"\nRuntime Error: Exception {e}")
+            sys.exit(1)
