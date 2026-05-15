@@ -8,7 +8,7 @@ import os
 import qo
 
 qolang_export = {
-    "var_args": "args",
+    "var_args_instance": "args",
     "func_exportAll": "exportAll",
     "func_env": "env",
     "func_version": "version",
@@ -29,6 +29,11 @@ class var_args:
 
     def __setter__(self, value):
         self.theargs = value
+
+    def __str__(self):
+        return str(self.theargs)
+
+var_args_instance = var_args()
 
 
 def func_exportAll(Variables, args: list):

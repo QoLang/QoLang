@@ -16,7 +16,7 @@ func print_text(whichone){
     } else if (whichone == 2) {
         println("Hello, QoLang!");
     } else if (whichone == 3) {
-        println("Hello, Camroku.TECH!");
+        println("Oh, Camroku is no more...");
     } else {
         println("Invalid input!");
         return 1;
