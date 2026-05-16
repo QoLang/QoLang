@@ -10,14 +10,13 @@ template = f"""<!DOCTYPE html>
 <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
 <link href="https://prismjs.com/plugins/line-numbers/prism-line-numbers.css" rel="stylesheet" />
 <link href="https://prismjs.com/plugins/toolbar/prism-toolbar.css" rel="stylesheet" />
-<link href="/style/prism-apprentice/prism-apprentice.css" rel="stylesheet" />
-<link href="/style/prism-apprentice/prism-apprentice.css" rel="stylesheet" />
-<link href="https://qolang.camroku.tech/style/index.css" rel="stylesheet" />
-<link href="https://qolang.camroku.tech/style/apprentice.css" rel="stylesheet" />
+<link href="https://qolang.github.io/style/prism-apprentice/prism-apprentice.css" rel="stylesheet" />
+<link href="https://qolang.github.io/style/index.css" rel="stylesheet" />
+<link href="https://qolang.github.io/style/apprentice.css" rel="stylesheet" />
 <body class="">
 <!-- Page Content -->
 <div class="w3-container border-bottom mid head">
-  <h1><img src="https://qolang.camroku.tech/images/qolang.png" width="32"/> The Qo Programming Language Documentation version {QO_VERSION}</h1>
+  <h1><img src="https://qolang.github.io/images/qolang.png" width="32"/> The <a href="https://qolang.github.io">Qo Programming Language</a> Documentation version {QO_VERSION}</h1>
 </div>
 <div class="sidebar">
 <!--NAV-->
@@ -65,7 +64,7 @@ function chTab(evt, tab) {{
 <script src="https://prismjs.com/plugins/line-numbers/prism-line-numbers.js"></script>
 <script src="https://prismjs.com/plugins/normalize-whitespace/prism-normalize-whitespace.js"></script>
 <script src="https://prismjs.com/plugins/show-language/prism-show-language.js"></script>
-<script src="/scripts/qo-prism/qo-prism.js"></script>
+<script src="https://qolang.github.io/scripts/qo-prism/qo-prism.js"></script>
 </body>
 </html>"""
 
